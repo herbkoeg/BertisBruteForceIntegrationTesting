@@ -11,6 +11,6 @@ package de.hk.bfit;
  */
 public class HelloWorld {
     public static void main(String[] args) {
-        System.out.println("Hallo bla");
+        System.out.println("Hallo bla blub");
     }
 }
