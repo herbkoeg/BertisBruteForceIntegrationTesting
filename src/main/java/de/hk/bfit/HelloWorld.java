@@ -6,19 +6,24 @@
 package de.hk.bfit;
 
 import de.hk.bfit.db.DBConnector;
+import de.hk.bfit.execute.ResultHandler;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  *
  * @author palmherby
  */
 public class HelloWorld {
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main(String[] args) throws Exception{
         System.out.println("Hallo bla blub");
         DBConnector dBConnector = new DBConnector();
         Connection dbConnection = dBConnector.getDBConnection();
         System.out.println(dbConnection.getClientInfo());
+        
+        ResultHandler resultHandler = new ResultHandler();
+        
+        resultHandler.generateReferenzFile("jawoi", "ein Test", "select * from berti.\"Person\"");
+        
         
     }
 }

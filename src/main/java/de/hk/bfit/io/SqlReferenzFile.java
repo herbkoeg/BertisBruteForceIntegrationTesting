@@ -6,21 +6,33 @@
 package de.hk.bfit.io;
 
 import java.util.List;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author palmherby
- */
+
+
+@XmlRootElement
 public class SqlReferenzFile {
-    
+    @XmlElement
+    private String description;
+    @XmlElement
     private String testSql;
+    @XmlElement
     private List<String> testResult;
+    @XmlElement
     private List<String> resetCommand;
 
-    public SqlReferenzFile(String description, String sql, List<String> resultList, List<String> resetList) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public SqlReferenzFile() {
     }
-    
+
+    public SqlReferenzFile(String description, String testSql, List<String> testResult, List<String> resetCommand) {
+        this.description = description;
+        this.testSql = testSql;
+        this.testResult = testResult;
+        this.resetCommand = resetCommand;
+    }
+
+
     
     public String getTestSql() {
         return testSql;

@@ -9,7 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import javax.xml.datatype.XMLGregorianCalendar;
 
-
 public class GsonHelper {
 
     private static Gson getGson() {
@@ -20,9 +19,13 @@ public class GsonHelper {
                 new XMLGregorianCalendarConverter.Deserializer());
         return gson_builder.create();
     }
-    
+
     public static String getGsonString(Object object) {
         return getGson().toJson(object);
+    }
+
+    public static Object getObjectFromString(String jsonString, Class clazz) {
+        return getGson().fromJson(jsonString,clazz);
     }
 
 }

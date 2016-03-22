@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
+<sqlReferenzFile>
+    <description>ein Test</description>
+    <testSql>select * from berti."Person"</testSql>
+    <resetCommand>bitte hier sql - updates fuer reset eintragen</resetCommand>
+</sqlReferenzFile>

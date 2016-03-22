@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.util.List;
 import java.util.Scanner;
 import javax.xml.bind.JAXBException;
 
@@ -21,24 +20,22 @@ public class FileAdapter {
 
     public static String readFile(String filename) throws FileNotFoundException {
         System.out.println("reading '" + filename + "'");
-        StringBuffer text = new StringBuffer();
+        StringBuilder text;
+        text = new StringBuilder();
         String newLine = System.getProperty("line.separator");
-        Scanner scanner = new Scanner(new FileInputStream(filename), "UTF-8");
-        try {
+        try (Scanner scanner = new Scanner(new FileInputStream(filename), "UTF-8")) {
             while (scanner.hasNextLine()) {
-                text.append(scanner.nextLine() + newLine);
+                text.append(scanner.nextLine()).append(newLine);
             }
-        } finally {
-            scanner.close();
         }
         return text.toString();
     }
 
     public static void writeFile(String filename, String content) throws IOException {
-        Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filename), "UTF8"));
-        out.append(content);
-        out.flush();
-        out.close();
+        try (Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filename), "UTF8"))) {
+            out.append(content);
+            out.flush();
+        }
     }
 }
