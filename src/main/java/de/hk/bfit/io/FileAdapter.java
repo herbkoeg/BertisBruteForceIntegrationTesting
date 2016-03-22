@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.util.List;
 import java.util.Scanner;
 import javax.xml.bind.JAXBException;
 
@@ -33,7 +34,7 @@ public class FileAdapter {
         return text.toString();
     }
 
-    private void writeFile(String filename, String content) throws IOException {
+    public static void writeFile(String filename, String content) throws IOException {
         Writer out = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(filename), "UTF8"));
         out.append(content);

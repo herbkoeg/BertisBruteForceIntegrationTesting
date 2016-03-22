@@ -67,11 +67,11 @@ public class ResultHandler {
     }
 
     private List<String> createResultList(ResultSet rs) throws SQLException {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
         while (rs.next()) {
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for (int i = 1; i <= columnCount; i++) {
                 if (rs.getString(i) != null) {
                     sb.append(rs.getString(i).trim()).append(";");
@@ -130,5 +130,16 @@ public class ResultHandler {
         GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
         String content = FileAdapter.readFile(filename);
         return genericXmlHandler.convertXMLToObject(SqlReferenzFile.class, content);
+    }
+    
+    public  void generateReferenzFile(String filename, String description, String sql) throws SQLException, ClassNotFoundException, IllegalArgumentException, JAXBException, IOException {
+        List<String> resultList = executeSelectSql(sql, null);
+        List<String> resetList = new ArrayList<>();
+        resetList.add("bitte hier sql - updates fuer reset eintragen");
+        SqlReferenzFile sqlReferenzFile;
+        sqlReferenzFile = new SqlReferenzFile(description, sql, resultList, resetList);
+        GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
+        String content = genericXmlHandler.convertObjectToXML(sqlReferenzFile);
+        FileAdapter.writeFile(filename, content);
     }
 }

@@ -16,6 +16,10 @@ public class SqlReferenzFile {
     private String testSql;
     private List<String> testResult;
     private List<String> resetCommand;
+
+    public SqlReferenzFile(String description, String sql, List<String> resultList, List<String> resetList) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     
     public String getTestSql() {
