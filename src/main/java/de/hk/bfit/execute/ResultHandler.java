@@ -38,19 +38,18 @@ public class ResultHandler {
             }
         }
 
-        Assert.assertEquals("Unterschiedlich viele Treffer", refResults.size(), actualResults.size());
+        Assert.assertEquals("Result size differs", refResults.size(), actualResults.size());
 
         int length = refResults.size();
 
         for (int i = 0; i < length; i++) {
             Assert.assertEquals(setVariables(refResults.get(i), variables), actualResults.get(i));
         }
-        System.out.println("Success :-)");
+        System.out.println("Success!");
     }
 
     private String setVariables(String sql, Map<String, String> variables) {
         if (variables != null) {
-
             Iterator<String> it = variables.keySet().iterator();
             String[] searchList = new String[variables.size()];
             String[] replacementList = new String[variables.size()];

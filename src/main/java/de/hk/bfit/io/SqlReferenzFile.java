@@ -9,33 +9,32 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-
-
 @XmlRootElement
 public class SqlReferenzFile {
+
     @XmlElement
     private String description;
     @XmlElement
-    private String testSql;
+    private String assertCommand;
     @XmlElement
     private List<String> testResult;
     @XmlElement
     private List<String> resetCommand;
+    @XmlElement
+    private List<String> initCommand;
 
     public SqlReferenzFile() {
     }
 
     public SqlReferenzFile(String description, String testSql, List<String> testResult, List<String> resetCommand) {
         this.description = description;
-        this.testSql = testSql;
+        this.assertCommand = testSql;
         this.testResult = testResult;
         this.resetCommand = resetCommand;
     }
 
-
-    
     public String getTestSql() {
-        return testSql;
+        return assertCommand;
     }
 
     public List<String> getTestResult() {
@@ -45,6 +44,25 @@ public class SqlReferenzFile {
     public List<String> getResetCommand() {
         return resetCommand;
     }
-    
-    
+
+    public SqlReferenzFile(String description, String assertCommand, List<String> testResult, List<String> resetCommand, List<String> initCommand) {
+        this.description = description;
+        this.assertCommand = assertCommand;
+        this.testResult = testResult;
+        this.resetCommand = resetCommand;
+        this.initCommand = initCommand;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getAssertCommand() {
+        return assertCommand;
+    }
+
+    public List<String> getInitCommand() {
+        return initCommand;
+    }
+
 }
