@@ -11,9 +11,9 @@ public class InitAction extends BaseAction{
     
     public InitAction() {
         this.description = "define your init commands here";
-        this.commands = new ArrayList<>();
-        this.commands.add("insert into xyz ...");
-        this.commands.add("update xyz where ...");
+        this.sqlCommmands = new ArrayList<>();
+        this.sqlCommmands.add("insert into xyz ...");
+        this.sqlCommmands.add("update xyz where ...");
     }    
 
     @XmlElement
@@ -27,11 +27,11 @@ public class InitAction extends BaseAction{
 
     @XmlElement
     public List<String> getCommands() {
-        return commands;
+        return sqlCommmands;
     }
 
-    public void setCommands(List<String> initCommands) {
-        this.commands = initCommands;
+    public void setSqlCommands(List<String> initCommands) {
+        this.sqlCommmands = initCommands;
     }
     
     

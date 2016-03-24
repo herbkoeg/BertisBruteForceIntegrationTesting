@@ -14,6 +14,6 @@ import java.util.List;
 public class BaseAction {
 
     protected String description;
-    protected List<String> commands;
+    protected List<String> sqlCommmands;
     
 }

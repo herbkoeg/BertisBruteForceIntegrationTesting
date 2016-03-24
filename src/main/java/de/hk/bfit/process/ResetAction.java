@@ -10,14 +10,14 @@ public class ResetAction extends BaseAction{
 
     public ResetAction() {
         this.description = "define your reset commands here";
-        this.commands = new ArrayList<>();
-        this.commands.add("delete from xyz where ...");
-        this.commands.add("update xyz where ...");
+        this.sqlCommmands = new ArrayList<>();
+        this.sqlCommmands.add("delete from xyz where ...");
+        this.sqlCommmands.add("update xyz where ...");
     }
     
     public ResetAction(String description) {
         this.description = description;
-        this.commands = new ArrayList<>();
+        this.sqlCommmands = new ArrayList<>();
     }
 
     @XmlElement
@@ -30,12 +30,12 @@ public class ResetAction extends BaseAction{
     }
 
     @XmlElement
-    public List<String> getCommands() {
-        return commands;
+    public List<String> getSqlCommands() {
+        return sqlCommmands;
     }
 
     public void setCommands(List<String> commands) {
-        this.commands = commands;
+        this.sqlCommmands = commands;
     }
     
     
