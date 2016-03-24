@@ -33,7 +33,7 @@ public class TestCaseProcessor {
             ReferenceAction reference = itRef.next();
             logger.info("executing '" + reference.getSelect() + "'");
             List<String> refResults = reference.getResults();
-            if(!re.getSelect().contains("order by")){
+            if(!reference.getSelect().contains("order by")){
                 logger.info("Warning: SQL doesn't contain 'order by'");
             }
             List<String> actualResults = executeSelectSql(reference.getSelect(), variables);

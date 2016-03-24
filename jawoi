@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
-<sqlReferenzFile>
-    <description>ein Test</description>
-    <testSql>select * from berti."Person"</testSql>
-    <resetCommand>bitte hier sql - updates fuer reset eintragen</resetCommand>
-</sqlReferenzFile>
+<testCase>
+    <initAction>
+        <commands>insert into xyz ...</commands>
+        <commands>update xyz where ...</commands>
+        <commands>tralala</commands>
+        <commands>blafasl</commands>
+        <description>define your init commands here</description>
+    </initAction>
+    <referenceAction>
+        <description>jawoi</description>
+        <results>m;1;</results>
+        <results>a;2;</results>
+        <select>select * from Person</select>
+    </referenceAction>
+    <referenceAction>
+        <description>jamei</description>
+        <select>select tralala</select>
+    </referenceAction>
+    <resetAction>
+        <commands>delete from xyz where ...</commands>
+        <commands>update xyz where ...</commands>
+        <description>define your reset commands here</description>
+    </resetAction>
+</testCase>

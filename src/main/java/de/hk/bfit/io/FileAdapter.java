@@ -1,5 +1,6 @@
 package de.hk.bfit.io;
 
+import de.hk.bfit.process.TestCase;
 import java.io.BufferedWriter;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,10 +13,10 @@ import javax.xml.bind.JAXBException;
 
 public class FileAdapter {
 
-    private SqlReferenzFile getSqlReferenzFile(String filename) throws IOException, JAXBException {
+    public static TestCase loadTestCase(String filename) throws IOException, JAXBException {
         GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
         String content = readFile(filename);
-        return genericXmlHandler.convertXMLToObject(SqlReferenzFile.class, content);
+        return genericXmlHandler.convertXMLToObject(TestCase.class, content);
     }
 
     public static String readFile(String filename) throws FileNotFoundException {

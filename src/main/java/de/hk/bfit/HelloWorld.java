@@ -23,7 +23,7 @@ public class HelloWorld {
         
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor();
         
-        testCaseProcessor.generateTestCase("jawoi", "ein Test", "select * from Person");
+        testCaseProcessor.generateExampleTestCase("jawoi", "ein Test", "select * from Person");
         
 //        TestCase testCase = FileAdapter.loadTestCase("jawoi");
 //        testCaseProcessor.assertReferences(testCase, variables, true);
