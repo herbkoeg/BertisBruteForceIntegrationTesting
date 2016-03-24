@@ -6,7 +6,8 @@
 package de.hk.bfit;
 
 import de.hk.bfit.db.DBConnector;
-import de.hk.bfit.execute.ResultHandler;
+import de.hk.bfit.io.FileAdapter;
+import de.hk.bfit.process.TestCaseProcessor;
 import java.sql.Connection;
 
 /**
@@ -20,10 +21,12 @@ public class HelloWorld {
         Connection dbConnection = dBConnector.getDBConnection();
         System.out.println(dbConnection.getClientInfo());
         
-        ResultHandler resultHandler = new ResultHandler();
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor();
         
-        resultHandler.generateReferenzFile("jawoi", "ein Test", "select * from berti.\"Person\"");
+        testCaseProcessor.generateTestCase("jawoi", "ein Test", "select * from Person");
         
+//        TestCase testCase = FileAdapter.loadTestCase("jawoi");
+//        testCaseProcessor.assertReferences(testCase, variables, true);
         
     }
 }
