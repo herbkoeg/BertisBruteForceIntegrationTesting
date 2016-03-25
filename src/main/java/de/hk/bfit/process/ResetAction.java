@@ -5,7 +5,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement( name = "ResetAction" )
+@XmlRootElement
 public class ResetAction extends BaseAction{
 
     public ResetAction() {

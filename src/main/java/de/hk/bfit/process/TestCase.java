@@ -21,6 +21,7 @@ public class TestCase {
     }
 
     public TestCase(String description, ReferenceAction select) {
+        this.description = description;
         // InitAction
         this.initAction = new InitAction();
         // Reference
@@ -41,5 +42,13 @@ public class TestCase {
     public List<ReferenceAction> getReferenceActions() {
         return referenceAction;
     }
-    
+
+    public List<ReferenceAction> getReferenceAction() {
+        return referenceAction;
+    }
+
+    public ResetAction getResetAction() {
+        return resetAction;
+    }
+
 }

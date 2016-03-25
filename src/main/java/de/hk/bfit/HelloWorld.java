@@ -7,8 +7,11 @@ package de.hk.bfit;
 
 import de.hk.bfit.db.DBConnector;
 import de.hk.bfit.io.FileAdapter;
+import de.hk.bfit.process.TestCase;
 import de.hk.bfit.process.TestCaseProcessor;
 import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -21,9 +24,10 @@ public class HelloWorld {
         Connection dbConnection = dBConnector.getDBConnection();
         System.out.println(dbConnection.getClientInfo());
         
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor();
+        Map<String,String> variables = new HashMap<>();
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(DBConnector.getDBConnection());
         
-        testCaseProcessor.generateExampleTestCase("jawoi", "ein Test", "select * from Person");
+        testCaseProcessor.generateExampleTestCase("jawoi", "Dies ist ein neuer TestCase", "select * from Person");
         
 //        TestCase testCase = FileAdapter.loadTestCase("jawoi");
 //        testCaseProcessor.assertReferences(testCase, variables, true);
