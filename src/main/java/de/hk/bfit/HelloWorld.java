@@ -27,7 +27,7 @@ public class HelloWorld {
         Map<String,String> variables = new HashMap<>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(DBConnector.getDBConnection());
         
-        testCaseProcessor.generateExampleTestCase("jawoi", "Dies ist ein neuer TestCase", "select * from Person");
+        testCaseProcessor.generateExampleTestCase("BfitErsterTest.xml", "Dies ist ein neuer TestCase", "select * from Person");
         
 //        TestCase testCase = FileAdapter.loadTestCase("jawoi");
 //        testCaseProcessor.assertReferences(testCase, variables, true);

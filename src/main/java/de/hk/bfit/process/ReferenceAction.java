@@ -6,9 +6,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class ReferenceAction {
-    private List<String> results;
-    private String select;
     private String description;
+    private String select;
+    private List<String> results;
     
     public ReferenceAction() {
     }
