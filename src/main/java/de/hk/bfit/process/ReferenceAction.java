@@ -37,6 +37,5 @@ public class ReferenceAction {
     public void setDescription(String description) {
         this.description = description;
     }
-
     
 }
