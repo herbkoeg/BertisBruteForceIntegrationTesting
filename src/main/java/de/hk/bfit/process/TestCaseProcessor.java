@@ -68,11 +68,11 @@ public class TestCaseProcessor {
     }
 
     public void processResetAction(TestCase testCase,Map<String, String> variables) throws ClassNotFoundException, SQLException {
-        processCommandList(testCase.getResetAction().getSqlCommands(),variables);
+        processCommandList(testCase.getResetAction().getSqlCommands(),variables,testCase.getResetAction().isRollBackOnError());
     }
 
     public void processInitAction(TestCase testCase,Map<String, String> variables) throws ClassNotFoundException, SQLException {
-        processCommandList(testCase.getInitAction().getSqlCommands(),variables);
+        processCommandList(testCase.getInitAction().getSqlCommands(),variables,testCase.getInitAction().isRollBackOnError());
     }
 
     private List<String> processReferenceAction(String sql,Map<String, String> variables) throws SQLException, ClassNotFoundException {
@@ -121,8 +121,8 @@ public class TestCaseProcessor {
         return statement.executeQuery(sql);
     }
 
-    private void processCommandList(List<String> sqlList,Map<String, String> variables) throws ClassNotFoundException, SQLException {
-        connection.setAutoCommit(false);
+    private void processCommandList(List<String> sqlList,Map<String, String> variables, boolean rollbackOnError) throws ClassNotFoundException, SQLException {
+        connection.setAutoCommit(!rollbackOnError);
         Statement statement = connection.createStatement();
         Iterator<String> it = sqlList.iterator();
 
@@ -139,7 +139,8 @@ public class TestCaseProcessor {
             }
             connection.commit();
         } catch (SQLException e) {
-            connection.rollback();
+            if(rollbackOnError)
+                connection.rollback();
             throw e;
         } finally {
             connection.close();
