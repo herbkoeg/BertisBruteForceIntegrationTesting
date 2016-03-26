@@ -6,14 +6,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
+//@XmlAccessorType (XmlAccessType.FIELD)
 public class InitAction extends BaseAction{
 
     
     public InitAction() {
         this.description = "define your init commands here";
-        this.sqlCommmands = new ArrayList<>();
-        this.sqlCommmands.add("insert into xyz ...");
-        this.sqlCommmands.add("update xyz where ...");
+        this.sqlCommmand = new ArrayList<>();
+        this.sqlCommmand.add("insert into xyz ...");
+        this.sqlCommmand.add("update xyz where ...");
+        this.sqlCommmand.add("delete from xyz where ...");
+ 
+        this.rollBackOnError = false;
     }    
 
     @XmlElement
@@ -27,12 +31,19 @@ public class InitAction extends BaseAction{
 
     @XmlElement
     public List<String> getSqlCommands() {
-        return sqlCommmands;
+        return sqlCommmand;
     }
 
     public void setSqlCommands(List<String> initCommands) {
-        this.sqlCommmands = initCommands;
+        this.sqlCommmand = initCommands;
     }
-    
-    
+
+    public boolean isRollBackOnError() {
+        return rollBackOnError;
+    }
+
+    public void setRollBackOnError(boolean rollBackOnError) {
+        this.rollBackOnError = rollBackOnError;
+    }
+
 }

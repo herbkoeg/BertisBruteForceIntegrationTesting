@@ -1,11 +1,12 @@
 package de.hk.bfit.process;
 
-import java.util.ArrayList;
-import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
+@XmlAccessorType (XmlAccessType.FIELD)
 public class TestCase {
 
     @XmlElement
@@ -13,20 +14,23 @@ public class TestCase {
     @XmlElement
     private InitAction initAction;
     @XmlElement
-    private List<ReferenceAction> referenceAction;
+    private ReferenceAction referenceAction;
     @XmlElement
     private ResetAction resetAction;
 
     public TestCase() {
     }
 
-    public TestCase(String description, ReferenceAction select) {
+    public TestCase(ReferenceAction referenceAction) {
+        this("This is a new testcase",referenceAction);
+    }
+    
+    public TestCase(String description, ReferenceAction referenceAction) {
         this.description = description;
         // InitAction
         this.initAction = new InitAction();
         // Reference
-        this.referenceAction = new ArrayList<>();
-        this.referenceAction.add(select);
+        this.referenceAction = referenceAction;
         // ResetAction
         this.resetAction = new ResetAction();
     }
@@ -39,11 +43,7 @@ public class TestCase {
         return initAction;
     }
 
-    public List<ReferenceAction> getReferenceActions() {
-        return referenceAction;
-    }
-
-    public List<ReferenceAction> getReferenceAction() {
+    public ReferenceAction getReferenceAction() {
         return referenceAction;
     }
 

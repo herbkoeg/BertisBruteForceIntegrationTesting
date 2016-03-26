@@ -1,20 +1,21 @@
 package de.hk.bfit.db;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DBConnector {
+public abstract class DBConnector {
     
-    private static final String jdbcUrl = "jdbc:postgresql://localhost:5432/bertisDB";
-    private static final String DB_DRIVER =  "org.postgresql.Driver";
+    protected String jdbcUrl;
+    protected String user;
+    protected String password;
     
-        public static Connection getDBConnection() throws ClassNotFoundException, SQLException {
-		Connection dbConnection = null;
-		Class.forName(DB_DRIVER);
-		String username = "berti";
-		String passwort = "berti";
-		dbConnection = DriverManager.getConnection(jdbcUrl, username, passwort);
-		return dbConnection;
-        }
+    abstract public Connection getDBConnection() throws ClassNotFoundException, SQLException;
+
+    public DBConnector(String jdbcUrl, String user, String password) {
+        this.jdbcUrl = jdbcUrl;
+        this.user = user;
+        this.password = password;
+    }
+    
+    
 }

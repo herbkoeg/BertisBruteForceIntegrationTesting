@@ -7,26 +7,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class ReferenceAction {
     private String description;
-    private String select;
-    private List<String> results;
+    private List<SelectAction> selectAction;
     
     public ReferenceAction() {
     }
-    
-    public ReferenceAction(String description, String select, List<String> results) {
+
+    public ReferenceAction(String description, List<SelectAction> selectAction) {
         this.description = description;
-        this.select = select;
-        this.results = results;
-    }
-
-    @XmlElement
-    public List<String> getResults() {
-        return results;
-    }
-
-    @XmlElement
-    public String getSelect() {
-        return select;
+        this.selectAction = selectAction;
     }
 
     @XmlElement
@@ -37,5 +25,17 @@ public class ReferenceAction {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @XmlElement
+    public List<SelectAction> getSelectAction() {
+        return selectAction;
+    }
+
+    public void setSelectAction(List<SelectAction> selectAction) {
+        this.selectAction = selectAction;
+    }
+
+    
+
     
 }

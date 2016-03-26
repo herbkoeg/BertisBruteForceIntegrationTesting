@@ -5,12 +5,15 @@
  */
 package de.hk.bfit;
 
-import de.hk.bfit.db.DBConnector;
+import de.hk.bfit.db.PostgresDBConnector;
 import de.hk.bfit.io.FileAdapter;
+import de.hk.bfit.process.ReferenceAction;
 import de.hk.bfit.process.TestCase;
 import de.hk.bfit.process.TestCaseProcessor;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,17 +23,28 @@ import java.util.Map;
 public class HelloWorld {
     public static void main(String[] args) throws Exception{
         System.out.println("Hallo bla blub");
-        DBConnector dBConnector = new DBConnector();
+        PostgresDBConnector dBConnector = 
+                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+        
         Connection dbConnection = dBConnector.getDBConnection();
         System.out.println(dbConnection.getClientInfo());
         
         Map<String,String> variables = new HashMap<>();
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(DBConnector.getDBConnection());
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
-        testCaseProcessor.generateExampleTestCase("BfitErsterTest.xml", "Dies ist ein neuer TestCase", "select * from Person");
+        String filename = "BfitErsterTest.xml";
+        List<String> sqlList = new ArrayList<>();
+        sqlList.add("select id from Person");
+        sqlList.add("select name from Person");
+                
         
-//        TestCase testCase = FileAdapter.loadTestCase("jawoi");
-//        testCaseProcessor.assertReferences(testCase, variables, true);
+        testCaseProcessor.generateExampleTestCase(filename, sqlList,variables);
+        
+        TestCase testCase = FileAdapter.loadTestCase(filename);
+
+        testCaseProcessor.assertReferences(testCase,variables);
+        
+        System.out.println(testCase.getDescription());
         
     }
 }

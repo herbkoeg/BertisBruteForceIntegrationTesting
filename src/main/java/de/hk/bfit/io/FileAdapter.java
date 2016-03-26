@@ -16,6 +16,7 @@ public class FileAdapter {
     public static TestCase loadTestCase(String filename) throws IOException, JAXBException {
         GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
         String content = readFile(filename);
+        System.out.println(content);
         return genericXmlHandler.convertXMLToObject(TestCase.class, content);
     }
 
