@@ -7,7 +7,6 @@ package de.hk.bfit;
 
 import de.hk.bfit.db.PostgresDBConnector;
 import de.hk.bfit.io.FileAdapter;
-import de.hk.bfit.process.ReferenceAction;
 import de.hk.bfit.process.TestCase;
 import de.hk.bfit.process.TestCaseProcessor;
 import java.sql.Connection;

@@ -35,7 +35,4 @@ public class ReferenceAction {
         this.selectAction = selectAction;
     }
 
-    
-
-    
 }

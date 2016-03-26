@@ -6,7 +6,6 @@ import java.sql.SQLException;
 
 public class PostgresDBConnector extends DBConnector {
     
-//    private static final String jdbcUrl = "jdbc:postgresql://localhost:5432/bertisDB";
     private static final String DB_DRIVER =  "org.postgresql.Driver";
 
     public PostgresDBConnector(String jdbcUrl, String user, String password) {
@@ -16,8 +15,6 @@ public class PostgresDBConnector extends DBConnector {
         public  Connection getDBConnection() throws ClassNotFoundException, SQLException {
 		Connection dbConnection = null;
 		Class.forName(DB_DRIVER);
-//		String username = "berti";
-//		String passwort = "berti";
 		dbConnection = DriverManager.getConnection(jdbcUrl, user, password);
 		return dbConnection;
         }

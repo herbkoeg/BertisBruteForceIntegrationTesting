@@ -1,6 +1,5 @@
 package de.hk.bfit.process;
 
-import apple.laf.JRSUIConstants;
 import de.hk.bfit.io.FileAdapter;
 import de.hk.bfit.io.GenericXmlHandler;
 import java.io.IOException;
@@ -21,8 +20,6 @@ import org.junit.Assert;
 public class TestCaseProcessor {
 
     private final Logger logger = Logger.getLogger(TestCaseProcessor.class);
-//    private final TestCase testCase;
-//    private final Map<String, String> variables;
     private final Connection connection;
 
     public TestCaseProcessor(Connection connection) {
@@ -34,7 +31,7 @@ public class TestCaseProcessor {
 
         for (String sql : sqlList) {
             List<String> resultList = processReferenceAction(sql,variables);
-            selectAction.add(new SelectAction("describe me 2!", sql, resultList));
+            selectAction.add(new SelectAction("describe me!", sql, resultList));
         }
         TestCase newTestCase = new TestCase("this is a new testcase", new ReferenceAction("this is a new referenceAction", selectAction));
 
