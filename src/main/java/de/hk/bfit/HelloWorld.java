@@ -31,7 +31,7 @@ public class HelloWorld {
         Map<String,String> variables = new HashMap<>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
-        String filename = "BfitErsterTest.xml";
+        String filename = "BfitFirstTest.xml";
         List<String> sqlList = new ArrayList<>();
         sqlList.add("select id from Person");
         sqlList.add("select name from Person");

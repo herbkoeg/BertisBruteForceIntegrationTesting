@@ -9,15 +9,15 @@
         <sqlCommands>delete from xyz where ...</sqlCommands>
     </initAction>
     <referenceAction>
-        <description>this is a new referenceAction</description>
+        <description>This is a new referenceAction ...</description>
         <selectAction>
-            <description>describe me 2!</description>
+            <description>describe me!</description>
             <result>1;</result>
             <result>2;</result>
             <select>select id from Person</select>
         </selectAction>
         <selectAction>
-            <description>describe me 2!</description>
+            <description>describe me!</description>
             <result>m;</result>
             <result>a;</result>
             <select>select name from Person</select>
