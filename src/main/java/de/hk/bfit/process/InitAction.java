@@ -12,12 +12,8 @@ public class InitAction extends BaseAction{
     public InitAction() {
         this.description = "define your init commands here";
         this.sqlCommmand = new ArrayList<>();
-        this.sqlCommmand.add("insert into xyz ...");
-        this.sqlCommmand.add("update xyz where ...");
-        this.sqlCommmand.add("delete from xyz where ...");
- 
         this.rollBackOnError = false;
-    }    
+    }
 
     @XmlElement
     public String getDescription() {

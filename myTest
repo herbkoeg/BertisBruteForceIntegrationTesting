@@ -5,23 +5,11 @@
         <description>define your init commands here</description>
         <rollBackOnError>false</rollBackOnError>
         <sqlCommands>insert into xyz ...</sqlCommands>
-        <sqlCommands>update into xyz ...</sqlCommands>
-        <sqlCommands>delete into xyz ...</sqlCommands>
+        <sqlCommands>update xyz where ...</sqlCommands>
+        <sqlCommands>delete from xyz where ...</sqlCommands>
     </initAction>
     <referenceActionBefore>
         <description>This is a new referenceAction ...</description>
-        <selectAction>
-            <description>describe me!</description>
-            <result>1;</result>
-            <result>2;</result>
-            <select>select id from Person</select>
-        </selectAction>
-        <selectAction>
-            <description>describe me!</description>
-            <result>m;</result>
-            <result>a;</result>
-            <select>select name from Person</select>
-        </selectAction>
     </referenceActionBefore>
     <referenceActionAfter>
         <description>This is a referenceAction</description>
@@ -29,8 +17,7 @@
     <resetAction>
         <description>define your reset commands here</description>
         <rollBackOnError>true</rollBackOnError>
-        <sqlCommands>insert into xyz ...</sqlCommands>
-        <sqlCommands>update into xyz ...</sqlCommands>
-        <sqlCommands>delete into xyz ...</sqlCommands>
+        <sqlCommands>delete from xyz where ...</sqlCommands>
+        <sqlCommands>update xyz where ...</sqlCommands>
     </resetAction>
 </testCase>

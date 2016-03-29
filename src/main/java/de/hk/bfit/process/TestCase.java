@@ -1,5 +1,6 @@
 package de.hk.bfit.process;
 
+import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -14,7 +15,9 @@ public class TestCase {
     @XmlElement
     private InitAction initAction;
     @XmlElement
-    private ReferenceAction referenceAction;
+    private ReferenceAction referenceActionBefore;
+    @XmlElement
+    private ReferenceAction referenceActionAfter;
     @XmlElement
     private ResetAction resetAction;
 
@@ -30,9 +33,11 @@ public class TestCase {
         // InitAction
         this.initAction = new InitAction();
         // Reference
-        this.referenceAction = referenceAction;
+        this.referenceActionBefore = referenceAction;
+        this.referenceActionAfter = new ReferenceAction("This is a referenceAction", new ArrayList<>());
         // ResetAction
         this.resetAction = new ResetAction();
+        
     }
 
     public String getDescription() {
@@ -43,12 +48,36 @@ public class TestCase {
         return initAction;
     }
 
-    public ReferenceAction getReferenceAction() {
-        return referenceAction;
+    public ReferenceAction getReferenceActionBefore() {
+        return referenceActionBefore;
     }
 
     public ResetAction getResetAction() {
         return resetAction;
+    }
+
+    public ReferenceAction getReferenceActionAfter() {
+        return referenceActionAfter;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setInitAction(InitAction initAction) {
+        this.initAction = initAction;
+    }
+
+    public void setReferenceActionBefore(ReferenceAction referenceActionBefore) {
+        this.referenceActionBefore = referenceActionBefore;
+    }
+
+    public void setReferenceActionAfter(ReferenceAction referenceActionAfter) {
+        this.referenceActionAfter = referenceActionAfter;
+    }
+
+    public void setResetAction(ResetAction resetAction) {
+        this.resetAction = resetAction;
     }
 
 }

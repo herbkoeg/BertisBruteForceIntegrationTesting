@@ -6,18 +6,11 @@
 package de.hk.bfit.process;
 
 import de.hk.bfit.io.GenericXmlHandler;
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.JAXBException;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
-/**
- *
- * @author palmherby
- */
 public class TestCaseTest {
 
     public TestCaseTest() {

@@ -41,7 +41,7 @@ public class HelloWorld {
         
         TestCase testCase = FileAdapter.loadTestCase(filename);
 
-        testCaseProcessor.assertReferences(testCase,variables);
+        testCaseProcessor.assertAfter(testCase,variables);
         
         System.out.println(testCase.getDescription());
         

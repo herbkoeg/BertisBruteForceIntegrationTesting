@@ -11,8 +11,6 @@ public class ResetAction extends BaseAction{
     public ResetAction() {
         this.description = "define your reset commands here";
         this.sqlCommmand = new ArrayList<>();
-        this.sqlCommmand.add("delete from xyz where ...");
-        this.sqlCommmand.add("update xyz where ...");
         this.rollBackOnError = true;
     }
     
