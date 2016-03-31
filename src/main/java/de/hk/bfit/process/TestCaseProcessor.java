@@ -137,8 +137,7 @@ public class TestCaseProcessor {
     }
 
     private ResultSet createResultset(String sql) throws SQLException {
-        Statement statement = connection.createStatement();
-        return statement.executeQuery(sql);
+        return connection.createStatement().executeQuery(sql);
     }
 
     private void processCommandList(List<String> sqlList,Map<String, String> variables, boolean rollbackOnError) throws ClassNotFoundException, SQLException {
