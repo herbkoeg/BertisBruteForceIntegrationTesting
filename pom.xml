@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.hk.bfit</groupId>
     <artifactId>BruteForceIntegrationTesting</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -56,5 +56,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
