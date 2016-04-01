@@ -37,7 +37,7 @@ public class HelloWorld {
         sqlList.add("select name from Person");
                 
         
-        testCaseProcessor.generateExampleTestCase(filename, sqlList,variables);
+        testCaseProcessor.generateExampleTestCase(filename, sqlList);
         
         TestCase testCase = FileAdapter.loadTestCase(filename);
 

@@ -35,7 +35,7 @@ public class TestCaseProcessorTest {
     public void testGenerateExampleTestCase() throws Exception {
         Map<String, String> variables = new HashMap<>();
         List<String> sqlList = new ArrayList<>();
-        cut.generateExampleTestCase("myTestcase", sqlList, variables);
+        cut.generateExampleTestCase("myTestcase", sqlList);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class TestCaseProcessorTest {
     public void testProcessResetAction() throws Exception {
         List<String> sqlList = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
-        TestCase testCase = cut.generateTestCase(sqlList, variables);
+        TestCase testCase = cut.generateTestCase(sqlList);
         testCase.setResetAction(new ResetAction());
         cut.processResetAction(testCase, variables);
     }
@@ -59,7 +59,7 @@ public class TestCaseProcessorTest {
     public void testProcessInitAction() throws Exception {
         List<String> sqlList = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
-        TestCase testCase = cut.generateTestCase(sqlList, variables);
+        TestCase testCase = cut.generateTestCase(sqlList);
         testCase.setInitAction(new InitAction());
         cut.processInitAction(testCase, variables);
     }
@@ -81,7 +81,7 @@ public class TestCaseProcessorTest {
         sqlList.add("select name from Person");
                 
         
-        testCaseProcessor.generateExampleTestCase(filename, sqlList,variables);
+        testCaseProcessor.generateExampleTestCase(filename, sqlList);
         
         TestCase testCase = FileAdapter.loadTestCase(filename);
 
