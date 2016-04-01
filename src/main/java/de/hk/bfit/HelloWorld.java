@@ -28,11 +28,11 @@ public class HelloWorld {
         Connection dbConnection = dBConnector.getDBConnection();
         System.out.println(dbConnection.getClientInfo());
         
-        Map<String,String> variables = new HashMap<>();
+        Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
         String filename = "BfitFirstTest.xml";
-        List<String> sqlList = new ArrayList<>();
+        List<String> sqlList = new ArrayList<String>();
         sqlList.add("select id from Person");
         sqlList.add("select name from Person");
                 

@@ -14,7 +14,7 @@ public class SelectAction {
 
     public SelectAction() {
         this.select = "define your select here";
-        List<String> result =  new ArrayList<>() ;
+        List<String> result =  new ArrayList<String>() ;
         result.add("result one");
         result.add("result two");
     }

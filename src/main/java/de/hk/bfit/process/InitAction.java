@@ -11,7 +11,7 @@ public class InitAction extends BaseAction{
     
     public InitAction() {
         this.description = "define your init commands here";
-        this.sqlCommmand = new ArrayList<>();
+        this.sqlCommmand = new ArrayList<String>();
         this.rollBackOnError = false;
     }
 

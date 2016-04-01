@@ -1,5 +1,6 @@
 package de.hk.bfit.process;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -34,7 +35,7 @@ public class TestCase {
         this.initAction = new InitAction();
         // Reference
         this.referenceActionBefore = referenceAction;
-        this.referenceActionAfter = new ReferenceAction("This is a referenceAction", new ArrayList<>());
+        this.referenceActionAfter = new ReferenceAction("This is a referenceAction", new ArrayList<SelectAction>());
         // ResetAction
         this.resetAction = new ResetAction();
         

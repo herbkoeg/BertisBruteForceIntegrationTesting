@@ -25,19 +25,21 @@ public class FileAdapter {
         StringBuilder text;
         text = new StringBuilder();
         String newLine = System.getProperty("line.separator");
-        try (Scanner scanner = new Scanner(new FileInputStream(filename), "UTF-8")) {
+
+        Scanner scanner = new Scanner(new FileInputStream(filename), "UTF-8") ;
             while (scanner.hasNextLine()) {
                 text.append(scanner.nextLine()).append(newLine);
             }
-        }
+        
+        
         return text.toString();
     }
 
     public static void writeFile(String filename, String content) throws IOException {
-        try (Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filename), "UTF8"))) {
+
+        Writer out = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filename), "UTF8")) ;
             out.append(content);
             out.flush();
-        }
     }
 }

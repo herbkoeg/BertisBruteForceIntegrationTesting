@@ -33,8 +33,8 @@ public class TestCaseProcessorTest {
 
     @Test
     public void testGenerateExampleTestCase() throws Exception {
-        Map<String, String> variables = new HashMap<>();
-        List<String> sqlList = new ArrayList<>();
+        Map<String, String> variables = new HashMap<String,String>();
+        List<String> sqlList = new ArrayList<String>();
         cut.generateExampleTestCase("myTestcase", sqlList);
     }
 
@@ -48,8 +48,8 @@ public class TestCaseProcessorTest {
 
     @Test
     public void testProcessResetAction() throws Exception {
-        List<String> sqlList = new ArrayList<>();
-        Map<String, String> variables = new HashMap<>();
+        List<String> sqlList = new ArrayList<String>();
+        Map<String, String> variables = new HashMap<String,String>();
         TestCase testCase = cut.generateTestCase(sqlList);
         testCase.setResetAction(new ResetAction());
         cut.processResetAction(testCase, variables);
@@ -57,8 +57,8 @@ public class TestCaseProcessorTest {
 
     @Test
     public void testProcessInitAction() throws Exception {
-        List<String> sqlList = new ArrayList<>();
-        Map<String, String> variables = new HashMap<>();
+        List<String> sqlList = new ArrayList<String>();
+        Map<String, String> variables = new HashMap<String,String>();
         TestCase testCase = cut.generateTestCase(sqlList);
         testCase.setInitAction(new InitAction());
         cut.processInitAction(testCase, variables);
@@ -72,11 +72,11 @@ public class TestCaseProcessorTest {
         Connection dbConnection = dBConnector.getDBConnection();
         System.out.println(dbConnection.getClientInfo());
         
-        Map<String,String> variables = new HashMap<>();
+        Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
         String filename = "BfitFirstTest.xml";
-        List<String> sqlList = new ArrayList<>();
+        List<String> sqlList = new ArrayList<String>();
         sqlList.add("select id from Person");
         sqlList.add("select name from Person");
                 

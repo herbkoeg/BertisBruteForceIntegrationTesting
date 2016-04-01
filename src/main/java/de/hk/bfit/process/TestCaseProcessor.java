@@ -34,7 +34,7 @@ public class TestCaseProcessor {
     }
     
     TestCase generateTestCase(List<String> sqlListReferenceAction) throws SQLException, ClassNotFoundException, IllegalArgumentException, JAXBException, IOException {
-        List<SelectAction> selectAction = new ArrayList<>();
+        List<SelectAction> selectAction = new ArrayList<SelectAction>();
 
         for (String sql : sqlListReferenceAction) {
             List<String> resultList = processReferenceAction(sql,null);
@@ -119,7 +119,7 @@ public class TestCaseProcessor {
     }
 
     private List<String> createResultList(ResultSet rs) throws SQLException {
-        List<String> results = new ArrayList<>();
+        List<String> results = new ArrayList<String>();
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
         while (rs.next()) {

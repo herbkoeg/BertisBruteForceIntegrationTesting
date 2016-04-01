@@ -10,13 +10,13 @@ public class ResetAction extends BaseAction{
 
     public ResetAction() {
         this.description = "define your reset commands here";
-        this.sqlCommmand = new ArrayList<>();
+        this.sqlCommmand = new ArrayList<String>();
         this.rollBackOnError = true;
     }
     
     public ResetAction(String description) {
         this.description = description;
-        this.sqlCommmand = new ArrayList<>();
+        this.sqlCommmand = new ArrayList<String>();
     }
 
     @XmlElement
