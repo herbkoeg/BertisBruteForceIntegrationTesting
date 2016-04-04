@@ -1,6 +1,6 @@
 # BertisBruteForceIntegrationTesting
 BfiTesting verifies results persisted in a database by a black box, e.g.
-results of an ancieant cobol program called by a special library within a webservice.
+results of an ancient cobol program called by a special library within a webservice.
  
 You can define a TESTCASE described in a xml-file, which will be loaded and exectuted:
 - define insert, update or delete sql commands for INITIALISATION
@@ -16,6 +16,8 @@ you can use for easily CREATE A NEW TESTCASE named MyTestCase.xml:
 
 Just run HelloWorld.java to generate a first TestCase.
 
-Have fun :-) !
+Don't forget: there are much better testing methods, brude force should only be
+used for testing ancient technics which couldn't easily replaced or extended 
+with modern technics !
 
 
