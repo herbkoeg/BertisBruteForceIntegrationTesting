@@ -50,8 +50,16 @@ public class TestCaseProcessor {
         return testCase;
     }
 
+    public void assertBefore(TestCase testCase) throws IOException, JAXBException, SQLException, ClassNotFoundException {
+        assertBefore(testCase,null);
+    }
+    
     public void assertBefore(TestCase testCase,Map<String, String> variables) throws IOException, JAXBException, SQLException, ClassNotFoundException {
         assertAction(testCase.getReferenceActionBefore(), variables);
+    }
+
+    public void assertAfter(TestCase testCase) throws IOException, JAXBException, SQLException, ClassNotFoundException {
+        assertAfter(testCase, null);
     }
     
     public void assertAfter(TestCase testCase,Map<String, String> variables) throws IOException, JAXBException, SQLException, ClassNotFoundException {
@@ -153,7 +161,7 @@ public class TestCaseProcessor {
             while (it.hasNext()) {
                 String sql = it.next();
                 sql = setVariables(sql,variables);
-                if (executableCommand(sql)) {
+                if (isExecutableCommand(sql)) {
                     logger.info("reset: execute " + sql);
                     statement.execute(sql);
                 } else {
@@ -170,7 +178,7 @@ public class TestCaseProcessor {
         }
     }
 
-    private boolean executableCommand(String sql) {
+    private boolean isExecutableCommand(String sql) {
         return sql.toLowerCase().startsWith("update ")
                 || sql.toLowerCase().startsWith("insert ")
                 || sql.toLowerCase().startsWith("delete ");

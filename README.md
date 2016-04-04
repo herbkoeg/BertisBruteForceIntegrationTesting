@@ -1,18 +1,18 @@
 # BertisBruteForceIntegrationTesting
-BfiTesting verifies results perstised in a database by a black box, e.g.
-a Cobol Program called by a special library within a webservice.
+BfiTesting verifies results persisted in a database by a black box, e.g.
+results of an ancieant cobol program called by a special library within a webservice.
  
-You can define a TestCase described in a xml-file, which will be loaded and exectuted:
-- define insert, update or delete sql commands for initialisation
-- assert state BEFORE
-- run your magic blackbox ...
-- assert state AFTER
-- define insert, update or delete sql commands for restoring the intial state
-- use $MyVariable and set it as key-value map parameter calling process, assert or
-genrate methods
+You can define a TESTCASE described in a xml-file, which will be loaded and exectuted:
+- define insert, update or delete sql commands for INITIALISATION
+- ASSERT BEFORE blackbox action
+- RUN your magic BLACKBOX ...
+- ASSERT AFTER blackbox action
+- define insert, update or delete sql commands for RESTORING the intial state
+- use $MyVariable and set it as key-value map PARAMETER calling process, assert or
+generate methods
 
 The TestCaseProcessor has a method called 'generateExampleTestCase', which 
-you can use for easily create a new TestCase.xml:
+you can use for easily CREATE A NEW TESTCASE named MyTestCase.xml:
 
 Just run HelloWorld.java to generate a first TestCase.
 

@@ -76,16 +76,17 @@ public class TestCaseProcessorTest {
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
         String filename = "BfitFirstTest.xml";
-        List<String> sqlList = new ArrayList<String>();
-        sqlList.add("select id from Person");
-        sqlList.add("select name from Person");
+        List<String> sqlListReferenceAction = new ArrayList<String>();
+        sqlListReferenceAction.add("select id from Person");
+        sqlListReferenceAction.add("select name from Person");
                 
         
-        testCaseProcessor.generateExampleTestCase(filename, sqlList);
+        testCaseProcessor.generateExampleTestCase(filename, sqlListReferenceAction);
         
         TestCase testCase = FileAdapter.loadTestCase(filename);
 
         testCaseProcessor.assertAfter(testCase,variables);
+        testCaseProcessor.processResetAction(testCase, variables);
         
         System.out.println(testCase.getDescription());
         
