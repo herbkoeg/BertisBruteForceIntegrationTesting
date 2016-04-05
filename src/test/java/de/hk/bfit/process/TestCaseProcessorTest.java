@@ -83,11 +83,8 @@ public class TestCaseProcessorTest {
         
         testCaseProcessor.generateExampleTestCase(filename, sqlListReferenceAction);
         
-        TestCase testCase = FileAdapter.loadTestCase(filename);
+        TestCase testCase = testCaseProcessor.loadTestCase(filename);
 
-        testCaseProcessor.assertAfter(testCase,variables);
-        testCaseProcessor.processResetAction(testCase, variables);
-        
         System.out.println(testCase.getDescription());
         
     }

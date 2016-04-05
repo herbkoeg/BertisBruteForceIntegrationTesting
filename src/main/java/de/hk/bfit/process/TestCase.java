@@ -34,8 +34,8 @@ public class TestCase {
         // InitAction
         this.initAction = new InitAction();
         // Reference
-        this.referenceActionBefore = referenceAction;
-        this.referenceActionAfter = new ReferenceAction("This is a referenceAction", new ArrayList<SelectAction>());
+        this.referenceActionAfter = referenceAction;
+        this.referenceActionBefore = new ReferenceAction("This is a referenceAction", new ArrayList<SelectAction>());
         // ResetAction
         this.resetAction = new ResetAction();
         

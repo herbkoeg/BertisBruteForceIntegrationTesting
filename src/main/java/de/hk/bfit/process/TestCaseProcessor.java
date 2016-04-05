@@ -26,6 +26,10 @@ public class TestCaseProcessor {
         this.connection = connection;
     }
 
+    public TestCase loadTestCase (String filename) throws IOException, JAXBException {
+        return FileAdapter.loadTestCase(filename);
+    }
+
     public void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, ClassNotFoundException, IllegalArgumentException, JAXBException, IOException {
         TestCase newTestCase = generateTestCase(sqlListReferenceAction);
         GenericXmlHandler genericXmlHandler = new GenericXmlHandler();

@@ -9,6 +9,9 @@
         <sqlCommands>delete into xyz ...</sqlCommands>
     </initAction>
     <referenceActionBefore>
+        <description>This is a referenceAction</description>
+    </referenceActionBefore>
+    <referenceActionAfter>
         <description>This is a new referenceAction ...</description>
         <selectAction>
             <description>describe me!</description>
@@ -22,9 +25,6 @@
             <result>a;</result>
             <select>select name from Person</select>
         </selectAction>
-    </referenceActionBefore>
-    <referenceActionAfter>
-        <description>This is a referenceAction</description>
     </referenceActionAfter>
     <resetAction>
         <description>define your reset commands here</description>
