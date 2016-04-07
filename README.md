@@ -1,12 +1,17 @@
 # BertisBruteForceIntegrationTesting
-BfiTesting verifies results persisted in a database by a black box, e.g.
-results of an ancient cobol program called by a special library within a webservice.
- 
+- BfiTesting verifies results persisted in a database by a black box, for example
+   + results of an ancient cobol program called by a special library within a webservice.
+   + you run a bpm and want to assert, that all components - which are peristing
+     their datas in different databases - work correctly together: just define
+     more DBConnectors ... 
+   + you can run and assert some actions over different databases with your 
+     countinous integration system
+
 You can define a TESTCASE described in a xml-file, which will be loaded and exectuted:
 - define insert, update or delete sql commands for INITIALISATION running 
 'TestCaseProcessor.processInitAction ...'
 - ASSERT BEFORE blackbox action running 'TestCaseProcessor.assertBefore ...'
-- RUN your magic BLACKBOX ...
+- RUN your magic BLACKBOX -...
 - ASSERT AFTER blackbox action running 'TestCaseProcessor.assertAfter ...'
 - define insert, update or delete sql commands for RESTORING the intial state
 running 'TestCaseProcessor.processResetAction ...'
