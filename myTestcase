@@ -9,10 +9,10 @@
         <sqlCommands>delete into xyz ...</sqlCommands>
     </initAction>
     <referenceActionBefore>
-        <description>This is a new referenceAction ...</description>
+        <description>This is a referenceAction</description>
     </referenceActionBefore>
     <referenceActionAfter>
-        <description>This is a referenceAction</description>
+        <description>This is a new referenceAction ...</description>
     </referenceActionAfter>
     <resetAction>
         <description>define your reset commands here</description>

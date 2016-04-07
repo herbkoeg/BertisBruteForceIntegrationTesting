@@ -1,7 +1,6 @@
 package de.hk.bfit.process;
 
 import de.hk.bfit.db.PostgresDBConnector;
-import de.hk.bfit.io.FileAdapter;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,24 +68,46 @@ public class TestCaseProcessorTest {
             PostgresDBConnector dBConnector = 
                 new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
         
-        Connection dbConnection = dBConnector.getDBConnection();
-        System.out.println(dbConnection.getClientInfo());
-        
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
         String filename = "BfitFirstTest.xml";
         List<String> sqlListReferenceAction = new ArrayList<String>();
-        sqlListReferenceAction.add("select id from Person");
+        boolean add = sqlListReferenceAction.add("select id from Person");
         sqlListReferenceAction.add("select name from Person");
                 
         
         testCaseProcessor.generateExampleTestCase(filename, sqlListReferenceAction);
         
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
-
-        System.out.println(testCase.getDescription());
-        
+        testCaseProcessor.assertAfter(testCase);
     }
+    
+    @Test
+    public void integerationTestOnlyResetAction() throws Exception {
+            PostgresDBConnector dBConnector = 
+                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+        
+        Map<String,String> variables = new HashMap<String,String>();
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
+        
+        String filename = "BfitFirstTestOnlyReset.xml";
+        TestCase testCase = testCaseProcessor.loadTestCase(filename);
+        testCaseProcessor.assertAfter(testCase);
+    }
+
+        @Test
+    public void integerationTestNoResultToCompareAction() throws Exception {
+            PostgresDBConnector dBConnector = 
+                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+        
+        Map<String,String> variables = new HashMap<String,String>();
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
+        
+        String filename = "BfitFirstTestNoResult.xml";
+        TestCase testCase = testCaseProcessor.loadTestCase(filename);
+        testCaseProcessor.assertAfter(testCase);
+    }
+
 
 }
