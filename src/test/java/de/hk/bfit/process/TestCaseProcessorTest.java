@@ -70,7 +70,6 @@ public class TestCaseProcessorTest {
         
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
-        
         String filename = "BfitFirstTest.xml";
         List<String> sqlListReferenceAction = new ArrayList<String>();
         boolean add = sqlListReferenceAction.add("select id from Person");
