@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Clock;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -16,6 +17,7 @@ import javax.xml.bind.JAXBException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import reactor.core.action.ForEachAction;
 
 public class TestCaseProcessor {
 
@@ -106,7 +108,7 @@ public class TestCaseProcessor {
         }
         logger.info("Success!");
     }
-
+   
     public void processResetAction(TestCase testCase, Map<String, String> variables) throws ClassNotFoundException, SQLException {
         processCommandList(testCase.getResetAction().getSqlCommands(), variables, testCase.getResetAction().isRollBackOnError());
     }
@@ -121,7 +123,7 @@ public class TestCaseProcessor {
         return createResultList(rs);
     }
 
-    private String setVariables(String sql, Map<String, String> variables) {
+    String setVariables(String sql, Map<String, String> variables) {
         if (variables != null) {
             Iterator<String> it = variables.keySet().iterator();
             String[] searchList = new String[variables.size()];
@@ -131,6 +133,7 @@ public class TestCaseProcessor {
                 String variable = it.next();
                 searchList[counter] = "$" + variable;
                 replacementList[counter] = variables.get(variable);
+                counter ++;
             }
 
             return StringUtils.replaceEachRepeatedly(sql, searchList, replacementList);

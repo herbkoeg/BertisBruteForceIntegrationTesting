@@ -23,7 +23,7 @@
             <description>describe me!</description>
             <result>m;</result>
             <result>a;</result>
-            <select>select name from Person where person = $NAME</select>
+            <select>select name from Person</select>
         </selectAction>
     </referenceActionAfter>
     <resetAction>

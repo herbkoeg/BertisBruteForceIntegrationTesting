@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import junit.framework.Assert;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -95,7 +97,7 @@ public class TestCaseProcessorTest {
         testCaseProcessor.assertAfter(testCase);
     }
 
-        @Test
+    @Test
     public void integerationTestNoResultToCompareAction() throws Exception {
             PostgresDBConnector dBConnector = 
                 new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
@@ -107,6 +109,20 @@ public class TestCaseProcessorTest {
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
         testCaseProcessor.assertAfter(testCase);
     }
+    
+    @Test
+    public void integerationTestManyVariables() throws Exception {
+            PostgresDBConnector dBConnector = 
+                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+        
+        Map<String,String> variables = new HashMap<String,String>();
+        variables.put("VNR", "12345");
+        variables.put("NAME", "Berti");
+        
+        TestCaseProcessor cut = new TestCaseProcessor(dBConnector.getDBConnection());
+        String sql = "select $VNR $NAME from contract where vnr = $VNR" ;
 
+        Assert.assertEquals("select 12345 Berti from contract where vnr = 12345", cut.setVariables(sql, variables));
+    }
 
 }
