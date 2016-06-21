@@ -172,10 +172,10 @@ public class TestCaseProcessor {
         connection.setAutoCommit(!rollbackOnError);
         Statement statement = connection.createStatement();
         Iterator<String> it = sqlList.iterator();
-
+        String sql="";
         try {
             while (it.hasNext()) {
-                String sql = it.next();
+                sql = it.next();
                 sql = setVariables(sql, variables);
                 if (isExecutableCommand(sql)) {
                     logger.info("reset: execute " + sql);
@@ -186,6 +186,7 @@ public class TestCaseProcessor {
             }
             connection.commit();
         } catch (SQLException e) {
+            logger.error("SQLException fuer command: " + sql);
             if (rollbackOnError) {
                 connection.rollback();
             }

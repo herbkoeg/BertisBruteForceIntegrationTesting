@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>de.hk.bfit</groupId>
     <artifactId>BruteForceIntegrationTesting</artifactId>
-    <version>1.22</version>
+    <version>1.23</version>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
@@ -30,6 +30,11 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
             <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>uk.co.jemos.podam</groupId>
+            <artifactId>podam</artifactId>
+            <version>6.0.2.RELEASE</version>
         </dependency>
     </dependencies>
     <properties>
