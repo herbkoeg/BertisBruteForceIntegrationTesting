@@ -189,6 +189,7 @@ public class TestCaseProcessor {
             logger.error("SQLException fuer command: " + sql);
             if (rollbackOnError) {
                 connection.rollback();
+                logger.error("... rollback");
             }
             throw e;
         } finally {
