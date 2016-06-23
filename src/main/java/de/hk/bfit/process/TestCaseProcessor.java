@@ -43,6 +43,7 @@ public class TestCaseProcessor {
         List<SelectAction> selectAction = new ArrayList<SelectAction>();
 
         for (String sql : sqlListReferenceAction) {
+            logger.error("processing: " + sql);
             List<String> resultList = processReferenceAction(sql, null);
             selectAction.add(new SelectAction("describe me!", sql, resultList));
         }

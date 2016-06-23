@@ -1,5 +1,7 @@
 # BertisBruteForceIntegrationTesting
-- BfiTesting verifies results persisted in a database by a black box, for example
+- BfiTesting is a very lightweight framework for testing applications using
+  a jdbc-driver to create connections to db
+- Aim of BfiTesting is to verify results persisted in a database by a black box, for example
    + results of an ancient cobol program called by a special library within a webservice.
    + you run a bpm and want to assert, that all components - which are peristing
      their datas in different databases - work correctly together: just define
@@ -28,8 +30,6 @@ your own DB2, MySql, ... Connector implementing DBConnector.
 - Just run HelloWorld.java or even better TestCaseProcessorTest
 to generate a first TestCase.
 
-Don't forget: there are much better testing methods, brude force should only be
-used for testing ancient technics which couldn't easily replaced or extended 
-with modern technics !
+
 
 
