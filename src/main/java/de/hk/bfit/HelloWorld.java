@@ -28,6 +28,9 @@ public class HelloWorld {
         Connection dbConnection = dBConnector.getDBConnection();
         System.out.println(dbConnection.getClientInfo());
         
+        
+        for (int i = 0; i < 1000; i++) {
+            
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
@@ -35,15 +38,18 @@ public class HelloWorld {
         List<String> sqlList = new ArrayList<String>();
         sqlList.add("select id from Person");
         sqlList.add("select name from Person");
-                
+        
         
         testCaseProcessor.generateExampleTestCase(filename, sqlList);
         
         TestCase testCase = FileAdapter.loadTestCase(filename);
 
         testCaseProcessor.assertAfter(testCase,variables);
+
+        testCaseProcessor.closeConnection();
         
         System.out.println(testCase.getDescription());
+        }
         
     }
 }

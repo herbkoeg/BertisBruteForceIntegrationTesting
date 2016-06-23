@@ -27,6 +27,10 @@ public class TestCaseProcessor {
     public TestCaseProcessor(Connection connection) {
         this.connection = connection;
     }
+    
+    public void closeConnection() throws SQLException {
+        this.connection.close();
+    }
 
     public TestCase loadTestCase(String filename) throws IOException, JAXBException {
         return FileAdapter.loadTestCase(filename);
@@ -161,7 +165,7 @@ public class TestCaseProcessor {
     }
 
     private ResultSet createResultset(String sql) throws SQLException {
-        return connection.createStatement().executeQuery(sql);
+            return connection.createStatement().executeQuery(sql);
     }
 
     private void processCommandList(List<String> sqlList, Map<String, String> variables, boolean rollbackOnError) throws ClassNotFoundException, SQLException {
