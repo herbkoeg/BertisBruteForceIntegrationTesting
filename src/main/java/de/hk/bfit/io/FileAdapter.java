@@ -10,18 +10,21 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Scanner;
 import javax.xml.bind.JAXBException;
+import org.apache.log4j.Logger;
 
 public class FileAdapter {
+    private static final Logger logger = Logger.getLogger(FileAdapter.class);
 
     public static TestCase loadTestCase(String filename) throws IOException, JAXBException {
         GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
         String content = readFile(filename);
-        System.out.println(content);
-        return genericXmlHandler.convertXMLToObject(TestCase.class, content);
+        final TestCase testcase = genericXmlHandler.convertXMLToObject(TestCase.class, content);
+        logger.info("-> " + testcase.getDescription());
+        return testcase;
     }
 
     public static String readFile(String filename) throws FileNotFoundException {
-        System.out.println("reading '" + filename + "'");
+        logger.info("reading '" + filename + "'");
         StringBuilder text;
         text = new StringBuilder();
         String newLine = System.getProperty("line.separator");
@@ -36,7 +39,7 @@ public class FileAdapter {
     }
 
     public static void writeFile(String filename, String content) throws IOException {
-
+        logger.info("writing " + filename);
         Writer out = new BufferedWriter(new OutputStreamWriter(
                 new FileOutputStream(filename), "UTF8")) ;
             out.append(content);
