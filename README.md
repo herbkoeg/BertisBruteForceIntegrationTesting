@@ -30,6 +30,13 @@ your own DB2, MySql, ... Connector implementing DBConnector.
 - Just run HelloWorld.java or even better TestCaseProcessorTest
 to generate a first TestCase.
 
+MyToDos:
+- add Ignore Columns
+- refactor assert
+    - add ignore column
+- add execSql to Processor
+- 
+
 
 
 
