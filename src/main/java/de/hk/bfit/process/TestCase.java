@@ -1,6 +1,5 @@
 package de.hk.bfit.process;
 
-import java.lang.ref.Reference;
 import java.util.ArrayList;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
