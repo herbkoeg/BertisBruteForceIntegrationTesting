@@ -1,4 +1,4 @@
-package de.hk.bfit.process;
+package de.hk.bfit.action;
 
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;

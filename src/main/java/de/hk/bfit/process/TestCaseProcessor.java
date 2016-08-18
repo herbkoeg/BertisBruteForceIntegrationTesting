@@ -1,5 +1,7 @@
 package de.hk.bfit.process;
 
+import de.hk.bfit.action.ReferenceAction;
+import de.hk.bfit.action.SelectAction;
 import de.hk.bfit.io.FileAdapter;
 import de.hk.bfit.io.GenericXmlHandler;
 import java.io.IOException;
@@ -8,16 +10,16 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.time.Clock;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import javax.xml.bind.JAXBException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import reactor.core.action.ForEachAction;
 
 public class TestCaseProcessor {
 
@@ -44,7 +46,7 @@ public class TestCaseProcessor {
     }
 
     TestCase generateTestCase(List<String> sqlListReferenceAction) throws SQLException, ClassNotFoundException, IllegalArgumentException, JAXBException, IOException {
-        List<SelectAction> selectAction = new ArrayList<SelectAction>();
+        List<SelectAction> selectAction = new ArrayList<>();
 
         for (String sql : sqlListReferenceAction) {
             logger.error("processing: " + sql);
@@ -114,10 +116,24 @@ public class TestCaseProcessor {
         logger.info("Success!");
     }
    
+    /**
+     * Processes the resetAction definded in the testcase
+     * @param testCase
+     * @param variables
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void processResetAction(TestCase testCase, Map<String, String> variables) throws ClassNotFoundException, SQLException {
         processCommandList(testCase.getResetAction().getSqlCommands(), variables, testCase.getResetAction().isRollBackOnError());
     }
 
+    /**
+     * Processes the initAction defined in the testcase
+     * @param testCase
+     * @param variables
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
     public void processInitAction(TestCase testCase, Map<String, String> variables) throws ClassNotFoundException, SQLException {
         processCommandList(testCase.getInitAction().getSqlCommands(), variables, testCase.getInitAction().isRollBackOnError());
     }
@@ -126,6 +142,32 @@ public class TestCaseProcessor {
         sql = setVariables(sql, variables);
         ResultSet rs = createResultset(sql);
         return createResultList(rs);
+    }
+
+    /**
+     * Executes one of the following sql commands: insert, update, delete
+     * Other commands (for exapmle select) will be ignored
+     * @param sql
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    public void execSql(String sql) throws ClassNotFoundException, SQLException {
+        execSql(sql,null,true);
+    }
+    
+    /**
+     * Executes one of the following sql commands: insert, update, delete
+     * Other commands (for exapmle select) will be ignored
+     * @param sql
+     * @param variables
+     * @param autoCommit
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    public void execSql(String sql, Map<String, String> variables, boolean autoCommit) throws ClassNotFoundException, SQLException {
+        List<String> sqlList = new ArrayList<>();
+        sqlList.add(setVariables(sql,variables));
+        processCommandList(sqlList, new HashMap<String, String>(), autoCommit);
     }
 
     String setVariables(String sql, Map<String, String> variables) {
@@ -147,7 +189,7 @@ public class TestCaseProcessor {
     }
 
     private List<String> createResultList(ResultSet rs) throws SQLException {
-        List<String> results = new ArrayList<String>();
+        List<String> results = new ArrayList<>();
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
         while (rs.next()) {
@@ -165,10 +207,10 @@ public class TestCaseProcessor {
     }
 
     private ResultSet createResultset(String sql) throws SQLException {
-            return connection.createStatement().executeQuery(sql);
+        return connection.createStatement().executeQuery(sql);
     }
 
-    private void processCommandList(List<String> sqlList, Map<String, String> variables, boolean rollbackOnError) throws ClassNotFoundException, SQLException {
+    public void processCommandList(List<String> sqlList, Map<String, String> variables, boolean rollbackOnError) throws ClassNotFoundException, SQLException {
 
         if (sqlList == null || sqlList.isEmpty()) {
             return;
@@ -191,21 +233,34 @@ public class TestCaseProcessor {
             }
             connection.commit();
         } catch (SQLException e) {
-            logger.error("SQLException fuer command: " + sql);
+            StringBuilder sb = new StringBuilder();
+            sb.append("Command could not be executed: ").append(sql).append("\n");
+            sb.append("Exception Message: ").append(e.getMessage()).append("\n");
+            sb.append("SQLState         : ").append(e.getSQLState()).append("\n");
+            sb.append("ErrorCode        : ").append(e.getErrorCode()).append("\n");
+
+            sb.append("").append(connection.getClientInfo());
+            logger.error(sb.toString());
             if (rollbackOnError) {
                 connection.rollback();
                 logger.error("... rollback");
             }
+//            connection.close()
             throw e;
         } finally {
-            connection.close();
+//            connection.close();
         }
     }
 
+    public Properties getClientInfo() throws SQLException {
+        final Properties clientInfo = connection.getClientInfo();
+        return clientInfo;
+    }
+    
     private boolean isExecutableCommand(String sql) {
-        return sql.toLowerCase().startsWith("update ")
-                || sql.toLowerCase().startsWith("insert ")
-                || sql.toLowerCase().startsWith("delete ");
+        return sql.toLowerCase().startsWith("update")
+                || sql.toLowerCase().startsWith("insert")
+                || sql.toLowerCase().startsWith("delete");
     }
 
 }

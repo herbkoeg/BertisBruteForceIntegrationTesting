@@ -1,11 +1,16 @@
 package de.hk.bfit.process;
 
+import de.hk.bfit.action.ResetAction;
+import de.hk.bfit.action.InitAction;
+import com.sun.org.apache.bcel.internal.classfile.PMGClass;
 import de.hk.bfit.db.PostgresDBConnector;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import junit.framework.Assert;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
@@ -124,5 +129,21 @@ public class TestCaseProcessorTest {
 
         Assert.assertEquals("select 12345 Berti from contract where vnr = 12345", cut.setVariables(sql, variables));
     }
+    
+    @Test
+    public void getClientInfo() throws SQLException {
+        System.out.println(cut.getClientInfo());
+    }
+    
+    @Test
+    public void execSql() throws ClassNotFoundException, SQLException {
+        cut.execSql("select * from personxx");
+        
+    }
+    
+    
+    
+    
 
+    
 }

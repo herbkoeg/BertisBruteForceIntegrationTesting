@@ -1,4 +1,4 @@
-package de.hk.bfit.process;
+package de.hk.bfit.action;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -29,7 +29,7 @@ public class HelloWorld {
         System.out.println(dbConnection.getClientInfo());
         
         
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 10; i++) {
             
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
