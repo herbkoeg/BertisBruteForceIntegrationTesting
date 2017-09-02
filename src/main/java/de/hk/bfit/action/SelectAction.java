@@ -52,7 +52,9 @@ public class SelectAction {
         this.description = description;
     }
     
-    
+    public String getAssertFailedMessage() {
+        return getDescription() + " -> " + getSelect() + " failed:\n";
+    }
 
     
 }

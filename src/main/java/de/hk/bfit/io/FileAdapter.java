@@ -1,15 +1,12 @@
 package de.hk.bfit.io;
 
 import de.hk.bfit.process.TestCase;
-import java.io.BufferedWriter;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
+
+import java.io.*;
 import java.util.Scanner;
 import javax.xml.bind.JAXBException;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 
 public class FileAdapter {
@@ -38,11 +35,16 @@ public class FileAdapter {
         return text.toString();
     }
 
+    public static void createFile(String filename) {
+
+
+    }
+
     public static void writeFile(String filename, String content) throws IOException {
         logger.info("writing " + filename);
-        Writer out = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filename), "UTF8")) ;
-            out.append(content);
-            out.flush();
+
+        File f = new File(filename);
+
+        FileUtils.writeStringToFile(f,content,"UTF-8");
     }
 }

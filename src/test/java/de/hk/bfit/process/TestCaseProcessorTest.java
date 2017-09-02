@@ -42,6 +42,8 @@ public class TestCaseProcessorTest {
         Map<String, String> variables = new HashMap<String,String>();
         List<String> sqlList = new ArrayList<String>();
         cut.generateExampleTestCase("myTestcase", sqlList);
+        cut.generateExampleTestCase("myTestcase2",sqlList);
+        //cut.generateExampleTestCase("myTestcase", sqlList, false, false);
     }
 
     @Test
@@ -69,7 +71,12 @@ public class TestCaseProcessorTest {
         testCase.setInitAction(new InitAction());
         cut.processInitAction(testCase, variables);
     }
-    
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
     @Test
     public void integerationTest() throws Exception {
             PostgresDBConnector dBConnector = 
