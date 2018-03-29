@@ -35,11 +35,6 @@ public class FileAdapter {
         return text.toString();
     }
 
-    public static void createFile(String filename) {
-
-
-    }
-
     public static void writeFile(String filename, String content) throws IOException {
         logger.info("writing " + filename);
 

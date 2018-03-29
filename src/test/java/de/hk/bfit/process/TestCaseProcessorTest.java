@@ -2,7 +2,6 @@ package de.hk.bfit.process;
 
 import de.hk.bfit.action.ResetAction;
 import de.hk.bfit.action.InitAction;
-import com.sun.org.apache.bcel.internal.classfile.PMGClass;
 import de.hk.bfit.db.PostgresDBConnector;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -10,14 +9,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Logger;
+
 import junit.framework.Assert;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TestCaseProcessorTest {
+public class TestCaseProcessorTest implements IBfiTest{
 
     private static PostgresDBConnector dBConnector;
     private static Connection dbConnection;
@@ -41,8 +39,8 @@ public class TestCaseProcessorTest {
     public void testGenerateExampleTestCase() throws Exception {
         Map<String, String> variables = new HashMap<String,String>();
         List<String> sqlList = new ArrayList<String>();
-        cut.generateExampleTestCase("myTestcase", sqlList);
-        cut.generateExampleTestCase("myTestcase2",sqlList);
+        cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase", sqlList);
+        cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase2",sqlList);
         //cut.generateExampleTestCase("myTestcase", sqlList, false, false);
     }
 
@@ -79,7 +77,7 @@ public class TestCaseProcessorTest {
 
     @Test
     public void integerationTest() throws Exception {
-            PostgresDBConnector dBConnector = 
+            PostgresDBConnector dBConnector =
                 new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
         
         Map<String,String> variables = new HashMap<String,String>();
@@ -98,33 +96,33 @@ public class TestCaseProcessorTest {
     
     @Test
     public void integerationTestOnlyResetAction() throws Exception {
-            PostgresDBConnector dBConnector = 
+            PostgresDBConnector dBConnector =
                 new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
         
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
-        String filename = "BfitFirstTestOnlyReset.xml";
+        String filename = BASE_PATH_TESTCASES + "BfitFirstTestOnlyReset.xml";
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
         testCaseProcessor.assertAfter(testCase);
     }
 
     @Test
     public void integerationTestNoResultToCompareAction() throws Exception {
-            PostgresDBConnector dBConnector = 
+            PostgresDBConnector dBConnector =
                 new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
         
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
-        String filename = "BfitFirstTestNoResult.xml";
+        String filename = BASE_PATH_TESTCASES + "BfitFirstTestNoResult.xml";
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
         testCaseProcessor.assertAfter(testCase);
     }
     
     @Test
     public void integerationTestManyVariables() throws Exception {
-            PostgresDBConnector dBConnector = 
+            PostgresDBConnector dBConnector =
                 new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
         
         Map<String,String> variables = new HashMap<String,String>();

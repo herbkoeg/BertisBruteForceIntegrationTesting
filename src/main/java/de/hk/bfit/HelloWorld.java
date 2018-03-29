@@ -22,7 +22,7 @@ import java.util.Map;
 public class HelloWorld {
     public static void main(String[] args) throws Exception{
         System.out.println("Hallo bla blub");
-        PostgresDBConnector dBConnector = 
+        PostgresDBConnector dBConnector =
                 new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
         
         Connection dbConnection = dBConnector.getDBConnection();

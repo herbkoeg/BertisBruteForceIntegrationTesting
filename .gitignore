@@ -1,3 +1,4 @@
 /target/
-/nbproject/
 /.idea/
+/src/test/resources/generated/
+/*.iml/
