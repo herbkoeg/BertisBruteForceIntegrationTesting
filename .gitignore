@@ -1,4 +1,4 @@
 /target/
 /.idea/
 /src/test/resources/generated/
-/*.iml/
+/BruteForceIntegrationTesting.iml
