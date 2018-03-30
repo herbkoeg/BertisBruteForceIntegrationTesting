@@ -1,154 +1,60 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.action.ResetAction;
-import de.hk.bfit.action.InitAction;
-import de.hk.bfit.db.PostgresDBConnector;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import junit.framework.Assert;
+import de.hk.bfit.action.ReferenceAction;
+import de.hk.bfit.action.SelectAction;
+import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TestCaseProcessorTest implements IBfiTest{
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-    private static PostgresDBConnector dBConnector;
-    private static Connection dbConnection;
-    private static TestCaseProcessor cut;
+public class TestCaseProcessorTest {
 
-    public TestCaseProcessorTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() throws Exception {
-        dBConnector = new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        dbConnection = dBConnector.getDBConnection();
-        cut = new TestCaseProcessor(dBConnector.getDBConnection());
-    }
+    TestCaseProcessor cut = null;
 
     @Before
-    public void setUp() {
+    public void init() {
+        cut = new TestCaseProcessor();
     }
 
     @Test
-    public void testGenerateExampleTestCase() throws Exception {
-        Map<String, String> variables = new HashMap<String,String>();
-        List<String> sqlList = new ArrayList<String>();
-        cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase", sqlList);
-        cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase2",sqlList);
-        //cut.generateExampleTestCase("myTestcase", sqlList, false, false);
+    public void testGetDifferencesNoDifferences() throws ClassNotFoundException, SQLException, JAXBException, IOException {
+        SelectAction selectAction = getSelectAction();
+        List<String> actualResults = new ArrayList<>();
+        actualResults.add("test;bla;bla;test;;");
+        System.out.println(cut.determineDifferences(selectAction,null,actualResults).toString());
+        Assert.assertEquals(0,cut.determineDifferences(selectAction,null,actualResults).size());
     }
 
     @Test
-    public void testAssertBefore() throws Exception {
+    public void testGetDifferencesWithOneDifference() throws ClassNotFoundException, SQLException, JAXBException, IOException {
+        SelectAction selectAction = getSelectAction();
+        List<String> actualResults = new ArrayList<>();
+        actualResults.add("test;bla;bla;test;blub;");
+        System.out.println(cut.determineDifferences(selectAction,null,actualResults).toString());
+        Assert.assertEquals(1,cut.determineDifferences(selectAction,null,actualResults).size());
     }
 
-    @Test
-    public void testAssertAfter() throws Exception {
+    private SelectAction getSelectAction() {
+        SelectAction selectAction = new SelectAction();
+
+        selectAction.setDescription("ein test");
+
+        selectAction.setSelect("irgendein select");
+
+        List<String> resultList = new ArrayList<>();
+
+        resultList.add("test;bla;bla;test;;");
+
+        selectAction.setResult(resultList);
+
+        return selectAction;
     }
 
-    @Test
-    public void testProcessResetAction() throws Exception {
-        List<String> sqlList = new ArrayList<String>();
-        Map<String, String> variables = new HashMap<String,String>();
-        TestCase testCase = cut.generateTestCase(sqlList);
-        testCase.setResetAction(new ResetAction());
-        cut.processResetAction(testCase, variables);
-    }
 
-    @Test
-    public void testProcessInitAction() throws Exception {
-        List<String> sqlList = new ArrayList<String>();
-        Map<String, String> variables = new HashMap<String,String>();
-        TestCase testCase = cut.generateTestCase(sqlList);
-        testCase.setInitAction(new InitAction());
-        cut.processInitAction(testCase, variables);
-    }
 
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
-    @Test
-    public void integerationTest() throws Exception {
-            PostgresDBConnector dBConnector =
-                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        
-        Map<String,String> variables = new HashMap<String,String>();
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
-        String filename = "BfitFirstTest.xml";
-        List<String> sqlListReferenceAction = new ArrayList<String>();
-        boolean add = sqlListReferenceAction.add("select id from Person");
-        sqlListReferenceAction.add("select name from Person");
-                
-        
-        testCaseProcessor.generateExampleTestCase(filename, sqlListReferenceAction);
-        
-        TestCase testCase = testCaseProcessor.loadTestCase(filename);
-        testCaseProcessor.assertAfter(testCase);
-    }
-    
-    @Test
-    public void integerationTestOnlyResetAction() throws Exception {
-            PostgresDBConnector dBConnector =
-                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        
-        Map<String,String> variables = new HashMap<String,String>();
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
-        
-        String filename = BASE_PATH_TESTCASES + "BfitFirstTestOnlyReset.xml";
-        TestCase testCase = testCaseProcessor.loadTestCase(filename);
-        testCaseProcessor.assertAfter(testCase);
-    }
-
-    @Test
-    public void integerationTestNoResultToCompareAction() throws Exception {
-            PostgresDBConnector dBConnector =
-                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        
-        Map<String,String> variables = new HashMap<String,String>();
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
-        
-        String filename = BASE_PATH_TESTCASES + "BfitFirstTestNoResult.xml";
-        TestCase testCase = testCaseProcessor.loadTestCase(filename);
-        testCaseProcessor.assertAfter(testCase);
-    }
-    
-    @Test
-    public void integerationTestManyVariables() throws Exception {
-            PostgresDBConnector dBConnector =
-                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        
-        Map<String,String> variables = new HashMap<String,String>();
-        variables.put("VNR", "12345");
-        variables.put("NAME", "Berti");
-        
-        TestCaseProcessor cut = new TestCaseProcessor(dBConnector.getDBConnection());
-        String sql = "select $VNR $NAME from contract where vnr = $VNR" ;
-
-        Assert.assertEquals("select 12345 Berti from contract where vnr = 12345", cut.setVariables(sql, variables));
-    }
-    
-    @Test
-    public void getClientInfo() throws SQLException {
-        System.out.println(cut.getClientInfo());
-    }
-    
-    @Test
-    public void execSql() throws ClassNotFoundException, SQLException {
-        cut.execSql("select * from personxx");
-        
-    }
-    
-    
-    
-    
-
-    
 }

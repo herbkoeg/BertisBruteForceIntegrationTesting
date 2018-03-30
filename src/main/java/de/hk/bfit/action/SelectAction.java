@@ -1,5 +1,7 @@
 package de.hk.bfit.action;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
@@ -56,5 +58,4 @@ public class SelectAction {
         return getDescription() + " -> " + getSelect() + " failed:\n";
     }
 
-    
 }
