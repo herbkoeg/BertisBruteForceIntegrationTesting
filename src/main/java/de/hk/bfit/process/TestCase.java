@@ -1,10 +1,9 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.action.ResetAction;
-import de.hk.bfit.action.ReferenceAction;
-import de.hk.bfit.action.SelectAction;
-import de.hk.bfit.action.InitAction;
+import de.hk.bfit.action.*;
+
 import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -24,6 +23,8 @@ public class TestCase {
     private ReferenceAction referenceActionAfter;
     @XmlElement
     private ResetAction resetAction;
+    @XmlElement
+    private List<DefinedAction> definedActions;
 
     public TestCase() {
     }
@@ -84,4 +85,11 @@ public class TestCase {
         this.resetAction = resetAction;
     }
 
+    public List<DefinedAction> getDefinedActions() {
+        return definedActions;
+    }
+
+    public void setDefinedActions(List<DefinedAction> definedActions) {
+        this.definedActions = definedActions;
+    }
 }

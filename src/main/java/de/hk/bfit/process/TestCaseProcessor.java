@@ -43,11 +43,17 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         return FileAdapter.loadTestCase(filename);
     }
 
+    @Override
     public void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
         TestCase newTestCase = generateTestCase(sqlListReferenceAction);
         GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
         String content = genericXmlHandler.convertObjectToXML(newTestCase);
         FileAdapter.writeFile(filename, content);
+    }
+
+    private void someMethod() {
+
+//        XmlMa
     }
 
     TestCase generateTestCase(List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
@@ -220,10 +226,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
                 connection.rollback();
                 logger.error("... rollback");
             }
-//            connection.close()
             throw e;
-        } finally {
-//            connection.close();
         }
     }
 
