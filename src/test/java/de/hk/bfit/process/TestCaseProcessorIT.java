@@ -4,6 +4,7 @@ import de.hk.bfit.action.ResetAction;
 import de.hk.bfit.action.InitAction;
 import de.hk.bfit.db.PostgresDBConnector;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,9 +78,8 @@ public class TestCaseProcessorIT implements IBfiTest{
 
     @Test
     public void integerationTest() throws Exception {
-            PostgresDBConnector dBConnector =
-                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        
+        PostgresDBConnector dBConnector = getPostgresDBConnector();
+
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         String filename = "BfitFirstTest.xml";
@@ -95,9 +95,8 @@ public class TestCaseProcessorIT implements IBfiTest{
     
     @Test
     public void integerationTestOnlyResetAction() throws Exception {
-            PostgresDBConnector dBConnector =
-                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        
+        PostgresDBConnector dBConnector = getPostgresDBConnector();
+
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
@@ -107,10 +106,22 @@ public class TestCaseProcessorIT implements IBfiTest{
     }
 
     @Test
+    public void variablesInitAction() throws Exception {
+        PostgresDBConnector dBConnector = getPostgresDBConnector();
+
+        Map<String,String> variables = new HashMap<String,String>();
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
+
+        String filename = BASE_PATH_TESTCASES + "BfitFirstTestOnlyReset.xml";
+        TestCase testCase = testCaseProcessor.loadTestCase(filename);
+        testCaseProcessor.assertAfter(testCase);
+    }
+
+
+    @Test
     public void integerationTestNoResultToCompareAction() throws Exception {
-            PostgresDBConnector dBConnector =
-                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        
+        PostgresDBConnector dBConnector = getPostgresDBConnector();
+
         Map<String,String> variables = new HashMap<String,String>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         
@@ -121,9 +132,8 @@ public class TestCaseProcessorIT implements IBfiTest{
     
     @Test
     public void integerationTestManyVariables() throws Exception {
-            PostgresDBConnector dBConnector =
-                new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        
+        PostgresDBConnector dBConnector = getPostgresDBConnector();
+
         Map<String,String> variables = new HashMap<String,String>();
         variables.put("VNR", "12345");
         variables.put("NAME", "Berti");
@@ -133,7 +143,11 @@ public class TestCaseProcessorIT implements IBfiTest{
 
         Assert.assertEquals("select 12345 Berti from contract where vnr = 12345", cut.setVariables(sql, variables));
     }
-    
+
+    private PostgresDBConnector getPostgresDBConnector() {
+        return new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+    }
+
     @Test
     public void getClientInfo() throws SQLException {
         System.out.println(cut.getClientInfo());
@@ -142,9 +156,10 @@ public class TestCaseProcessorIT implements IBfiTest{
     @Test
     public void execSql() throws ClassNotFoundException, SQLException {
         cut.execSql("select * from personxx");
-        
+//        ResultSet rs = cut.execSql("bla");
     }
-    
+
+
     
     
     

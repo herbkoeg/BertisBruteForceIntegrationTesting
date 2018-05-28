@@ -23,7 +23,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 
-public class TestCaseProcessor  {
+public class TestCaseProcessor implements ITestCaseProcessor {
 
     private final Logger logger = Logger.getLogger(TestCaseProcessor.class);
     private Connection connection = null;
@@ -43,51 +43,51 @@ public class TestCaseProcessor  {
         return FileAdapter.loadTestCase(filename);
     }
 
-    public void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, ClassNotFoundException, IllegalArgumentException, JAXBException, IOException {
+    public void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
         TestCase newTestCase = generateTestCase(sqlListReferenceAction);
         GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
         String content = genericXmlHandler.convertObjectToXML(newTestCase);
         FileAdapter.writeFile(filename, content);
     }
 
-    TestCase generateTestCase(List<String> sqlListReferenceAction) throws SQLException, ClassNotFoundException, IllegalArgumentException, JAXBException, IOException {
+    TestCase generateTestCase(List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
         return generateTestCase(sqlListReferenceAction, false, false);
     }
 
-    public void assertBefore(TestCase testCase) throws IOException, JAXBException, SQLException, ClassNotFoundException {
+    public void assertBefore(TestCase testCase) throws SQLException {
         assertBefore(testCase, null);
     }
 
-    public void assertBefore(TestCase testCase, Map<String, String> variables) throws IOException, JAXBException, SQLException, ClassNotFoundException {
+    public void assertBefore(TestCase testCase, Map<String, String> variables) throws SQLException {
         logger.info("asserting before ...");
         assertAction(testCase.getReferenceActionBefore(), variables);
     }
 
-    public void assertAfter(TestCase testCase) throws IOException, JAXBException, SQLException, ClassNotFoundException {
+    public void assertAfter(TestCase testCase) throws SQLException {
         assertAfter(testCase, null);
     }
 
-    public void assertAfter(TestCase testCase, Map<String, String> variables) throws IOException, JAXBException, SQLException, ClassNotFoundException {
+    public void assertAfter(TestCase testCase, Map<String, String> variables) throws  SQLException {
         logger.info("asserting after ...");
         assertAction(testCase.getReferenceActionAfter(), variables);
     }
 
-    public List<AssertResult> getDifferencesAfter(TestCase testcase) throws ClassNotFoundException, SQLException, JAXBException, IOException {
+    public List<AssertResult> getDifferencesAfter(TestCase testcase) throws SQLException {
         logger.info("getDiffencesAfter ...");
         return getDifferences(testcase.getReferenceActionAfter(),null);
     }
 
-    public List<AssertResult> getDifferencesAfter(TestCase testcase, Map<String, String> variables) throws ClassNotFoundException, SQLException, JAXBException, IOException {
+    public List<AssertResult> getDifferencesAfter(TestCase testcase, Map<String, String> variables) throws SQLException {
         logger.info("getDiffencesAfter ...");
         return getDifferences(testcase.getReferenceActionAfter(),variables);
     }
 
-    public List<AssertResult> getDifferencesBefore(TestCase testcase) throws ClassNotFoundException, SQLException, JAXBException, IOException {
+    public List<AssertResult> getDifferencesBefore(TestCase testcase) throws SQLException {
         logger.info("getDiffencesBefore ...");
         return getDifferences(testcase.getReferenceActionBefore(),null);
     }
 
-    public List<AssertResult> getDifferencesBefore(TestCase testcase, Map<String, String> variables) throws ClassNotFoundException, SQLException, JAXBException, IOException {
+    public List<AssertResult> getDifferencesBefore(TestCase testcase, Map<String, String> variables) throws  SQLException {
         logger.info("getDiffencesBefore ...");
         return getDifferences(testcase.getReferenceActionBefore(),variables);
     }
@@ -97,10 +97,9 @@ public class TestCaseProcessor  {
      *
      * @param testCase
      * @param variables
-     * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public void processResetAction(TestCase testCase, Map<String, String> variables) throws ClassNotFoundException, SQLException {
+    public void processResetAction(TestCase testCase, Map<String, String> variables) throws SQLException {
         processCommandList(testCase.getResetAction().getSqlCommands(), variables, testCase.getResetAction().isRollBackOnError());
     }
 
@@ -109,14 +108,13 @@ public class TestCaseProcessor  {
      *
      * @param testCase
      * @param variables
-     * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public void processInitAction(TestCase testCase, Map<String, String> variables) throws ClassNotFoundException, SQLException {
+    public void processInitAction(TestCase testCase, Map<String, String> variables) throws SQLException {
         processCommandList(testCase.getInitAction().getSqlCommands(), variables, testCase.getInitAction().isRollBackOnError());
     }
 
-    private List<String> processReferenceAction(String sql, Map<String, String> variables) throws SQLException, ClassNotFoundException {
+    private List<String> processReferenceAction(String sql, Map<String, String> variables) throws SQLException {
         sql = setVariables(sql, variables);
         ResultSet rs = createResultset(sql);
         return createResultList(rs);
@@ -127,11 +125,10 @@ public class TestCaseProcessor  {
      * Other commands (for exapmle select) will be ignored
      *
      * @param sql
-     * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public void execSql(String sql) throws ClassNotFoundException, SQLException {
-        execSql(sql, null, true);
+    public void execSql(String sql) throws SQLException {
+        execSql(sql, new HashMap<String, String>(), true);
     }
 
     /**
@@ -141,10 +138,9 @@ public class TestCaseProcessor  {
      * @param sql
      * @param variables
      * @param autoCommit
-     * @throws ClassNotFoundException
      * @throws SQLException
      */
-    public void execSql(String sql, Map<String, String> variables, boolean autoCommit) throws ClassNotFoundException, SQLException {
+    public void execSql(String sql, Map<String, String> variables, boolean autoCommit) throws SQLException {
         List<String> sqlList = new ArrayList<>();
         sqlList.add(setVariables(sql, variables));
         processCommandList(sqlList, new HashMap<String, String>(), autoCommit);
@@ -190,31 +186,30 @@ public class TestCaseProcessor  {
         return connection.createStatement().executeQuery(sql);
     }
 
-    public void processCommandList(List<String> sqlList, Map<String, String> variables, boolean rollbackOnError) throws ClassNotFoundException, SQLException {
+    private void processCommandList(List<String> sqlCommands, Map<String, String> variables, boolean rollbackOnError) throws SQLException {
 
-        if (sqlList == null || sqlList.isEmpty()) {
+        if (sqlCommands == null || sqlCommands.isEmpty()) {
             return;
         }
 
         connection.setAutoCommit(!rollbackOnError);
         Statement statement = connection.createStatement();
-        Iterator<String> it = sqlList.iterator();
-        String sql = "";
+        Iterator<String> it = sqlCommands.iterator();
+        String sqlWithSetVars = "";
         try {
-            while (it.hasNext()) {
-                sql = it.next();
-                sql = setVariables(sql, variables);
-                if (isExecutableCommand(sql)) {
-                    logger.info("... execute " + sql);
-                    statement.execute(sql);
+            for (String sqlCommand:sqlCommands) {
+                sqlWithSetVars = setVariables(sqlCommand, variables);
+                if (isExecutableCommand(sqlCommand)) {
+                    logger.info("... executing " + sqlCommand);
+                    statement.execute(sqlCommand);
                 } else {
-                    logger.info("... ignore " + sql);
+                    logger.info("... ignoring " + sqlCommand);
                 }
             }
             connection.commit();
         } catch (SQLException e) {
             StringBuilder sb = new StringBuilder();
-            sb.append("Command could not be executed: ").append(sql).append("\n");
+            sb.append("Command could not be executed: ").append(sqlWithSetVars).append("\n");
             sb.append("Exception Message: ").append(e.getMessage()).append("\n");
             sb.append("SQLState         : ").append(e.getSQLState()).append("\n");
             sb.append("ErrorCode        : ").append(e.getErrorCode()).append("\n");
@@ -237,7 +232,7 @@ public class TestCaseProcessor  {
         return clientInfo;
     }
 
-    TestCase generateTestCase(List<String> sqlListReferenceAction, boolean withInit, boolean withReset) throws SQLException, ClassNotFoundException, IllegalArgumentException, JAXBException, IOException {
+    TestCase generateTestCase(List<String> sqlListReferenceAction, boolean withInit, boolean withReset) throws SQLException, IllegalArgumentException, JAXBException, IOException {
         List<SelectAction> selectAction = new ArrayList<>();
 
         for (String sql : sqlListReferenceAction) {
@@ -304,9 +299,8 @@ public class TestCaseProcessor  {
      * @throws IOException
      * @throws JAXBException
      * @throws SQLException
-     * @throws ClassNotFoundException
      */
-    public List<AssertResult> getDifferences(ReferenceAction referenceAction, Map<String, String> variables) throws IOException, JAXBException, SQLException, ClassNotFoundException {
+    public List<AssertResult> getDifferences(ReferenceAction referenceAction, Map<String, String> variables) throws SQLException {
         logger.info("Find differences for referenceAction: " + referenceAction.getDescription());
 
         List<AssertResult> assertResults = new ArrayList();
@@ -334,16 +328,12 @@ public class TestCaseProcessor  {
         }
     }
 
-    protected void assertAction(ReferenceAction referenceAction, Map<String, String> variables) throws IOException, JAXBException, SQLException, ClassNotFoundException {
+    protected void assertAction(ReferenceAction referenceAction, Map<String, String> variables) throws SQLException {
         if (referenceAction == null || referenceAction.getSelectAction() == null) {
             return;
         }
-        Iterator<SelectAction> selectActionIt = referenceAction.getSelectAction().iterator();
 
-        while (selectActionIt.hasNext()) {
-
-            SelectAction selectAction = selectActionIt.next();
-
+        for (SelectAction selectAction:referenceAction.getSelectAction()) {
             logger.info("Asserting: " + selectAction.getDescription());
 
             List<String> refResults = selectAction.getResult();
