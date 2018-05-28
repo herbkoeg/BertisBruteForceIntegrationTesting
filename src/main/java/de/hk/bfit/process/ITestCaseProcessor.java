@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 public interface ITestCaseProcessor {
 
@@ -21,7 +22,7 @@ public interface ITestCaseProcessor {
     public void processInitAction(TestCase testCase, Map<String, String> variables) throws SQLException;
     public void execSql(String sql) throws SQLException;
     public void execSql(String sql, Map<String, String> variables, boolean autoCommit) throws SQLException;
-
+    public Properties getClientInfo() throws SQLException;
 
 
 }

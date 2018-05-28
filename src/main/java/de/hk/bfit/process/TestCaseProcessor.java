@@ -296,11 +296,9 @@ public class TestCaseProcessor implements ITestCaseProcessor {
      * @param referenceAction
      * @param variables
      * @return
-     * @throws IOException
-     * @throws JAXBException
      * @throws SQLException
      */
-    public List<AssertResult> getDifferences(ReferenceAction referenceAction, Map<String, String> variables) throws SQLException {
+    private List<AssertResult> getDifferences(ReferenceAction referenceAction, Map<String, String> variables) throws SQLException {
         logger.info("Find differences for referenceAction: " + referenceAction.getDescription());
 
         List<AssertResult> assertResults = new ArrayList();
@@ -358,7 +356,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         logger.info("Success!");
     }
 
-    protected boolean isExecutableCommand(String sql) {
+    private boolean isExecutableCommand(String sql) {
         return sql.toLowerCase().startsWith("update")
                 || sql.toLowerCase().startsWith("insert")
                 || sql.toLowerCase().startsWith("delete");
