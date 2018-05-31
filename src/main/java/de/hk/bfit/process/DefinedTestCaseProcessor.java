@@ -1,7 +1,7 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.io.FileAdapter;
-import de.hk.bfit.io.GenericXmlHandler;
+import de.hk.bfit.io.TestCaseHandler;
+import de.hk.bfit.model.TestCase;
 import org.apache.log4j.Logger;
 
 import javax.xml.bind.JAXBException;
@@ -15,11 +15,7 @@ public class DefinedTestCaseProcessor extends TestCaseProcessor{
 
     public void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
         TestCase newTestCase = generateTestCase(sqlListReferenceAction);
-        GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
-        String content = genericXmlHandler.convertObjectToXML(newTestCase);
-        FileAdapter.writeFile(filename, content);
-
-
+        TestCaseHandler.writeTestcase(newTestCase,filename);
     }
 
 

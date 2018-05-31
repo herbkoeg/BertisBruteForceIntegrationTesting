@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1" standalone="yes"?>
-<testCase>
+<TestCase>
     <description>This testcase demonstrates how you can run only a reset action</description>
     <resetAction>
         <description>define your reset commands here</description>
         <rollBackOnError>true</rollBackOnError>
-        <sqlCommands>insert into xyz ...</sqlCommands>
-        <sqlCommands>update into xyz ...</sqlCommands>
-        <sqlCommands>delete into xyz ...</sqlCommands>
+        <sqlCommands>
+            <sqlCommand>insert into xyz ...</sqlCommand>
+            <sqlCommand>update into xyz ...</sqlCommand>
+            <sqlCommand>delete into xyz ...</sqlCommand>
+        </sqlCommands>
     </resetAction>
-</testCase>
+</TestCase>

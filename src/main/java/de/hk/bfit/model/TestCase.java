@@ -1,29 +1,24 @@
-package de.hk.bfit.process;
+package de.hk.bfit.model;
 
-import de.hk.bfit.action.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import de.hk.bfit.model.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-@XmlAccessorType (XmlAccessType.FIELD)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TestCase {
 
-    @XmlElement
     private String description;
-    @XmlElement
+
     private InitAction initAction;
-    @XmlElement
+
     private ReferenceAction referenceActionBefore;
-    @XmlElement
+
     private ReferenceAction referenceActionAfter;
-    @XmlElement
+
     private ResetAction resetAction;
-    @XmlElement
+
     private List<DefinedAction> definedActions;
 
     public TestCase() {

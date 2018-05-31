@@ -1,21 +1,20 @@
-package de.hk.bfit.action;
+package de.hk.bfit.model;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
-public class InitAction extends BaseAction{
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class InitAction extends ExecutionAction {
 
     
     public InitAction() {
         this.description = "define your init commands here";
-        this.sqlCommmand = new ArrayList<String>();
+        this.sqlCommands = new ArrayList<String>();
         this.rollBackOnError = false;
     }
 
-    @XmlElement
     public String getDescription() {
         return description;
     }
@@ -24,17 +23,12 @@ public class InitAction extends BaseAction{
         this.description = description;
     }
 
-    @XmlElement
     public List<String> getSqlCommands() {
-        return sqlCommmand;
+        return sqlCommands;
     }
 
     public void setSqlCommands(List<String> initCommands) {
-        this.sqlCommmand = initCommands;
-    }
-
-    public boolean isRollBackOnError() {
-        return rollBackOnError;
+        this.sqlCommands = initCommands;
     }
 
     public void setRollBackOnError(boolean rollBackOnError) {

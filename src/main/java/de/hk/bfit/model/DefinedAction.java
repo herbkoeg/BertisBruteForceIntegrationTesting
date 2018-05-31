@@ -1,38 +1,35 @@
-package de.hk.bfit.action;
+package de.hk.bfit.model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.util.ArrayList;
 import java.util.List;
 
-@XmlRootElement
-public class DefinedAction extends BaseAction{
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class DefinedAction extends ExecutionAction {
 
 
     public DefinedAction() {
         this.description = "define your init commands here";
-        this.sqlCommmand = new ArrayList<String>();
+        this.sqlCommands = new ArrayList<String>();
         this.rollBackOnError = false;
     }
 
     public DefinedAction(String name) {
         this.description = "define your init commands here";
-        this.sqlCommmand = new ArrayList<String>();
+        this.sqlCommands = new ArrayList<String>();
         this.rollBackOnError = false;
         this.name = name;
     }
 
-    @XmlElement
     public String name;
 
-    @XmlElement
     public String getDescription() {
         return description;
     }
 
-    @XmlElement
     public List<String> getSqlCommands() {
-        return sqlCommmand;
+        return sqlCommands;
     }
 
     public void setDescription(String description) {
@@ -40,11 +37,7 @@ public class DefinedAction extends BaseAction{
     }
 
     public void setSqlCommands(List<String> initCommands) {
-        this.sqlCommmand = initCommands;
-    }
-
-    public boolean isRollBackOnError() {
-        return rollBackOnError;
+        this.sqlCommands = initCommands;
     }
 
     public void setRollBackOnError(boolean rollBackOnError) {

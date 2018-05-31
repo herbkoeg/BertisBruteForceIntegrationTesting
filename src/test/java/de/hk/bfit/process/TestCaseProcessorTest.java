@@ -1,7 +1,6 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.action.ReferenceAction;
-import de.hk.bfit.action.SelectAction;
+import de.hk.bfit.model.SelectAction;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -50,7 +49,7 @@ public class TestCaseProcessorTest {
 
         resultList.add("test;bla;bla;test;;");
 
-        selectAction.setResult(resultList);
+        selectAction.setResults(resultList);
 
         return selectAction;
     }

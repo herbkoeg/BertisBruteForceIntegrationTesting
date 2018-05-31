@@ -6,9 +6,9 @@
 package de.hk.bfit;
 
 import de.hk.bfit.db.PostgresDBConnector;
-import de.hk.bfit.io.FileAdapter;
+import de.hk.bfit.io.TestCaseHandler;
 import de.hk.bfit.process.IBfiTest;
-import de.hk.bfit.process.TestCase;
+import de.hk.bfit.model.TestCase;
 import de.hk.bfit.process.TestCaseProcessor;
 
 import java.sql.Connection;
@@ -43,7 +43,7 @@ public class HelloWorld implements IBfiTest {
 
             testCaseProcessor.generateExampleTestCase(filename, sqlList);
 
-            TestCase testCase = FileAdapter.loadTestCase(filename);
+            TestCase testCase = TestCaseHandler.loadTestCase(filename);
 
             testCaseProcessor.assertAfter(testCase, variables);
 

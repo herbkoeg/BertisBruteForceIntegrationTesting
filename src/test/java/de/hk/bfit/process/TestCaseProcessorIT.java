@@ -1,16 +1,13 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.action.ResetAction;
-import de.hk.bfit.action.InitAction;
+import de.hk.bfit.model.ResetAction;
+import de.hk.bfit.model.InitAction;
 import de.hk.bfit.db.PostgresDBConnector;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+import de.hk.bfit.model.TestCase;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -42,6 +39,8 @@ public class TestCaseProcessorIT implements IBfiTest{
         List<String> sqlList = new ArrayList<String>();
         cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase", sqlList);
         cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase2",sqlList);
+        cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase3",sqlList);
+
         //cut.generateExampleTestCase("myTestcase", sqlList, false, false);
     }
 
@@ -84,13 +83,15 @@ public class TestCaseProcessorIT implements IBfiTest{
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         String filename = "BfitFirstTest.xml";
         List<String> sqlListReferenceAction = new ArrayList<String>();
-        boolean add = sqlListReferenceAction.add("select id from Person");
-        sqlListReferenceAction.add("select name from Person");
-                
+
+        sqlListReferenceAction.addAll(Arrays.asList("select id from Person","select name from Person"));
+
         testCaseProcessor.generateExampleTestCase(filename, sqlListReferenceAction);
         
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
+        testCaseProcessor.getDifferencesAfter(testCase);
         testCaseProcessor.assertAfter(testCase);
+
     }
     
     @Test

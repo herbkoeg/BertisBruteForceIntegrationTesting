@@ -1,5 +1,7 @@
 package de.hk.bfit.process;
 
+import de.hk.bfit.model.TestCase;
+
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.sql.SQLException;

@@ -1,9 +1,5 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.action.ReferenceAction;
-
-import java.util.List;
-
 public class AssertResult {
 
     private String sql;

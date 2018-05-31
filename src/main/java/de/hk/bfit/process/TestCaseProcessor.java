@@ -1,9 +1,7 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.action.ReferenceAction;
-import de.hk.bfit.action.SelectAction;
-import de.hk.bfit.io.FileAdapter;
-import de.hk.bfit.io.GenericXmlHandler;
+import de.hk.bfit.model.ReferenceAction;
+import de.hk.bfit.model.SelectAction;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -19,6 +17,8 @@ import java.util.Map;
 import java.util.Properties;
 import javax.xml.bind.JAXBException;
 
+import de.hk.bfit.io.TestCaseHandler;
+import de.hk.bfit.model.TestCase;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -40,20 +40,13 @@ public class TestCaseProcessor implements ITestCaseProcessor {
     }
 
     public TestCase loadTestCase(String filename) throws IOException, JAXBException {
-        return FileAdapter.loadTestCase(filename);
+        return TestCaseHandler.loadTestCase(filename);
     }
 
     @Override
     public void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
         TestCase newTestCase = generateTestCase(sqlListReferenceAction);
-        GenericXmlHandler genericXmlHandler = new GenericXmlHandler();
-        String content = genericXmlHandler.convertObjectToXML(newTestCase);
-        FileAdapter.writeFile(filename, content);
-    }
-
-    private void someMethod() {
-
-//        XmlMa
+        TestCaseHandler.writeTestcase(newTestCase,filename);
     }
 
     TestCase generateTestCase(List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
@@ -269,7 +262,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         List<AssertResult> assertResults = new ArrayList();
 
             logger.info("-- determine differences: " + selectAction.getDescription());
-            List<String> resultList = selectAction.getResult();
+            List<String> resultList = selectAction.getResults();
 
             if (resultList == null) {
                 assertResults.add(new AssertResult(selectAction.getSelect(),actualResults.size(),0,"No Result expected"));
@@ -306,12 +299,12 @@ public class TestCaseProcessor implements ITestCaseProcessor {
 
         List<AssertResult> assertResults = new ArrayList();
 
-        if (referenceAction == null || referenceAction.getSelectAction() == null) {
+        if (referenceAction == null || referenceAction.getSelectActions() == null) {
             return null;
         }
 
-        for (SelectAction selectAction : referenceAction.getSelectAction()){
-            List<String> refResults = selectAction.getResult();
+        for (SelectAction selectAction : referenceAction.getSelectActions()){
+            List<String> refResults = selectAction.getResults();
             logNoOrderWarning(selectAction);
 
             List<String> actualResults = processReferenceAction(selectAction.getSelect(), variables);
@@ -330,14 +323,14 @@ public class TestCaseProcessor implements ITestCaseProcessor {
     }
 
     protected void assertAction(ReferenceAction referenceAction, Map<String, String> variables) throws SQLException {
-        if (referenceAction == null || referenceAction.getSelectAction() == null) {
+        if (referenceAction == null || referenceAction.getSelectActions() == null) {
             return;
         }
 
-        for (SelectAction selectAction:referenceAction.getSelectAction()) {
+        for (SelectAction selectAction:referenceAction.getSelectActions()) {
             logger.info("Asserting: " + selectAction.getDescription());
 
-            List<String> refResults = selectAction.getResult();
+            List<String> refResults = selectAction.getResults();
             logNoOrderWarning(selectAction);
 
             List<String> actualResults = processReferenceAction(selectAction.getSelect(), variables);

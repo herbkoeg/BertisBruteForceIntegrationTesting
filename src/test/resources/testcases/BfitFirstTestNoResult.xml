@@ -3,9 +3,11 @@
     <description>This testcase demonstrate how you can test, that an action deliveres no result</description>
         <referenceActionAfter>
         <description>This is a new referenceAction ...</description>
-        <selectAction>
-            <description>No result !</description>
-            <select>select id from Person where id = 11111</select>
-        </selectAction>
-    </referenceActionAfter>
+            <selectActions>
+                <selectAction>
+                    <description></description>
+                    <select>select id from Person where id = 11111</select>
+                </selectAction>
+            </selectActions>
+        </referenceActionAfter>
 </testCase>
