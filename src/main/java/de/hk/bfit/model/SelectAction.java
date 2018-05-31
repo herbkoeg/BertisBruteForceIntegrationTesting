@@ -18,6 +18,10 @@ public class SelectAction {
     @JacksonXmlProperty(localName = "result")
     protected List<String> results;
 
+    @JacksonXmlElementWrapper(localName = "ignoredColumns")
+    @JacksonXmlProperty(localName = "column")
+    protected List<String> ignoredColumns;
+
     public SelectAction() {
         this.select = "define your select here";
         List<String> result = new ArrayList<String>();

@@ -24,25 +24,11 @@ public class DefinedAction extends ExecutionAction {
 
     public String name;
 
-    public String getDescription() {
-        return description;
+    public String getName() {
+        return name;
     }
 
-    public List<String> getSqlCommands() {
-        return sqlCommands;
+    public void setName(String name) {
+        this.name = name;
     }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setSqlCommands(List<String> initCommands) {
-        this.sqlCommands = initCommands;
-    }
-
-    public void setRollBackOnError(boolean rollBackOnError) {
-        this.rollBackOnError = rollBackOnError;
-    }
-
-
 }
