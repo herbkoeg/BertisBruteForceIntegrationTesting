@@ -21,7 +21,7 @@ public class TestCaseProcessorTest {
     }
 
     @Test
-    public void testGetDifferencesNoDifferences() throws ClassNotFoundException, SQLException, JAXBException, IOException {
+    public void testGetDifferencesNoDifferences() throws SQLException {
         SelectAction selectAction = getSelectAction();
         List<String> actualResults = new ArrayList<>();
         actualResults.add("test;bla;bla;test;;");
@@ -30,7 +30,7 @@ public class TestCaseProcessorTest {
     }
 
     @Test
-    public void testGetDifferencesWithOneDifference() throws ClassNotFoundException, SQLException, JAXBException, IOException {
+    public void testGetDifferencesWithOneDifference() throws SQLException {
         SelectAction selectAction = getSelectAction();
         List<String> actualResults = new ArrayList<>();
         actualResults.add("test;bla;bla;test;blub;");

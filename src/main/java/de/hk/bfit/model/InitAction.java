@@ -15,24 +15,4 @@ public class InitAction extends ExecutionAction {
         this.rollBackOnError = false;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<String> getSqlCommands() {
-        return sqlCommands;
-    }
-
-    public void setSqlCommands(List<String> initCommands) {
-        this.sqlCommands = initCommands;
-    }
-
-    public void setRollBackOnError(boolean rollBackOnError) {
-        this.rollBackOnError = rollBackOnError;
-    }
-
 }

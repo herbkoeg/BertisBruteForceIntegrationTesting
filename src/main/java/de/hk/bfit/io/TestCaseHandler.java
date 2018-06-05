@@ -21,7 +21,6 @@ public class TestCaseHandler {
      public static TestCase loadTestCase(String filename) throws IOException {
         File file = new File(filename);
         XmlMapper xmlMapper = new XmlMapper();
-
         String xml = inputStreamToString(new FileInputStream(file));
         return xmlMapper.readValue(xml,TestCase.class);
     }
@@ -29,8 +28,6 @@ public class TestCaseHandler {
     public static void writeTestcase(TestCase testCase, String filename)
             throws IOException {
         XmlMapper xmlMapper = new XmlMapper();
-
-
         xmlMapper.writeValue(new File(filename),testCase);
     }
 
