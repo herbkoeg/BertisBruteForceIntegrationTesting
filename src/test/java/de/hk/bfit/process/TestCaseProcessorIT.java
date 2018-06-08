@@ -45,11 +45,11 @@ public class TestCaseProcessorIT implements IBfiTest{
     }
 
     @Test
-    public void testAssertBefore() throws Exception {
+    public void testAssertBefore() {
     }
 
     @Test
-    public void testAssertAfter() throws Exception {
+    public void testAssertAfter() {
     }
 
     @Test
@@ -155,7 +155,7 @@ public class TestCaseProcessorIT implements IBfiTest{
     }
     
     @Test
-    public void execSql() throws ClassNotFoundException, SQLException {
+    public void execSql() throws SQLException {
         cut.execSql("select * from personxx");
 //        ResultSet rs = cut.execSql("bla");
     }

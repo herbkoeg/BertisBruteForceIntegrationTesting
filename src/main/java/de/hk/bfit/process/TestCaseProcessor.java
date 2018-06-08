@@ -39,7 +39,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         this.connection.close();
     }
 
-    public TestCase loadTestCase(String filename) throws IOException, JAXBException {
+    public TestCase loadTestCase(String filename) throws IOException {
         return TestCaseHandler.loadTestCase(filename);
     }
 
@@ -167,6 +167,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         List<String> results = new ArrayList<>();
         ResultSetMetaData rsmd = rs.getMetaData();
         int columnCount = rsmd.getColumnCount();
+
         while (rs.next()) {
             StringBuilder sb = new StringBuilder();
             for (int i = 1; i <= columnCount; i++) {
@@ -213,7 +214,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
             sb.append("SQLState         : ").append(e.getSQLState()).append("\n");
             sb.append("ErrorCode        : ").append(e.getErrorCode()).append("\n");
 
-            sb.append("").append(connection.getClientInfo());
+            sb.append(connection.getClientInfo());
             logger.error(sb.toString());
             if (rollbackOnError) {
                 connection.rollback();
@@ -228,7 +229,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         return clientInfo;
     }
 
-    TestCase generateTestCase(List<String> sqlListReferenceAction, boolean withInit, boolean withReset) throws SQLException, IllegalArgumentException, JAXBException, IOException {
+    TestCase generateTestCase(List<String> sqlListReferenceAction, boolean withInit, boolean withReset) throws SQLException, IllegalArgumentException {
         List<SelectAction> selectAction = new ArrayList<>();
 
         for (String sql : sqlListReferenceAction) {
@@ -270,7 +271,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
 
                 if(actualResults.size() != resultList.size()) {
                     assertResults.add(new AssertResult(selectAction.getSelect(), actualResults.size(), resultList.size(), "Result size differs"));
-                }
+                }fffff
                 int length = resultList.size();
 
                 for (int i = 0; i < length; i++) {
