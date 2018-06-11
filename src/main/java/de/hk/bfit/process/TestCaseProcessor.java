@@ -201,7 +201,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
                 sqlWithSetVars = setVariables(sqlCommand, variables);
                 if (isExecutableCommand(sqlCommand)) {
                     logger.info("... executing " + sqlCommand);
-                    statement.execute(sqlCommand);
+                    statement.execute(sqlWithSetVars);
                 } else {
                     logger.info("... ignoring " + sqlCommand);
                 }
@@ -271,7 +271,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
 
                 if(actualResults.size() != resultList.size()) {
                     assertResults.add(new AssertResult(selectAction.getSelect(), actualResults.size(), resultList.size(), "Result size differs"));
-                }fffff
+                }
                 int length = resultList.size();
 
                 for (int i = 0; i < length; i++) {
