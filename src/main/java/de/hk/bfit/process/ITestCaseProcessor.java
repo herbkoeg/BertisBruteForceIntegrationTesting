@@ -11,7 +11,6 @@ import java.util.Properties;
 
 public interface ITestCaseProcessor {
 
-    void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException ;
     void assertBefore(TestCase testCase) throws  SQLException;
     void assertBefore(TestCase testCase, Map<String, String> variables) throws SQLException ;
     void assertAfter(TestCase testCase) throws SQLException;

@@ -1,27 +1,18 @@
 package de.hk.bfit.process;
 
+import de.hk.bfit.io.TestCaseHandler;
+import de.hk.bfit.model.DefinedSqlCommand;
 import de.hk.bfit.model.ReferenceAction;
 import de.hk.bfit.model.SelectAction;
-
-import java.io.IOException;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-import javax.xml.bind.JAXBException;
-
-import de.hk.bfit.io.TestCaseHandler;
 import de.hk.bfit.model.TestCase;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+
+import javax.xml.bind.JAXBException;
+import java.io.IOException;
+import java.sql.*;
+import java.util.*;
 
 public class TestCaseProcessor implements ITestCaseProcessor {
 
@@ -43,52 +34,59 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         return TestCaseHandler.loadTestCase(filename);
     }
 
-    @Override
     public void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
         TestCase newTestCase = generateTestCase(sqlListReferenceAction);
-        TestCaseHandler.writeTestcase(newTestCase,filename);
+        TestCaseHandler.writeTestcase(newTestCase, filename);
     }
 
     TestCase generateTestCase(List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, JAXBException, IOException {
         return generateTestCase(sqlListReferenceAction, false, false);
     }
 
+    @Override
     public void assertBefore(TestCase testCase) throws SQLException {
         assertBefore(testCase, null);
     }
 
+    @Override
     public void assertBefore(TestCase testCase, Map<String, String> variables) throws SQLException {
         logger.info("asserting before ...");
         assertAction(testCase.getReferenceActionBefore(), variables);
     }
 
+    @Override
     public void assertAfter(TestCase testCase) throws SQLException {
         assertAfter(testCase, null);
     }
 
-    public void assertAfter(TestCase testCase, Map<String, String> variables) throws  SQLException {
+    @Override
+    public void assertAfter(TestCase testCase, Map<String, String> variables) throws SQLException {
         logger.info("asserting after ...");
         assertAction(testCase.getReferenceActionAfter(), variables);
     }
 
+    @Override
     public List<AssertResult> getDifferencesAfter(TestCase testcase) throws SQLException {
         logger.info("getDiffencesAfter ...");
-        return getDifferences(testcase.getReferenceActionAfter(),null);
+        return getDifferences(testcase.getReferenceActionAfter(), null);
     }
 
+    @Override
     public List<AssertResult> getDifferencesAfter(TestCase testcase, Map<String, String> variables) throws SQLException {
         logger.info("getDiffencesAfter ...");
-        return getDifferences(testcase.getReferenceActionAfter(),variables);
+        return getDifferences(testcase.getReferenceActionAfter(), variables);
     }
 
+    @Override
     public List<AssertResult> getDifferencesBefore(TestCase testcase) throws SQLException {
         logger.info("getDiffencesBefore ...");
-        return getDifferences(testcase.getReferenceActionBefore(),null);
+        return getDifferences(testcase.getReferenceActionBefore(), null);
     }
 
-    public List<AssertResult> getDifferencesBefore(TestCase testcase, Map<String, String> variables) throws  SQLException {
+    @Override
+    public List<AssertResult> getDifferencesBefore(TestCase testcase, Map<String, String> variables) throws SQLException {
         logger.info("getDiffencesBefore ...");
-        return getDifferences(testcase.getReferenceActionBefore(),variables);
+        return getDifferences(testcase.getReferenceActionBefore(), variables);
     }
 
     /**
@@ -98,6 +96,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
      * @param variables
      * @throws SQLException
      */
+    @Override
     public void processResetAction(TestCase testCase, Map<String, String> variables) throws SQLException {
         processCommandList(testCase.getResetAction().getSqlCommands(), variables, testCase.getResetAction().isRollBackOnError());
     }
@@ -109,11 +108,12 @@ public class TestCaseProcessor implements ITestCaseProcessor {
      * @param variables
      * @throws SQLException
      */
+    @Override
     public void processInitAction(TestCase testCase, Map<String, String> variables) throws SQLException {
         processCommandList(testCase.getInitAction().getSqlCommands(), variables, testCase.getInitAction().isRollBackOnError());
     }
 
-    private List<String> processReferenceAction(String sql, Map<String, String> variables) throws SQLException {
+    protected List<String> processCommand(String sql, Map<String, String> variables) throws SQLException {
         sql = setVariables(sql, variables);
         ResultSet rs = createResultset(sql);
         return createResultList(rs);
@@ -126,6 +126,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
      * @param sql
      * @throws SQLException
      */
+    @Override
     public void execSql(String sql) throws SQLException {
         execSql(sql, new HashMap<String, String>(), true);
     }
@@ -139,6 +140,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
      * @param autoCommit
      * @throws SQLException
      */
+    @Override
     public void execSql(String sql, Map<String, String> variables, boolean autoCommit) throws SQLException {
         List<String> sqlList = new ArrayList<>();
         sqlList.add(setVariables(sql, variables));
@@ -186,24 +188,42 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         return connection.createStatement().executeQuery(sql);
     }
 
-    private void processCommandList(List<String> sqlCommands, Map<String, String> variables, boolean rollbackOnError) throws SQLException {
+    protected void processCommandList(List<String> sqlCommands, Map<String, String> variables, boolean rollbackOnError) throws SQLException {
 
-        if (sqlCommands == null || sqlCommands.isEmpty()) {
+        List<DefinedSqlCommand> definedSqlCommands = new ArrayList<>();
+        for (String sqlComand : sqlCommands) {
+            definedSqlCommands.add(new DefinedSqlCommand(sqlComand));
+        }
+        processDefinedSqlCommandList(definedSqlCommands, variables, rollbackOnError);
+    }
+
+
+    protected void processDefinedSqlCommandList(List<DefinedSqlCommand> definedSqlCommands, Map<String, String> variables, Boolean rollbackOnError) throws SQLException {
+
+        if (definedSqlCommands == null || definedSqlCommands.isEmpty()) {
             return;
         }
 
-        connection.setAutoCommit(!rollbackOnError);
+        connection.setAutoCommit(rollbackOnError == null ? false : !rollbackOnError);
         Statement statement = connection.createStatement();
-        Iterator<String> it = sqlCommands.iterator();
+        Iterator<DefinedSqlCommand> it = definedSqlCommands.iterator();
         String sqlWithSetVars = "";
         try {
-            for (String sqlCommand:sqlCommands) {
-                sqlWithSetVars = setVariables(sqlCommand, variables);
-                if (isExecutableCommand(sqlCommand)) {
-                    logger.info("... executing " + sqlCommand);
-                    statement.execute(sqlWithSetVars);
+            for (DefinedSqlCommand definedSqlCommand : definedSqlCommands) {
+                sqlWithSetVars = setVariables(definedSqlCommand.getSqlCommand(), variables);
+                if (isExecutableCommand(definedSqlCommand.getSqlCommand())) {
+                    logger.info("... executing " + definedSqlCommand);
+                    if (!definedSqlCommand.isIgnoreSqlException()) {
+                        statement.execute(sqlWithSetVars);
+                    } else {
+                        try {
+                            statement.execute(sqlWithSetVars);
+                        } catch (Exception sqlException) {
+                            logger.info("ignoring SQLException: " + sqlException.getMessage() + " due to isIgnoreSqlException");
+                        }
+                    }
                 } else {
-                    logger.info("... ignoring " + sqlCommand);
+                    logger.info("... ignoring not updating Command: " + definedSqlCommand);
                 }
             }
             connection.commit();
@@ -216,7 +236,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
 
             sb.append(connection.getClientInfo());
             logger.error(sb.toString());
-            if (rollbackOnError) {
+            if (rollbackOnError == null ? false : rollbackOnError) {
                 connection.rollback();
                 logger.error("... rollback");
             }
@@ -224,17 +244,18 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         }
     }
 
+    @Override
     public Properties getClientInfo() throws SQLException {
-        final Properties clientInfo = connection.getClientInfo();
+        Properties clientInfo = connection.getClientInfo();
         return clientInfo;
     }
 
-    TestCase generateTestCase(List<String> sqlListReferenceAction, boolean withInit, boolean withReset) throws SQLException, IllegalArgumentException {
+    TestCase generateTestCase(List<String> sqls, boolean withInit, boolean withReset) throws SQLException, IllegalArgumentException {
         List<SelectAction> selectAction = new ArrayList<>();
 
-        for (String sql : sqlListReferenceAction) {
+        for (String sql : sqls) {
             logger.error("processing: " + sql);
-            List<String> resultList = processReferenceAction(sql, null);
+            List<String> resultList = processCommand(sql, null);
             selectAction.add(new SelectAction("describe me!", sql, resultList));
         }
         TestCase testCase = new TestCase("This is a new testcase, generated by TestCaseProcessor.generate ...", new ReferenceAction("This is a new referenceAction ...", selectAction));
@@ -242,8 +263,9 @@ public class TestCaseProcessor implements ITestCaseProcessor {
             testCase.getInitAction().getSqlCommands().add("insert ...");
             testCase.getInitAction().getSqlCommands().add("update ...");
             testCase.getInitAction().getSqlCommands().add("delete ...");
-        } else
+        } else {
             testCase.setInitAction(null);
+        }
         if (withReset) {
             testCase.getResetAction().getSqlCommands().add("insert ...");
             testCase.getResetAction().getSqlCommands().add("update ...");
@@ -254,34 +276,35 @@ public class TestCaseProcessor implements ITestCaseProcessor {
 
     /**
      * Determines the differences between reference and actual results for a selectAction
+     *
      * @param selectAction
      * @param variables
      * @param actualResults
      * @return
      */
-     List<AssertResult> determineDifferences(SelectAction selectAction, Map<String, String> variables, List<String> actualResults) {
+    List<AssertResult> determineDifferences(SelectAction selectAction, Map<String, String> variables, List<String> actualResults) {
         List<AssertResult> assertResults = new ArrayList();
 
-            logger.info("-- determine differences: " + selectAction.getDescription());
-            List<String> resultList = selectAction.getResults();
+        logger.info("-- determine differences: " + selectAction.getDescription());
+        List<String> resultList = selectAction.getResults();
 
-            if (resultList == null) {
-                assertResults.add(new AssertResult(selectAction.getSelect(),actualResults.size(),0,"No Result expected"));
-            } else {
+        if (resultList == null) {
+            assertResults.add(new AssertResult(selectAction.getSelect(), actualResults.size(), 0, "No Result expected"));
+        } else {
 
-                if(actualResults.size() != resultList.size()) {
-                    assertResults.add(new AssertResult(selectAction.getSelect(), actualResults.size(), resultList.size(), "Result size differs"));
+            if (actualResults.size() != resultList.size()) {
+                assertResults.add(new AssertResult(selectAction.getSelect(), actualResults.size(), resultList.size(), "Result size differs"));
+            }
+            int length = resultList.size();
+
+            for (int i = 0; i < length; i++) {
+                String reference = setVariables(resultList.get(i), variables);
+                String actual = actualResults.get(i);
+                String diff = StringUtils.difference(reference, actual);
+                if (!StringUtils.isEmpty(diff)) {
+                    assertResults.add(new AssertResult(selectAction.getSelect(), actual, reference, diff));
                 }
-                int length = resultList.size();
-
-                for (int i = 0; i < length; i++) {
-                    String reference = setVariables(resultList.get(i), variables);
-                    String actual = actualResults.get(i);
-                    String diff = StringUtils.difference(reference, actual);
-                    if(!StringUtils.isEmpty(diff)) {
-                        assertResults.add(new AssertResult(selectAction.getSelect(), actual, reference, diff));
-                    }
-                }
+            }
         }
         logger.info("Differences found: " + assertResults.size());
 
@@ -290,6 +313,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
 
     /**
      * Determines all differences for all selectActions of a referenceAction
+     *
      * @param referenceAction
      * @param variables
      * @return
@@ -304,13 +328,13 @@ public class TestCaseProcessor implements ITestCaseProcessor {
             return null;
         }
 
-        for (SelectAction selectAction : referenceAction.getSelectActions()){
+        for (SelectAction selectAction : referenceAction.getSelectActions()) {
             List<String> refResults = selectAction.getResults();
             logNoOrderWarning(selectAction);
 
-            List<String> actualResults = processReferenceAction(selectAction.getSelect(), variables);
+            List<String> actualResults = processCommand(selectAction.getSelect(), variables);
 
-            assertResults.addAll(determineDifferences(selectAction,variables,actualResults));
+            assertResults.addAll(determineDifferences(selectAction, variables, actualResults));
         }
         logger.info("Differences found: " + assertResults.size());
 
@@ -328,13 +352,13 @@ public class TestCaseProcessor implements ITestCaseProcessor {
             return;
         }
 
-        for (SelectAction selectAction:referenceAction.getSelectActions()) {
+        for (SelectAction selectAction : referenceAction.getSelectActions()) {
             logger.info("Asserting: " + selectAction.getDescription());
 
             List<String> refResults = selectAction.getResults();
             logNoOrderWarning(selectAction);
 
-            List<String> actualResults = processReferenceAction(selectAction.getSelect(), variables);
+            List<String> actualResults = processCommand(selectAction.getSelect(), variables);
 
             logger.info(actualResults.size() + " results ");
 

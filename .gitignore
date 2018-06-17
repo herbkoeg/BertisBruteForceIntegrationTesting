@@ -1,4 +1,5 @@
 /target/
 /.idea/
+/*ignored_by_git.xml/
 /src/test/resources/generated/
 /BruteForceIntegrationTesting.iml

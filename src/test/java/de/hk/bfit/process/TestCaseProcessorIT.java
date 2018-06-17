@@ -1,13 +1,11 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.model.ResetAction;
-import de.hk.bfit.model.InitAction;
+import de.hk.bfit.model.*;
 import de.hk.bfit.db.PostgresDBConnector;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-import de.hk.bfit.model.TestCase;
 import junit.framework.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
