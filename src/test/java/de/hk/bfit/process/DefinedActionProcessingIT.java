@@ -14,20 +14,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DefinedTestCaseProcessorIT {
+public class DefinedActionProcessingIT {
 
     private static PostgresDBConnector dBConnector;
     private static Connection dbConnection;
 
-    DefinedTestCaseProcessor cut;
+    TestCaseProcessor cut;
 
     @Before
     public void init() throws Exception {
 
-        dBConnector = new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+        dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
         dbConnection = dBConnector.getDBConnection();
 
-        cut = new DefinedTestCaseProcessor(dBConnector.getDBConnection());
+        cut = new TestCaseProcessor(dBConnector.getDBConnection());
     }
 
     @Test

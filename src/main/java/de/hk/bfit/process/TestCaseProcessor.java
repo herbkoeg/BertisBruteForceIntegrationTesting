@@ -1,10 +1,7 @@
 package de.hk.bfit.process;
 
 import de.hk.bfit.io.TestCaseHandler;
-import de.hk.bfit.model.DefinedSqlCommand;
-import de.hk.bfit.model.ReferenceAction;
-import de.hk.bfit.model.SelectAction;
-import de.hk.bfit.model.TestCase;
+import de.hk.bfit.model.*;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
@@ -383,4 +380,26 @@ public class TestCaseProcessor implements ITestCaseProcessor {
                 || sql.toLowerCase().startsWith("delete");
     }
 
+    public TestCase generateExampleDefinedActionTestCase(String filename, List<DefinedAction> definedActions) throws SQLException, IllegalArgumentException, JAXBException, IOException {
+        TestCase newTestCase = new TestCase();
+        newTestCase.setDescription(filename);
+        newTestCase.setDefinedActions(definedActions);
+
+        TestCaseHandler.writeTestcase(newTestCase, filename);
+        return newTestCase;
+    }
+
+    public void processDefinedAction(TestCase testCase, String name) throws SQLException {
+        processDefinedAction(testCase, name, null);
+    }
+
+    public void processDefinedAction(TestCase testCase, String name, Map<String, String> variables) throws SQLException {
+
+        for (DefinedAction definedAction : testCase.getDefinedActions()) {
+            if (definedAction.getName().equals(name)) {
+                processDefinedSqlCommandList(definedAction.getDefinedSqlCommands(), variables, definedAction.isRollBackOnError());
+            }
+        }
+
+    }
 }
