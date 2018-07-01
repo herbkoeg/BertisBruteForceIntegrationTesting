@@ -2,7 +2,7 @@ package de.hk.bfit.process;
 
 import de.hk.bfit.db.PostgresDBConnector;
 import de.hk.bfit.model.DefinedAction;
-import de.hk.bfit.model.DefinedSqlCommand;
+import de.hk.bfit.model.IgnorableSqlCommand;
 import de.hk.bfit.model.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class DefinedActionProcessingIT {
 
         DefinedAction definedAction = new DefinedAction("EXAMPLE");
 
-        definedAction.getDefinedSqlCommands().add(new DefinedSqlCommand(true, "delete from person where id=11111"));
+        definedAction.getDefinedSqlCommands().add(new IgnorableSqlCommand(true, "delete from person where id=11111"));
 
         definedActions.add(definedAction);
 
@@ -48,13 +48,21 @@ public class DefinedActionProcessingIT {
     }
 
     @Test
-    public void testDefinedActions_when_ignoring_PSQException() throws Exception {
+    public void testLoadTestcaseWithDefinedActions() throws Exception {
+        String filename = "src/test/resources/testcases/BfiFirstDefinedActionTestcase.xml";
+        TestCase definedActionTestcase = cut.loadTestCase(filename);
+
+        cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
+    }
+
+    @Test
+    public void testDefinedActions_when_ignoring_SQLException() throws Exception {
         List<DefinedAction> definedActions = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
 
         DefinedAction definedAction = new DefinedAction("EXAMPLE");
 
-        definedAction.getDefinedSqlCommands().add(new DefinedSqlCommand(true, "select * from bla"));
+        definedAction.getDefinedSqlCommands().add(new IgnorableSqlCommand(true, "select * from bla"));
 
         definedActions.add(definedAction);
 
@@ -65,13 +73,13 @@ public class DefinedActionProcessingIT {
     }
 
     @Test(expected = PSQLException.class)
-    public void testDefinedActions_when_NOT_ignoring_PSQException() throws Exception {
+    public void testDefinedActions_when_NOT_ignoring_SQLException() throws Exception {
         List<DefinedAction> definedActions = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
 
         DefinedAction definedAction = new DefinedAction("EXAMPLE");
 
-        definedAction.getDefinedSqlCommands().add(new DefinedSqlCommand(false, "update * from bla"));
+        definedAction.getDefinedSqlCommands().add(new IgnorableSqlCommand(false, "update * from bla"));
 
         definedActions.add(definedAction);
 

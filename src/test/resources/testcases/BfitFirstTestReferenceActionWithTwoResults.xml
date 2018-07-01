@@ -6,16 +6,16 @@
     </referenceActionBefore>
     <referenceActionAfter>
         <description>This is a new referenceAction ...</description>
-        <selectActions>
-            <selectAction>
+        <selectCmds>
+            <selectCmd>
                 <description>Hi, I am the first selectAction!</description>
                 <results>
                     <result>1;</result>
                     <result>2;</result>
                 </results>
                 <select>select id from Person</select>
-            </selectAction>
-        </selectActions>
+            </selectCmd>
+        </selectCmds>
     </referenceActionAfter>
     <resetAction>
         <description>define your reset commands here</description>

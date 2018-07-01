@@ -11,9 +11,9 @@ import java.util.List;
 public class DefinedAction extends ExecutionAction {
 
     public String name;
-    @JacksonXmlElementWrapper(localName = "definedSqlCommands")
-    @JacksonXmlProperty(localName = "definedSqlCommand")
-    protected List<DefinedSqlCommand> definedSqlCommands;
+    @JacksonXmlElementWrapper(localName = "ignorableSqlCommands")
+    @JacksonXmlProperty(localName = "ignorableSqlCommand")
+    protected List<IgnorableSqlCommand> ignorableSqlCommands;
 
 
     public DefinedAction() {
@@ -34,14 +34,14 @@ public class DefinedAction extends ExecutionAction {
         this.name = name;
     }
 
-    public List<DefinedSqlCommand> getDefinedSqlCommands() {
-        if (definedSqlCommands == null) {
-            definedSqlCommands = new ArrayList<>();
+    public List<IgnorableSqlCommand> getIgnorableSqlCommands() {
+        if (ignorableSqlCommands == null) {
+            ignorableSqlCommands = new ArrayList<>();
         }
-        return definedSqlCommands;
+        return ignorableSqlCommands;
     }
 
-    public void setDefinedSqlCommands(List<DefinedSqlCommand> definedSqlCommands) {
-        this.definedSqlCommands = definedSqlCommands;
+    public void setIgnorableSqlCommands(List<IgnorableSqlCommand> definedSqlCommands) {
+        this.ignorableSqlCommands = definedSqlCommands;
     }
 }

@@ -7,35 +7,25 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ReferenceAction {
-    private String description;
+public class ReferenceAction extends BfiAction {
 
-    @JacksonXmlElementWrapper(localName = "selectActions")
-    @JacksonXmlProperty(localName = "selectAction")
-    private List<SelectAction> selectActions;
-    
+    @JacksonXmlElementWrapper(localName = "selectCmds")
+    @JacksonXmlProperty(localName = "selectCmd")
+    private List<SelectCmd> selectCmds;
+
     public ReferenceAction() {
     }
 
-    public ReferenceAction(String description, List<SelectAction> selectActions) {
+    public ReferenceAction(String description, List<SelectCmd> selectCmds) {
         this.description = description;
-        this.selectActions = selectActions;
+        this.selectCmds = selectCmds;
     }
 
-    public String getDescription() {
-        return description;
+    public List<SelectCmd> getSelectCmds() {
+        return selectCmds;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-
-    public List<SelectAction> getSelectActions() {
-        return selectActions;
-    }
-
-    public void setSelectActions(List<SelectAction> selectActions) {
-        this.selectActions = selectActions;
+    public void setSelectCmds(List<SelectCmd> selectCmds) {
+        this.selectCmds = selectCmds;
     }
 }

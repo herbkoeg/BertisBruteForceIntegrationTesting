@@ -1,13 +1,10 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.model.SelectAction;
+import de.hk.bfit.model.SelectCmd;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.xml.bind.JAXBException;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,38 +19,37 @@ public class TestCaseProcessorTest {
 
     @Test
     public void testGetDifferencesNoDifferences() {
-        SelectAction selectAction = getSelectAction();
+        SelectCmd selectCmd = getSelectCmd();
         List<String> actualResults = new ArrayList<>();
         actualResults.add("test;bla;bla;test;;");
-        System.out.println(cut.determineDifferences(selectAction,null,actualResults).toString());
-        Assert.assertEquals(0,cut.determineDifferences(selectAction,null,actualResults).size());
+        System.out.println(cut.determineDifferences(selectCmd, null, actualResults).toString());
+        Assert.assertEquals(0, cut.determineDifferences(selectCmd, null, actualResults).size());
     }
 
     @Test
     public void testGetDifferencesWithOneDifference() {
-        SelectAction selectAction = getSelectAction();
+        SelectCmd selectCmd = getSelectCmd();
         List<String> actualResults = new ArrayList<>();
         actualResults.add("test;bla;bla;test;blub;");
-        System.out.println(cut.determineDifferences(selectAction,null,actualResults).toString());
-        Assert.assertEquals(1,cut.determineDifferences(selectAction,null,actualResults).size());
+        System.out.println(cut.determineDifferences(selectCmd, null, actualResults).toString());
+        Assert.assertEquals(1, cut.determineDifferences(selectCmd, null, actualResults).size());
     }
 
-    private SelectAction getSelectAction() {
-        SelectAction selectAction = new SelectAction();
+    private SelectCmd getSelectCmd() {
+        SelectCmd selectCmd = new SelectCmd();
 
-        selectAction.setDescription("ein test");
+        selectCmd.setDescription("ein test");
 
-        selectAction.setSelect("irgendein select");
+        selectCmd.setSelect("irgendein select");
 
         List<String> resultList = new ArrayList<>();
 
         resultList.add("test;bla;bla;test;;");
 
-        selectAction.setResults(resultList);
+        selectCmd.setResults(resultList);
 
-        return selectAction;
+        return selectCmd;
     }
-
 
 
 }

@@ -1,0 +1,14 @@
+<TestCase>
+    <description>src/test/resources/generated/definedActionTestcase.xml</description>
+    <definedActions>
+        <definedActions>
+            <name>EXAMPLE</name>
+            <ignorableSqlCommands>
+                <ignorableSqlCommand>
+                    <sqlCommand>select * from bla</sqlCommand>
+                    <ignoreSqlException>true</ignoreSqlException>
+                </ignorableSqlCommand>
+            </ignorableSqlCommands>
+        </definedActions>
+    </definedActions>
+</TestCase>

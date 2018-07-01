@@ -3,16 +3,16 @@ package de.hk.bfit.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DefinedSqlCommand {
+public class IgnorableSqlCommand {
     protected Boolean ignoreUnsetVariables;
     protected String sqlCommand;
 
-    public DefinedSqlCommand(String sqlCommand) {
+    public IgnorableSqlCommand(String sqlCommand) {
         this.sqlCommand = sqlCommand;
         this.setIgnoreUnsetVariables(false);
     }
 
-    public DefinedSqlCommand(Boolean isIgnoreSqlException, String sqlCommand) {
+    public IgnorableSqlCommand(Boolean isIgnoreSqlException, String sqlCommand) {
         this.ignoreUnsetVariables = isIgnoreSqlException;
         this.sqlCommand = sqlCommand;
     }

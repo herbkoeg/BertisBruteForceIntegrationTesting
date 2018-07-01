@@ -9,27 +9,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SelectAction {
+public class SelectCmd {
 
-    protected String description;
     protected String select;
-
+    protected String description;
     @JacksonXmlElementWrapper(localName = "results")
     @JacksonXmlProperty(localName = "result")
     protected List<String> results;
-
     @JacksonXmlElementWrapper(localName = "ignoredColumns")
     @JacksonXmlProperty(localName = "column")
     protected List<String> ignoredColumns;
 
-    public SelectAction() {
+    public SelectCmd() {
         this.select = "define your select here";
-        List<String> result = new ArrayList<String>();
+        List<String> result = new ArrayList<>();
         result.add("result one");
         result.add("result two");
     }
 
-    public SelectAction(String description, String select, List<String> results) {
+    public SelectCmd(String description, String select, List<String> results) {
         this.select = select;
         this.results = results;
         this.description = description;
@@ -41,6 +39,14 @@ public class SelectAction {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<String> getIgnoredColumns() {
+        return ignoredColumns;
+    }
+
+    public void setIgnoredColumns(List<String> ignoredColumns) {
+        this.ignoredColumns = ignoredColumns;
     }
 
     public String getSelect() {

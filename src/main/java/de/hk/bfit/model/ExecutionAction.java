@@ -8,21 +8,12 @@ import java.util.List;
 
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-abstract class ExecutionAction {
+abstract class ExecutionAction extends BfiAction {
 
-    protected String description;
     @JacksonXmlElementWrapper(localName = "sqlCommands")
     @JacksonXmlProperty(localName = "sqlCommand")
     protected List<String> sqlCommands;
     protected Boolean rollBackOnError;
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public List<String> getSqlCommands() {
         return sqlCommands;
