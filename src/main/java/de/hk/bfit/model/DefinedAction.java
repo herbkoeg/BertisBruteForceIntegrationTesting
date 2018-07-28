@@ -10,11 +10,10 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DefinedAction extends ExecutionAction {
 
-    public String name;
     @JacksonXmlElementWrapper(localName = "ignorableSqlCommands")
     @JacksonXmlProperty(localName = "ignorableSqlCommand")
-    protected List<IgnorableSqlCommand> ignorableSqlCommands;
-
+    private List<IgnorableSqlCommand> ignorableSqlCommands;
+    private String name;
 
     public DefinedAction() {
         this.description = "Describe your defined action here";
@@ -44,4 +43,5 @@ public class DefinedAction extends ExecutionAction {
     public void setIgnorableSqlCommands(List<IgnorableSqlCommand> definedSqlCommands) {
         this.ignorableSqlCommands = definedSqlCommands;
     }
+
 }

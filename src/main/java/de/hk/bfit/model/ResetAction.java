@@ -9,13 +9,13 @@ public class ResetAction extends ExecutionAction {
 
     public ResetAction() {
         this.description = "define your reset commands here";
-        this.sqlCommands = new ArrayList<String>();
+        this.sqlCommands = new ArrayList<>();
         this.rollBackOnError = true;
     }
-    
+
     public ResetAction(String description) {
         this.description = description;
-        this.sqlCommands = new ArrayList<String>();
+        this.sqlCommands = new ArrayList<>();
     }
 
 }

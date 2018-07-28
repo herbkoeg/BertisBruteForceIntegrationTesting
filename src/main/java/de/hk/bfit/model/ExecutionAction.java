@@ -30,4 +30,5 @@ abstract class ExecutionAction extends BfiAction {
     public void setRollBackOnError(Boolean rollBackOnError) {
         this.rollBackOnError = rollBackOnError;
     }
+
 }

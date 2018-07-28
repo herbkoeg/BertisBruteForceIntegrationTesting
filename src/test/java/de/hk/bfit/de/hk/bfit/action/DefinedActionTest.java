@@ -18,11 +18,11 @@ public class DefinedActionTest {
 
         String xml = xmlMapper.writeValueAsString(definedAction);
 
-        Assert.assertEquals("<DefinedAction><description>define your init commands here</description><rollBackOnError>false</rollBackOnError><name>herbert</name><sqlCommands/></DefinedAction>",xml);
+        Assert.assertEquals("<DefinedAction><description>define your init commands here</description><rollBackOnError>false</rollBackOnError><name>herbert</name><sqlCommands/></DefinedAction>", xml);
 
         System.out.println(xml);
 
-        DefinedAction definedAction2 =  xmlMapper.readValue(xml,DefinedAction.class);
-       // AsseassertNotNull(xml);
+        DefinedAction definedAction2 = xmlMapper.readValue(xml, DefinedAction.class);
+        // AsseassertNotNull(xml);
     }
 }
