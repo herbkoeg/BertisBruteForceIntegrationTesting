@@ -16,16 +16,13 @@ import java.util.Map;
 
 public class DefinedActionProcessingIT {
 
-    private static PostgresDBConnector dBConnector;
-    private static Connection dbConnection;
-
     TestCaseProcessor cut;
 
     @Before
     public void init() throws Exception {
 
-        dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
-        dbConnection = dBConnector.getDBConnection();
+        PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
+        Connection dbConnection = dBConnector.getDBConnection();
 
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
     }

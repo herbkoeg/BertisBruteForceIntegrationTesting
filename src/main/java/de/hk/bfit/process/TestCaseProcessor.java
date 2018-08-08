@@ -244,7 +244,8 @@ public class TestCaseProcessor implements ITestCaseProcessor {
 
     @Override
     public Properties getClientInfo() throws SQLException {
-        Properties clientInfo = connection.getClientInfo();
+        Properties clientInfo;
+        clientInfo = connection.getClientInfo();
         return clientInfo;
     }
 

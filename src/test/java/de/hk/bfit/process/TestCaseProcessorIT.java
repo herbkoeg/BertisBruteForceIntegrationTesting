@@ -4,7 +4,7 @@ import de.hk.bfit.db.PostgresDBConnector;
 import de.hk.bfit.model.InitAction;
 import de.hk.bfit.model.ResetAction;
 import de.hk.bfit.model.TestCase;
-import junit.framework.Assert;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,7 +15,6 @@ import java.util.*;
 
 public class TestCaseProcessorIT implements IBfiTest {
 
-    private static PostgresDBConnector dBConnector;
     private static Connection dbConnection;
     private static TestCaseProcessor cut;
 
@@ -24,7 +23,7 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
+        PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
         dbConnection = dBConnector.getDBConnection();
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
     }
