@@ -226,14 +226,13 @@ public class TestCaseProcessor implements ITestCaseProcessor {
             }
             connection.commit();
         } catch (SQLException e) {
-            StringBuilder sb = new StringBuilder();
-            sb.append("Command could not be executed: ").append(sqlWithSetVars).append("\n");
-            sb.append("Exception Message: ").append(e.getMessage()).append("\n");
-            sb.append("SQLState         : ").append(e.getSQLState()).append("\n");
-            sb.append("ErrorCode        : ").append(e.getErrorCode()).append("\n");
 
-            sb.append(connection.getClientInfo());
-            logger.error(sb.toString());
+            String sb = "Command could not be executed: " + sqlWithSetVars + "\n" +
+                    "Exception Message: " + e.getMessage() + "\n" +
+                    "SQLState         : " + e.getSQLState() + "\n" +
+                    "ErrorCode        : " + e.getErrorCode() + "\n" +
+                    connection.getClientInfo();
+            logger.error(sb);
             if (rollbackOnError == null ? false : rollbackOnError) {
                 connection.rollback();
                 logger.error("... rollback");

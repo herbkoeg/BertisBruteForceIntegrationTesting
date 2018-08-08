@@ -2,7 +2,6 @@ package de.hk.bfit.process;
 
 import de.hk.bfit.db.PostgresDBConnector;
 import de.hk.bfit.model.DefinedAction;
-import de.hk.bfit.model.IgnorableSqlCommand;
 import de.hk.bfit.model.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,8 +33,6 @@ public class DefinedActionProcessingIT {
 
         DefinedAction definedAction = new DefinedAction("EXAMPLE");
 
-        definedAction.getDefinedSqlCommands().add(new IgnorableSqlCommand(true, "delete from person where id=11111"));
-
         definedActions.add(definedAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
@@ -59,8 +56,6 @@ public class DefinedActionProcessingIT {
 
         DefinedAction definedAction = new DefinedAction("EXAMPLE");
 
-        definedAction.getDefinedSqlCommands().add(new IgnorableSqlCommand(true, "select * from bla"));
-
         definedActions.add(definedAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
@@ -75,8 +70,6 @@ public class DefinedActionProcessingIT {
         Map<String, String> variables = new HashMap<>();
 
         DefinedAction definedAction = new DefinedAction("EXAMPLE");
-
-        definedAction.getDefinedSqlCommands().add(new IgnorableSqlCommand(false, "update * from bla"));
 
         definedActions.add(definedAction);
 

@@ -15,7 +15,6 @@ import java.util.*;
 
 public class TestCaseProcessorIT implements IBfiTest {
 
-    private static Connection dbConnection;
     private static TestCaseProcessor cut;
 
     public TestCaseProcessorIT() {
@@ -24,7 +23,7 @@ public class TestCaseProcessorIT implements IBfiTest {
     @BeforeClass
     public static void setUpClass() throws Exception {
         PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
-        dbConnection = dBConnector.getDBConnection();
+        Connection dbConnection = dBConnector.getDBConnection();
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
     }
 
@@ -81,9 +80,8 @@ public class TestCaseProcessorIT implements IBfiTest {
         Map<String, String> variables = new HashMap<>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
         String filename = "BfitFirstTest.xml";
-        List<String> sqlListReferenceAction = new ArrayList<>();
 
-        sqlListReferenceAction.addAll(Arrays.asList("select id from Person", "select name from Person"));
+        List<String> sqlListReferenceAction = new ArrayList<>(Arrays.asList("select id from Person", "select name from Person"));
 
         testCaseProcessor.generateExampleTestCase(filename, sqlListReferenceAction);
 
