@@ -6,7 +6,6 @@ import de.hk.bfit.model.DefinedAction;
 import de.hk.bfit.model.TestCase;
 import de.hk.bfit.process.IBfiTest;
 import de.hk.bfit.process.TestCaseProcessor;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,10 +26,6 @@ public class TestCaseProcessorWorkflowDefinedActionIT implements IBfiTest {
         tcp = new TestCaseProcessor(dBConnector.getDBConnection());
     }
 
-
-    @Before
-    public void setUp() {
-    }
 
     @Test
     public void testGenerateExampleTestCase() throws Exception {

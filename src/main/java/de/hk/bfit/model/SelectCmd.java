@@ -11,14 +11,14 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SelectCmd {
 
-    protected String select;
-    protected String description;
+    private String select;
+    private String description;
     @JacksonXmlElementWrapper(localName = "results")
     @JacksonXmlProperty(localName = "result")
-    protected List<String> results;
+    private List<String> results;
     @JacksonXmlElementWrapper(localName = "ignoredColumns")
     @JacksonXmlProperty(localName = "column")
-    protected List<String> ignoredColumns;
+    private List<String> ignoredColumns;
 
     public SelectCmd() {
         this.select = "define your select here";

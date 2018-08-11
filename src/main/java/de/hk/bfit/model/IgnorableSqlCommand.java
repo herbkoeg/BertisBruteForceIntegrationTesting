@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class IgnorableSqlCommand {
-    protected Boolean ignoreUnsetVariables;
-    protected String sqlCommand;
+    private Boolean ignoreUnsetVariables;
+    private String sqlCommand;
 
     public IgnorableSqlCommand(String sqlCommand) {
         this.sqlCommand = sqlCommand;
@@ -21,7 +21,7 @@ public class IgnorableSqlCommand {
         return ignoreUnsetVariables;
     }
 
-    public void setIgnoreUnsetVariables(Boolean ignoreUnsetVariables) {
+    private void setIgnoreUnsetVariables(Boolean ignoreUnsetVariables) {
         this.ignoreUnsetVariables = ignoreUnsetVariables;
     }
 

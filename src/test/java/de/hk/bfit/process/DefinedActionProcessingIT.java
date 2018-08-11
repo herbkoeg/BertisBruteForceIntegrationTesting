@@ -15,7 +15,7 @@ import java.util.Map;
 
 public class DefinedActionProcessingIT {
 
-    TestCaseProcessor cut;
+    private TestCaseProcessor cut;
 
     @Before
     public void init() throws Exception {

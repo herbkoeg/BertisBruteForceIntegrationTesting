@@ -5,7 +5,6 @@ import de.hk.bfit.model.InitAction;
 import de.hk.bfit.model.ResetAction;
 import de.hk.bfit.model.TestCase;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -27,10 +26,6 @@ public class TestCaseProcessorIT implements IBfiTest {
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
     }
 
-    @Before
-    public void setUp() {
-    }
-
     @Test
     public void testGenerateExampleTestCase() throws Exception {
         Map<String, String> variables = new HashMap<>();
@@ -40,14 +35,6 @@ public class TestCaseProcessorIT implements IBfiTest {
         cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase3", sqlList);
 
         //cut.generateExampleTestCase("myTestcase", sqlList, false, false);
-    }
-
-    @Test
-    public void testAssertBefore() {
-    }
-
-    @Test
-    public void testAssertAfter() {
     }
 
     @Test
@@ -66,11 +53,6 @@ public class TestCaseProcessorIT implements IBfiTest {
         TestCase testCase = cut.generateTestCase(sqlList);
         testCase.setInitAction(new InitAction());
         cut.processInitAction(testCase, variables);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
     }
 
     @Test

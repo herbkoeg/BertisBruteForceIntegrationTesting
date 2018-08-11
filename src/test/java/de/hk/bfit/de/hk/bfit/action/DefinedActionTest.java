@@ -6,7 +6,7 @@ import org.junit.Assert;
 
 import java.io.IOException;
 
-public class DefinedActionTest {
+class DefinedActionTest {
 
     //http://www.baeldung.com/jackson-xml-serialization-and-deserialization
 

@@ -1,7 +1,7 @@
 package de.hk.bfit.model;
 
 public class BfiAction {
-    protected String description;
+    String description;
 
     public String getDescription() {
         return description;

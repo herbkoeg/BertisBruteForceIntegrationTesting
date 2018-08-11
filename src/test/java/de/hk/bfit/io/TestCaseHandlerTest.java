@@ -14,7 +14,7 @@ import java.util.*;
 public class TestCaseHandlerTest implements IBfiTest {
 
 
-    public static final String SOMETESTCASE_XML = "sometestcase.xml";
+    private static final String SOMETESTCASE_XML = "sometestcase.xml";
 
     @Test
     public void readWriteTestcase() throws IOException {

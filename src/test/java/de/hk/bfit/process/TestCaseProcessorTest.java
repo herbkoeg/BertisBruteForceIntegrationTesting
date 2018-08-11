@@ -10,7 +10,7 @@ import java.util.List;
 
 public class TestCaseProcessorTest {
 
-    TestCaseProcessor cut = null;
+    private TestCaseProcessor cut = null;
 
     @Before
     public void init() {

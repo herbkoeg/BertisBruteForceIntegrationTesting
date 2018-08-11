@@ -12,8 +12,8 @@ abstract class ExecutionAction extends BfiAction {
 
     @JacksonXmlElementWrapper(localName = "sqlCommands")
     @JacksonXmlProperty(localName = "sqlCommand")
-    protected List<String> sqlCommands;
-    protected Boolean rollBackOnError;
+    List<String> sqlCommands;
+    Boolean rollBackOnError;
 
     public List<String> getSqlCommands() {
         return sqlCommands;

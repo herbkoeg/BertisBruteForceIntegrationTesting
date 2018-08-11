@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-public interface ITestCaseProcessor {
+interface ITestCaseProcessor {
 
     void assertBefore(TestCase testCase) throws SQLException;
 

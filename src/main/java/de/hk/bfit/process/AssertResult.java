@@ -1,6 +1,6 @@
 package de.hk.bfit.process;
 
-public class AssertResult {
+class AssertResult {
 
     private String sql;
     private String actual;
