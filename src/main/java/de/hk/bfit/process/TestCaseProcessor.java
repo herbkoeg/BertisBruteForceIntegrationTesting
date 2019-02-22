@@ -347,7 +347,8 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         }
 
         for (SelectCmd selectCmd : referenceAction.getSelectCmds()) {
-            logger.info("Asserting: " + selectCmd.getDescription());
+            logger.info("Asserting: " + selectCmd.getDescription()==null?"noDescription set":selectCmd.getDescription());
+            logger.info("SelectCmd: " + selectCmd.getSelect());
 
             List<String> refResults = selectCmd.getResults();
             logNoOrderWarning(selectCmd);
