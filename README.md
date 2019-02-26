@@ -31,9 +31,6 @@ your own DB2, MySql, ... Connector implementing DBConnector.
 to generate a first TestCase.
 
 MyToDos:
-- java 1.6 -> 1.7 
-- refactor assert
-    - add ignore column
 - add execSql to Processor
 - add processCheck to testcase : i.e. select count(*) from xyz -> 
     continuous monitoring of a process which doesn't throw a exception
