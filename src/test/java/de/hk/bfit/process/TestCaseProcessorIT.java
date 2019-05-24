@@ -31,11 +31,10 @@ public class TestCaseProcessorIT implements IBfiTest {
         Map<String, String> variables = new HashMap<>();
         List<String> sqlList = new ArrayList<>();
         cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase", sqlList);
-        cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase2", sqlList);
-        cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase3", sqlList);
-
-        //cut.generateExampleTestCase("myTestcase", sqlList, false, false);
+  //      cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase2", sqlList, INITACTION, RESETACTION);
+  //      cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase3", sqlList,INITACTION);
     }
+
 
     @Test
     public void testProcessResetAction() throws Exception {

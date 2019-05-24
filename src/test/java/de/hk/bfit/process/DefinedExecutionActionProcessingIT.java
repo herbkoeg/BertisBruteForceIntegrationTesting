@@ -1,7 +1,7 @@
 package de.hk.bfit.process;
 
 import de.hk.bfit.db.PostgresDBConnector;
-import de.hk.bfit.model.DefinedAction;
+import de.hk.bfit.model.DefinedExecutionAction;
 import de.hk.bfit.model.TestCase;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DefinedActionProcessingIT {
+public class DefinedExecutionActionProcessingIT {
 
     private TestCaseProcessor cut;
 
@@ -28,15 +28,22 @@ public class DefinedActionProcessingIT {
 
     @Test
     public void testDefinedActions() throws Exception {
-        List<DefinedAction> definedActions = new ArrayList<>();
+        List<DefinedExecutionAction> definedExecutionActions = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
 
-        DefinedAction definedAction = new DefinedAction("EXAMPLE");
+        DefinedExecutionAction definedExecutionAction = new DefinedExecutionAction();
+        definedExecutionAction.setName("EXAMPLE");
+        List<String> sqlList = new ArrayList<>();
+        sqlList.add("insert into person (id,name,vorname,adresse,stadt) values (100,'hans','maier','maxstrasse','muenchen')");
 
-        definedActions.add(definedAction);
+
+        definedExecutionAction.setRollBackOnError(true);
+        definedExecutionAction.setSqlCommands(sqlList);
+
+        definedExecutionActions.add(definedExecutionAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedActions);
+        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedExecutionActions);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }
@@ -51,30 +58,33 @@ public class DefinedActionProcessingIT {
 
     @Test
     public void testDefinedActions_when_ignoring_SQLException() throws Exception {
-        List<DefinedAction> definedActions = new ArrayList<>();
+        List<DefinedExecutionAction> definedExecutionActions = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
 
-        DefinedAction definedAction = new DefinedAction("EXAMPLE");
+        DefinedExecutionAction definedExecutionAction = new DefinedExecutionAction();
+        definedExecutionAction.setName("EXAMPLE");
 
-        definedActions.add(definedAction);
+        definedExecutionActions.add(definedExecutionAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedActions);
+        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedExecutionActions);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }
 
     @Test(expected = PSQLException.class)
     public void testDefinedActions_when_NOT_ignoring_SQLException() throws Exception {
-        List<DefinedAction> definedActions = new ArrayList<>();
+        List<DefinedExecutionAction> definedExecutionActions = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
 
-        DefinedAction definedAction = new DefinedAction("EXAMPLE");
+        DefinedExecutionAction definedExecutionAction = new DefinedExecutionAction();
+        definedExecutionAction.setName("EXAMPLE");
 
-        definedActions.add(definedAction);
+
+        definedExecutionActions.add(definedExecutionAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedActions);
+        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedExecutionActions);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }

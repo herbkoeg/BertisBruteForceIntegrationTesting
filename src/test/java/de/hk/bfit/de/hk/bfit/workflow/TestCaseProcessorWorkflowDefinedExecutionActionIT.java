@@ -2,7 +2,7 @@ package de.hk.bfit.de.hk.bfit.workflow;
 
 import de.hk.bfit.db.PostgresDBConnector;
 import de.hk.bfit.io.TestCaseHandler;
-import de.hk.bfit.model.DefinedAction;
+import de.hk.bfit.model.DefinedExecutionAction;
 import de.hk.bfit.model.TestCase;
 import de.hk.bfit.process.IBfiTest;
 import de.hk.bfit.process.TestCaseProcessor;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TestCaseProcessorWorkflowDefinedActionIT implements IBfiTest {
+public class TestCaseProcessorWorkflowDefinedExecutionActionIT implements IBfiTest {
 
     private static TestCaseProcessor tcp;
 
@@ -38,7 +38,7 @@ public class TestCaseProcessorWorkflowDefinedActionIT implements IBfiTest {
         String filename = "workflowtest_ignored_by_git.xml";
         TestCase newTestCase = new TestCase();
 
-        List<DefinedAction> definedActions = new ArrayList<>();
+        List<DefinedExecutionAction> definedExecutionActions = new ArrayList<>();
 
 
         TestCaseHandler.writeTestcase(newTestCase, filename);

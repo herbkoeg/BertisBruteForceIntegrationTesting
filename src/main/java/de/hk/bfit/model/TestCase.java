@@ -1,6 +1,8 @@
 package de.hk.bfit.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +20,9 @@ public class TestCase {
 
     private ResetAction resetAction;
 
-    private List<DefinedAction> definedActions;
+    @JacksonXmlElementWrapper(localName = "definedExecutionActions")
+    @JacksonXmlProperty(localName = "definedAction")
+    private List<DefinedExecutionAction> definedExecutionActions;
 
     public TestCase() {
     }
@@ -79,11 +83,11 @@ public class TestCase {
         this.referenceActionAfter = referenceActionAfter;
     }
 
-    public List<DefinedAction> getDefinedActions() {
-        return definedActions;
+    public List<DefinedExecutionAction> getDefinedExecutionActions() {
+        return definedExecutionActions;
     }
 
-    public void setDefinedActions(List<DefinedAction> definedActions) {
-        this.definedActions = definedActions;
+    public void setDefinedExecutionActions(List<DefinedExecutionAction> definedExecutionActions) {
+        this.definedExecutionActions = definedExecutionActions;
     }
 }
