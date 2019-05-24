@@ -176,6 +176,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
             }
             results.add(sb.toString());
         }
+
         return results;
     }
 
@@ -287,7 +288,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         } else {
 
             if (actualResults.size() != resultList.size()) {
-                assertResults.add(new AssertResult(selectCmd.getSelect(), actualResults.size(), resultList.size(), "Result size differs"));
+                assertResults.add(new AssertResult(selectCmd.getSelect(), actualResults.size(), resultList.size(), "Result size differs: " + selectCmd.getSelect()));
             }
             int length = resultList.size();
 
