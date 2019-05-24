@@ -288,7 +288,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         } else {
 
             if (actualResults.size() != resultList.size()) {
-                assertResults.add(new AssertResult(selectCmd.getSelect(), actualResults.size(), resultList.size(), "Result size differs: " + selectCmd.getSelect()));
+                assertResults.add(new AssertResult(selectCmd.getSelect(), actualResults.size(), resultList.size(), "Result size differs for " + selectCmd.getSelect()));
             }
             int length = resultList.size();
 
@@ -361,7 +361,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
             if (refResults == null) {
                 Assert.assertEquals("No Result expected ", 0, actualResults.size());
             } else {
-                Assert.assertEquals("Result size differs", refResults.size(), actualResults.size());
+                Assert.assertEquals("Result size differs for " + selectCmd.getSelect() + " -> ", refResults.size(), actualResults.size());
 
                 int length = refResults.size();
 
