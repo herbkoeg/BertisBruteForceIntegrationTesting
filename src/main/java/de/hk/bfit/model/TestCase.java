@@ -21,8 +21,13 @@ public class TestCase {
     private ResetAction resetAction;
 
     @JacksonXmlElementWrapper(localName = "definedExecutionActions")
-    @JacksonXmlProperty(localName = "definedAction")
+    @JacksonXmlProperty(localName = "definedExecutionAction")
     private List<DefinedExecutionAction> definedExecutionActions;
+
+    @JacksonXmlElementWrapper(localName = "definedReferenceActions")
+    @JacksonXmlProperty(localName = "definedReferenceAction")
+    private List<DefinedReferenceAction> definedReferenceActions;
+
 
     public TestCase() {
     }
@@ -89,5 +94,13 @@ public class TestCase {
 
     public void setDefinedExecutionActions(List<DefinedExecutionAction> definedExecutionActions) {
         this.definedExecutionActions = definedExecutionActions;
+    }
+
+    public List<DefinedReferenceAction> getDefinedReferenceActions() {
+        return definedReferenceActions;
+    }
+
+    public void setDefinedReferenceActions(List<DefinedReferenceAction> definedReferenceActions) {
+        this.definedReferenceActions = definedReferenceActions;
     }
 }

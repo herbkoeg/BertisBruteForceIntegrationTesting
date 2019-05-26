@@ -395,11 +395,11 @@ public class TestCaseProcessor implements ITestCaseProcessor {
                 || sql.toLowerCase().startsWith("delete");
     }
 
-    public TestCase generateExampleDefinedActionTestCase(String filename, List<DefinedExecutionAction> definedExecutionActions) throws IllegalArgumentException, IOException {
+    public TestCase generateExampleDefinedActionTestCase(String filename, List<DefinedExecutionAction> definedExecutionActions, List<DefinedReferenceAction> definedReferenceActions) throws IllegalArgumentException, IOException {
         TestCase newTestCase = new TestCase();
         newTestCase.setDescription(filename);
         newTestCase.setDefinedExecutionActions(definedExecutionActions);
-
+        newTestCase.setDefinedReferenceActions(definedReferenceActions);
         TestCaseHandler.writeTestcase(newTestCase, filename);
         return newTestCase;
     }

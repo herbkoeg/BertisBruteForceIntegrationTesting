@@ -3,20 +3,19 @@ package de.hk.bfit.model;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class DefinedExecutionAction extends ExecutionAction {
+public class DefinedReferenceAction extends ReferenceAction {
 
     private String name;
 
 
-    public DefinedExecutionAction() {
+    public DefinedReferenceAction() {
         this.description = "define your init commands here";
-        this.sqlCommands = new ArrayList<>();
-        this.rollBackOnError = false;
     }
 
-    public DefinedExecutionAction(String name) {
+    public DefinedReferenceAction(String name) {
         this.name = name;
     }
 
