@@ -43,8 +43,12 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         generateExampleTestCase(filename, sqlListReferenceAction, null);
     }
 
-
-        @Override
+    /*
+    #############################
+    ASSERT BEFORE
+    #############################
+     */
+    @Override
     public void assertBefore(TestCase testCase) throws SQLException {
         assertBefore(testCase, null);
     }
@@ -52,9 +56,20 @@ public class TestCaseProcessor implements ITestCaseProcessor {
     @Override
     public void assertBefore(TestCase testCase, Map<String, String> variables) throws SQLException {
         logger.info("asserting before ...");
-        assertAction(testCase.getReferenceActionBefore(), variables);
+        assertAction(testCase.getReferenceActionBefore(), variables,null);
     }
 
+    @Override
+    public void assertBefore(TestCase testCase, Map<String, String> variables, Map<String,String> replaceMap) throws SQLException {
+        logger.info("asserting before ...");
+        assertAction(testCase.getReferenceActionBefore(), variables, replaceMap);
+    }
+
+    /*
+    #############################
+    ASSERT AFTER
+    #############################
+     */
     @Override
     public void assertAfter(TestCase testCase) throws SQLException {
         assertAfter(testCase, null);
@@ -63,8 +78,20 @@ public class TestCaseProcessor implements ITestCaseProcessor {
     @Override
     public void assertAfter(TestCase testCase, Map<String, String> variables) throws SQLException {
         logger.info("asserting after ...");
-        assertAction(testCase.getReferenceActionAfter(), variables);
+        assertAction(testCase.getReferenceActionAfter(), variables, null);
     }
+
+    @Override
+    public void assertAfter(TestCase testCase, Map<String, String> variables, Map<String,String> replacements) throws SQLException {
+        logger.info("asserting after ...");
+        assertAction(testCase.getReferenceActionAfter(), variables, replacements);
+    }
+
+    /*
+    #############################
+    GET DIFFERENCES AFTER
+    #############################
+     */
 
     @Override
     public List<AssertResult> getDifferencesAfter(TestCase testcase) throws SQLException {
@@ -78,6 +105,11 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         return getDifferences(testcase.getReferenceActionAfter(), variables);
     }
 
+    /*
+    #############################
+    GET DIFFERENCES BEFORE
+    #############################
+     */
     @Override
     public List<AssertResult> getDifferencesBefore(TestCase testcase) throws SQLException {
         logger.info("getDiffencesBefore ...");
@@ -358,7 +390,19 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         }
     }
 
-    private void assertAction(ReferenceAction referenceAction, Map<String, String> variables) throws SQLException {
+    String replaceStrings(String input, Map<String,String> replaceMap) {
+        if(replaceMap==null) {
+            return input;
+        }
+        Set<String> keySet = replaceMap.keySet();
+        String newString = input;
+        for (String key: keySet) {
+            newString = newString.replace(key,replaceMap.get(key));
+        }
+        return newString;
+    }
+
+    private void assertAction(ReferenceAction referenceAction, Map<String, String> variablesMap, Map<String,String> replaceMap) throws SQLException {
         if (referenceAction == null || referenceAction.getSelectCmds() == null) {
             return;
         }
@@ -370,7 +414,7 @@ public class TestCaseProcessor implements ITestCaseProcessor {
             List<String> refResults = selectCmd.getResults();
             logNoOrderWarning(selectCmd);
 
-            List<String> actualResults = processCommand(selectCmd.getSelect(), selectCmd.getIgnoredColumns(), variables);
+            List<String> actualResults = processCommand(selectCmd.getSelect(), selectCmd.getIgnoredColumns(), variablesMap);
 
             logger.info(actualResults.size() + " results ");
 
@@ -382,7 +426,9 @@ public class TestCaseProcessor implements ITestCaseProcessor {
                 int length = refResults.size();
 
                 for (int i = 0; i < length; i++) {
-                    Assert.assertEquals(selectCmd.getAssertFailedMessage(), setVariables(refResults.get(i), variables), actualResults.get(i));
+                    Assert.assertEquals(
+                            selectCmd.getAssertFailedMessage(),replaceStrings(setVariables(refResults.get(i), variablesMap),replaceMap)
+                            , replaceStrings(actualResults.get(i),replaceMap));
                 }
             }
         }
@@ -413,10 +459,10 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         for (DefinedExecutionAction definedExecutionAction : testCase.getDefinedExecutionActions()) {
             if (definedExecutionAction.getName().equals(name)) {
                 processCommandList(definedExecutionAction.getSqlCommands(),variables, definedExecutionAction.isRollBackOnError());
-
-//                processIgnorableSqlCommandList(definedExecutionAction.getIgnorableSqlCommands(), variables, definedExecutionAction.isRollBackOnError());
             }
         }
-
     }
+
+
+
 }

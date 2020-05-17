@@ -8,6 +8,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
+import static de.hk.bfit.process.Replacements.REPLACE_UMLAUTE;
+
 public class TestCaseProcessorTest {
 
     private TestCaseProcessor cut = null;
@@ -49,6 +51,12 @@ public class TestCaseProcessorTest {
         selectCmd.setResults(resultList);
 
         return selectCmd;
+    }
+
+    @Test
+    public void testReplaceMap() {
+
+        Assert.assertEquals("aeueoeAeUeOess", cut.replaceStrings("äüöÄÜÖß", REPLACE_UMLAUTE));
     }
 
 
