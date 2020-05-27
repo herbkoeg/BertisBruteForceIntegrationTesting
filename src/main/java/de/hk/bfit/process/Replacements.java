@@ -2,7 +2,7 @@ package de.hk.bfit.process;
 
 import java.util.HashMap;
 
-abstract class Replacements {
+abstract public class Replacements {
 
     // see https://stackoverflow.com/questions/32696273/java-replace-german-umlauts
     public static final HashMap<String, String> REPLACE_UMLAUTE = new HashMap<>();
