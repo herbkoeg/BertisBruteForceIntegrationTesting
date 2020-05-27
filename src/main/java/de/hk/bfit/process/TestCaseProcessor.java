@@ -34,6 +34,10 @@ public class TestCaseProcessor implements ITestCaseProcessor {
         return TestCaseHandler.loadTestCase(filename);
     }
 
+    public TestCase loadTestCase(String filename, String charsetName) throws IOException {
+        return TestCaseHandler.loadTestCase(filename,charsetName);
+    }
+
     public void generateExampleTestCase(String filename, List<String> sqlListReferenceAction) throws SQLException, IllegalArgumentException, IOException {
         TestCase newTestCase = generateTestCase(sqlListReferenceAction,null);
         TestCaseHandler.writeTestcase(newTestCase, filename);
