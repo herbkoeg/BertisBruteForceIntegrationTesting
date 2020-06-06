@@ -56,7 +56,7 @@ public class TestCaseProcessorTest {
     @Test
     public void testReplaceMap() {
 
-        Assert.assertEquals("aeueoeAeUeOess", cut.replaceStrings("äüöÄÜÖß", REPLACE_UMLAUTE));
+        Assert.assertEquals("*ae**ue**oe**AE**UE**OE**ss*", cut.replaceStrings("äüöÄÜÖß", REPLACE_UMLAUTE));
     }
 
 

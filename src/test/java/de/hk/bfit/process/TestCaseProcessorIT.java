@@ -1,6 +1,7 @@
 package de.hk.bfit.process;
 
 import de.hk.bfit.db.PostgresDBConnector;
+import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.model.InitAction;
 import de.hk.bfit.model.ResetAction;
 import de.hk.bfit.model.TestCase;
@@ -15,6 +16,7 @@ import java.util.*;
 public class TestCaseProcessorIT implements IBfiTest {
 
     private static TestCaseProcessor cut;
+    private static TestCaseGenerator tcg;
 
     public TestCaseProcessorIT() {
     }
@@ -24,13 +26,14 @@ public class TestCaseProcessorIT implements IBfiTest {
         PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
         Connection dbConnection = dBConnector.getDBConnection();
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
+        tcg = new TestCaseGenerator(dBConnector.getDBConnection());
     }
 
     @Test
     public void testGenerateExampleTestCase() throws Exception {
         Map<String, String> variables = new HashMap<>();
         List<String> sqlList = new ArrayList<>();
-        cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase", sqlList);
+        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase", sqlList);
   //      cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase2", sqlList, INITACTION, RESETACTION);
   //      cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase3", sqlList,INITACTION);
     }
@@ -40,7 +43,7 @@ public class TestCaseProcessorIT implements IBfiTest {
     public void testProcessResetAction() throws Exception {
         List<String> sqlList = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
-        TestCase testCase = cut.generateTestCase(sqlList);
+        TestCase testCase = tcg.generateTestCase(sqlList);
         testCase.setResetAction(new ResetAction());
         cut.processResetAction(testCase, variables);
     }
@@ -49,7 +52,7 @@ public class TestCaseProcessorIT implements IBfiTest {
     public void testProcessInitAction() throws Exception {
         List<String> sqlList = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
-        TestCase testCase = cut.generateTestCase(sqlList);
+        TestCase testCase = tcg.generateTestCase(sqlList);
         testCase.setInitAction(new InitAction());
         cut.processInitAction(testCase, variables);
     }
@@ -64,7 +67,7 @@ public class TestCaseProcessorIT implements IBfiTest {
 
         List<String> sqlListReferenceAction = new ArrayList<>(Arrays.asList("select id from Person", "select name from Person"));
 
-        testCaseProcessor.generateExampleTestCase(filename, sqlListReferenceAction);
+        tcg.generateTestCase(filename, sqlListReferenceAction);
 
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
         testCaseProcessor.getDifferencesAfter(testCase);
@@ -112,7 +115,7 @@ public class TestCaseProcessorIT implements IBfiTest {
     @Test
     public void integerationTestManyVariables() throws Exception {
         PostgresDBConnector dBConnector = getPostgresDBConnector();
-
+        SqlProzessor sqlProzessor = new SqlProzessor(dBConnector.getDBConnection());
         Map<String, String> variables = new HashMap<>();
         variables.put("VNR", "12345");
         variables.put("NAME", "Berti");
@@ -120,7 +123,7 @@ public class TestCaseProcessorIT implements IBfiTest {
         TestCaseProcessor cut = new TestCaseProcessor(dBConnector.getDBConnection());
         String sql = "select $VNR $NAME from contract where vnr = $VNR";
 
-        Assert.assertEquals("select 12345 Berti from contract where vnr = 12345", cut.setVariables(sql, variables));
+        Assert.assertEquals("select 12345 Berti from contract where vnr = 12345", sqlProzessor.setVariables(sql, variables));
     }
 
     private PostgresDBConnector getPostgresDBConnector() {

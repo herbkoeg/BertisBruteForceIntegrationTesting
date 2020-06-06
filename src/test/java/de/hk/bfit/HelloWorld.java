@@ -6,6 +6,7 @@
 package de.hk.bfit;
 
 import de.hk.bfit.db.PostgresDBConnector;
+import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.io.TestCaseHandler;
 import de.hk.bfit.model.TestCase;
 import de.hk.bfit.process.IBfiTest;
@@ -34,6 +35,7 @@ class HelloWorld implements IBfiTest {
 
             Map<String, String> variables = new HashMap<>();
             TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
+            TestCaseGenerator testCaseGenerator = new TestCaseGenerator(dBConnector.getDBConnection());
 
             String filename = BASE_PATH_GENERATED + "BfitFirstTest.xml";
             List<String> sqlList = new ArrayList<>();
@@ -41,7 +43,7 @@ class HelloWorld implements IBfiTest {
             sqlList.add("select name from Person");
 
 
-            testCaseProcessor.generateExampleTestCase(filename, sqlList);
+            testCaseGenerator.generateTestCase(filename, sqlList);
 
             TestCase testCase = TestCaseHandler.loadTestCase(filename);
 
