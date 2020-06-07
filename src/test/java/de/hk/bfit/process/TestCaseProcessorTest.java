@@ -8,7 +8,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.hk.bfit.process.Replacements.REPLACE_UMLAUTE;
+import static de.hk.bfit.process.enums.Replacements.REPLACE_UMLAUTE;
 
 public class TestCaseProcessorTest {
 

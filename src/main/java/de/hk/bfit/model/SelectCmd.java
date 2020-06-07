@@ -11,6 +11,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SelectCmd {
 
+    @JacksonXmlElementWrapper(localName = "filterexpressions")
+    @JacksonXmlProperty(localName = "regex")
+    private List filterExpressions;
     private String select;
     private String description;
     @JacksonXmlElementWrapper(localName = "results")
@@ -32,6 +35,10 @@ public class SelectCmd {
         this.results = results;
         this.description = description;
     }
+
+    public List getFilterExpressions() { return filterExpressions;}
+
+    public void setFilterExpressions(List filterExpressions) {this.filterExpressions = filterExpressions;}
 
     public String getDescription() {
         return description;

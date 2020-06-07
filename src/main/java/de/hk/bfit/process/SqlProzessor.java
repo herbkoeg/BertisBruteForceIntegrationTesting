@@ -12,7 +12,7 @@ import java.util.Map;
 
 public class SqlProzessor {
 
-    private final Logger logger = Logger.getLogger(TestCaseProcessor.class);
+    private final Logger logger = Logger.getLogger(SqlProzessor.class);
     private Connection connection = null;
 
     public SqlProzessor(Connection connection) {

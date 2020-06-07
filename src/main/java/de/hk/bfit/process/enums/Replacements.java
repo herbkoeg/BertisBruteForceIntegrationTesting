@@ -1,4 +1,4 @@
-package de.hk.bfit.process;
+package de.hk.bfit.process.enums;
 
 import java.util.HashMap;
 

@@ -4,19 +4,18 @@ import de.hk.bfit.model.ReferenceAction;
 import de.hk.bfit.model.SelectCmd;
 import de.hk.bfit.model.TestCase;
 import de.hk.bfit.process.SqlProzessor;
-import de.hk.bfit.process.StubGeneration;
+import de.hk.bfit.process.enums.StubGeneration;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-import static de.hk.bfit.process.StubGeneration.INITACTION;
-import static de.hk.bfit.process.StubGeneration.RESETACTION;
+import static de.hk.bfit.io.TestCaseHandler.writeTestcase;
+import static de.hk.bfit.process.enums.StubGeneration.INITACTION;
+import static de.hk.bfit.process.enums.StubGeneration.RESETACTION;
 import static java.util.Arrays.asList;
 
 public class TestCaseGenerator {
@@ -35,7 +34,7 @@ public class TestCaseGenerator {
 
     public void generateTestCase(String filename, List<String> sqls, StubGeneration... stubGeneration) throws IOException,SQLException{
         TestCase testCase = generateTestCase(sqls,stubGeneration);
-        TestCaseHandler.writeTestcase(testCase,filename);
+        writeTestcase(testCase,filename);
     }
 
     public TestCase generateTestCase(List<String> sqls, StubGeneration... stubGeneration ) throws SQLException, IllegalArgumentException {
@@ -65,7 +64,4 @@ public class TestCaseGenerator {
         }
         return testCase;
     }
-
-
-
 }
