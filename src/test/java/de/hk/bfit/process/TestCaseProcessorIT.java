@@ -5,7 +5,6 @@ import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.model.InitAction;
 import de.hk.bfit.model.ResetAction;
 import de.hk.bfit.model.TestCase;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -23,7 +22,7 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
+        PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_MY_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
         Connection dbConnection = dBConnector.getDBConnection();
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
         tcg = new TestCaseGenerator(dBConnector.getDBConnection());
@@ -112,20 +111,6 @@ public class TestCaseProcessorIT implements IBfiTest {
         testCaseProcessor.assertAfter(testCase);
     }
 
-    @Test
-    public void integerationTestManyVariables() throws Exception {
-        PostgresDBConnector dBConnector = getPostgresDBConnector();
-        SqlProzessor sqlProzessor = new SqlProzessor(dBConnector.getDBConnection());
-        Map<String, String> variables = new HashMap<>();
-        variables.put("VNR", "12345");
-        variables.put("NAME", "Berti");
-
-        TestCaseProcessor cut = new TestCaseProcessor(dBConnector.getDBConnection());
-        String sql = "select $VNR $NAME from contract where vnr = $VNR";
-
-        Assert.assertEquals("select 12345 Berti from contract where vnr = 12345", sqlProzessor.setVariables(sql, variables));
-    }
-
     private PostgresDBConnector getPostgresDBConnector() {
         return new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
     }
@@ -140,6 +125,8 @@ public class TestCaseProcessorIT implements IBfiTest {
         cut.execSql("select * from personxx");
 //        ResultSet rs = cut.execSql("bla");
     }
+
+
 
 
 }

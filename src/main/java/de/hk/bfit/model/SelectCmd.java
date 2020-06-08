@@ -40,6 +40,13 @@ public class SelectCmd {
 
     public void setFilterExpressions(List filterExpressions) {this.filterExpressions = filterExpressions;}
 
+    public void addFilterExpression(String filterExpression) {
+        if (filterExpressions == null) {
+            filterExpressions = new ArrayList();
+        }
+        filterExpressions.add(filterExpression);
+    }
+
     public String getDescription() {
         return description;
     }

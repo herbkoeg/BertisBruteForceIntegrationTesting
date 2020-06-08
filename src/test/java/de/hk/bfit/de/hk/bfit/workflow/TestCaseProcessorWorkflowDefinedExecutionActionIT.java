@@ -34,9 +34,9 @@ public class TestCaseProcessorWorkflowDefinedExecutionActionIT implements IBfiTe
     public void testGenerateExampleTestCase() throws Exception {
         Map<String, String> variables = new HashMap<>();
         List<String> sqlList = new ArrayList<>();
-        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase", sqlList);
-        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase2", sqlList);
-        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase3", sqlList);
+        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase.xml", sqlList);
+        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase2.xml", sqlList);
+        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase3.xml", sqlList);
 
         String filename = "workflowtest_ignored_by_git.xml";
         TestCase newTestCase = new TestCase();

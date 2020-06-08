@@ -1,5 +1,6 @@
 package de.hk.bfit.process;
 
+import de.hk.bfit.helper.ReplacementUtils;
 import de.hk.bfit.io.TestCaseHandler;
 import de.hk.bfit.model.*;
 import org.apache.commons.lang3.StringUtils;
@@ -10,6 +11,8 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
+
+import static de.hk.bfit.helper.ReplacementUtils.replaceStrings;
 
 public class TestCaseProcessor {
 
@@ -83,12 +86,12 @@ public class TestCaseProcessor {
      */
     public List<AssertResult> getDifferencesAfter(TestCase testcase) throws SQLException {
         logger.info("getDiffencesAfter ...");
-        return getDifferences(testcase.getReferenceActionAfter(), null);
+        return getDifferences(testcase.getReferenceActionAfter(), null, null);
     }
 
-    public List<AssertResult> getDifferencesAfter(TestCase testcase, Map<String, String> variables) throws SQLException {
+    public List<AssertResult> getDifferencesAfter(TestCase testcase, Map<String, String> variables, Map<String, String> replacements) throws SQLException {
         logger.info("getDiffencesAfter ...");
-        return getDifferences(testcase.getReferenceActionAfter(), variables);
+        return getDifferences(testcase.getReferenceActionAfter(), variables, replacements);
     }
 
     /*
@@ -98,12 +101,12 @@ public class TestCaseProcessor {
      */
     public List<AssertResult> getDifferencesBefore(TestCase testcase) throws SQLException {
         logger.info("getDiffencesBefore ...");
-        return getDifferences(testcase.getReferenceActionBefore(), null);
+        return getDifferences(testcase.getReferenceActionBefore(), null,null);
     }
 
-    public List<AssertResult> getDifferencesBefore(TestCase testcase, Map<String, String> variables) throws SQLException {
+    public List<AssertResult> getDifferencesBefore(TestCase testcase, Map<String, String> variables, Map<String, String> replacements) throws SQLException {
         logger.info("getDiffencesBefore ...");
-        return getDifferences(testcase.getReferenceActionBefore(), variables);
+        return getDifferences(testcase.getReferenceActionBefore(), variables,replacements);
     }
 
     /**
@@ -117,6 +120,10 @@ public class TestCaseProcessor {
         sqlProzessor.processCommandList(testCase.getResetAction().getSqlCommands(), variables, testCase.getResetAction().isRollBackOnError());
     }
 
+    public void processResetAction(TestCase testCase) throws SQLException {
+        processResetAction(testCase,null);
+    }
+
     /**
      * Processes the initAction defined in the testcase
      *
@@ -127,6 +134,11 @@ public class TestCaseProcessor {
     public void processInitAction(TestCase testCase, Map<String, String> variables) throws SQLException {
         sqlProzessor.processCommandList(testCase.getInitAction().getSqlCommands(), variables, testCase.getInitAction().isRollBackOnError());
     }
+
+    public void processInitAction(TestCase testCase) throws SQLException {
+        processInitAction(testCase,null);
+    }
+
 
     /**
      * Executes one of the following sql commands: insert, update, delete
@@ -164,11 +176,11 @@ public class TestCaseProcessor {
      * Determines the differences between reference and actual results for a selectCmd
      *
      * @param selectCmd
-     * @param variables
+     * @param variableMap
      * @param actualResults
      * @return
      */
-    List<AssertResult> determineDifferences(SelectCmd selectCmd, Map<String, String> variables, List<String> actualResults) {
+    List<AssertResult> determineDifferences(SelectCmd selectCmd, Map<String, String> variableMap, Map<String,String> replaceMap, List<String> actualResults) {
         ArrayList assertResults = new ArrayList();
 
         logger.info("-- determine differences: " + selectCmd.getDescription());
@@ -184,8 +196,17 @@ public class TestCaseProcessor {
             int length = resultList.size();
 
             for (int i = 0; i < length; i++) {
-                String reference = sqlProzessor.setVariables(resultList.get(i), variables);
-                String actual = actualResults.get(i);
+                String reference = replaceStrings(sqlProzessor.setVariables(resultList.get(i), variableMap),replaceMap);
+                String actual =  replaceStrings(actualResults.get(i),replaceMap);
+
+//                String reference = sqlProzessor.setVariables(resultList.get(i), variables);
+//                String actual = actualResults.get(i);
+
+                if(selectCmd.getFilterExpressions()!=null) {
+                    reference = ReplacementUtils.removeRegexFromString(reference, selectCmd.getFilterExpressions());
+                    actual = ReplacementUtils.removeRegexFromString(actual, selectCmd.getFilterExpressions());
+                }
+
                 String diff = StringUtils.difference(reference, actual);
                 if (!StringUtils.isEmpty(diff)) {
                     assertResults.add(new AssertResult(selectCmd.getSelect(), actual, reference, diff));
@@ -201,11 +222,12 @@ public class TestCaseProcessor {
      * Determines all differences for all selectCmds of a referenceAction
      *
      * @param referenceAction
-     * @param variables
+     * @param variableMap
+     * @param replaceMap
      * @return
      * @throws SQLException
      */
-    private List<AssertResult> getDifferences(ReferenceAction referenceAction, Map<String, String> variables) throws SQLException {
+    private List<AssertResult> getDifferences(ReferenceAction referenceAction, Map<String, String> variableMap, Map<String,String> replaceMap) throws SQLException {
         logger.info("Find differences for referenceAction: " + referenceAction.getDescription());
 
         List<AssertResult> assertResults = new ArrayList();
@@ -218,9 +240,9 @@ public class TestCaseProcessor {
             List<String> refResults = selectCmd.getResults();
             logNoOrderWarning(selectCmd);
 
-            List<String> actualResults = sqlProzessor.processCommand(selectCmd.getSelect(), selectCmd.getIgnoredColumns(), variables);
+            List<String> actualResults = sqlProzessor.processCommand(selectCmd.getSelect(), selectCmd.getIgnoredColumns(), variableMap);
 
-            assertResults.addAll(determineDifferences(selectCmd, variables, actualResults));
+            assertResults.addAll(determineDifferences(selectCmd, variableMap, replaceMap, actualResults));
         }
         logger.info("Differences found: " + assertResults.size());
 
@@ -231,18 +253,6 @@ public class TestCaseProcessor {
         if (!selectCmd.getSelect().contains("order by")) {
             logger.info("Warning: SQL doesn't contain 'order by'");
         }
-    }
-
-    String replaceStrings(String input, Map<String,String> replaceMap) {
-        if(replaceMap==null) {
-            return input;
-        }
-        Set<String> keySet = replaceMap.keySet();
-        String newString = input;
-        for (String key: keySet) {
-            newString = newString.replace(key,replaceMap.get(key));
-        }
-        return newString;
     }
 
     private void assertAction(ReferenceAction referenceAction, Map<String, String> variablesMap, Map<String,String> replaceMap) throws SQLException {
@@ -269,9 +279,14 @@ public class TestCaseProcessor {
                 int length = refResults.size();
 
                 for (int i = 0; i < length; i++) {
-                    Assert.assertEquals(
-                            selectCmd.getAssertFailedMessage(),replaceStrings(sqlProzessor.setVariables(refResults.get(i), variablesMap),replaceMap)
-                            , replaceStrings(actualResults.get(i),replaceMap));
+                    String reference = replaceStrings(sqlProzessor.setVariables(refResults.get(i), variablesMap),replaceMap);
+                    String actual =  replaceStrings(actualResults.get(i),replaceMap);
+                    if(selectCmd.getFilterExpressions()!=null) {
+                        reference = ReplacementUtils.removeRegexFromString(reference, selectCmd.getFilterExpressions());
+                        actual = ReplacementUtils.removeRegexFromString(actual, selectCmd.getFilterExpressions());
+                    }
+                    String failMessage = selectCmd.getAssertFailedMessage();
+                    Assert.assertEquals(failMessage, reference,actual);
                 }
             }
         }
@@ -284,20 +299,12 @@ public class TestCaseProcessor {
                 || sql.toLowerCase().startsWith("delete");
     }
 
-    public TestCase generateExampleDefinedActionTestCase(String filename, List<DefinedExecutionAction> definedExecutionActions, List<DefinedReferenceAction> definedReferenceActions) throws IllegalArgumentException, IOException {
-        TestCase newTestCase = new TestCase();
-        newTestCase.setDescription(filename);
-        newTestCase.setDefinedExecutionActions(definedExecutionActions);
-        newTestCase.setDefinedReferenceActions(definedReferenceActions);
-        TestCaseHandler.writeTestcase(newTestCase, filename);
-        return newTestCase;
-    }
-
     public void processDefinedAction(TestCase testCase, String name) throws SQLException {
         processDefinedAction(testCase, name, null);
     }
 
-    private void processDefinedAction(TestCase testCase, String name, Map<String, String> variables) throws SQLException {
+    public void processDefinedAction(TestCase testCase, String name, Map<String, String> variables) throws SQLException {
+        logger.info("processDefinedAction " + name);
         for (DefinedExecutionAction definedExecutionAction : testCase.getDefinedExecutionActions()) {
             if (definedExecutionAction.getName().equals(name)) {
                 sqlProzessor.processCommandList(definedExecutionAction.getSqlCommands(),variables, definedExecutionAction.isRollBackOnError());

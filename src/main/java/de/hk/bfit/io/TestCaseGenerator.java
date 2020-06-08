@@ -1,8 +1,6 @@
 package de.hk.bfit.io;
 
-import de.hk.bfit.model.ReferenceAction;
-import de.hk.bfit.model.SelectCmd;
-import de.hk.bfit.model.TestCase;
+import de.hk.bfit.model.*;
 import de.hk.bfit.process.SqlProzessor;
 import de.hk.bfit.process.enums.StubGeneration;
 import org.apache.log4j.Logger;
@@ -22,7 +20,7 @@ public class TestCaseGenerator {
 
     private final Logger logger = Logger.getLogger(TestCaseGenerator.class);
 
-    private  SqlProzessor sqlProzessor = null;
+    private SqlProzessor sqlProzessor = null;
 
     public TestCaseGenerator(Connection connection) {
         sqlProzessor = new SqlProzessor(connection);
@@ -32,12 +30,12 @@ public class TestCaseGenerator {
         return generateTestCase(sqls, null);
     }
 
-    public void generateTestCase(String filename, List<String> sqls, StubGeneration... stubGeneration) throws IOException,SQLException{
-        TestCase testCase = generateTestCase(sqls,stubGeneration);
-        writeTestcase(testCase,filename);
+    public void generateTestCase(String filename, List<String> sqls, StubGeneration... stubGeneration) throws IOException, SQLException {
+        TestCase testCase = generateTestCase(sqls, stubGeneration);
+        writeTestcase(testCase, filename);
     }
 
-    public TestCase generateTestCase(List<String> sqls, StubGeneration... stubGeneration ) throws SQLException, IllegalArgumentException {
+    public TestCase generateTestCase(List<String> sqls, StubGeneration... stubGeneration) throws SQLException, IllegalArgumentException {
         logger.info("Generating TestCase");
 
         List<SelectCmd> selectCmd = new ArrayList<>();
@@ -64,4 +62,14 @@ public class TestCaseGenerator {
         }
         return testCase;
     }
+
+    public TestCase generateExampleDefinedActionTestCase(String filename, List<DefinedExecutionAction> definedExecutionActions, List<DefinedReferenceAction> definedReferenceActions) throws IllegalArgumentException, IOException {
+        TestCase newTestCase = new TestCase();
+        newTestCase.setDescription(filename);
+        newTestCase.setDefinedExecutionActions(definedExecutionActions);
+        newTestCase.setDefinedReferenceActions(definedReferenceActions);
+        TestCaseHandler.writeTestcase(newTestCase, filename);
+        return newTestCase;
+    }
+
 }

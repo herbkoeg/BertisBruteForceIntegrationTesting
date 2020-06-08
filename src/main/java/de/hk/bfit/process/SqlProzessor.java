@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
+
 public class SqlProzessor {
 
     private final Logger logger = Logger.getLogger(SqlProzessor.class);
@@ -32,7 +34,7 @@ public class SqlProzessor {
             for (IgnorableSqlCommand definedSqlCommand : ignorableSqlCommands) {
                 sqlWithSetVars = setVariables(definedSqlCommand.getSqlCommand(), variables);
                 if (isExecutableCommand(definedSqlCommand.getSqlCommand())) {
-                    logger.info("... executing " + definedSqlCommand.getSqlCommand());
+                    logger.info(definedSqlCommand.getSqlCommand());
                     if (!definedSqlCommand.isIgnoreSqlException()) {
                         statement.execute(sqlWithSetVars);
                     } else {
@@ -69,11 +71,11 @@ public class SqlProzessor {
                 || sql.toLowerCase().startsWith("delete");
     }
 
-    public String setVariables(String sql) {
+    protected String setVariables(String sql) {
         return setVariables(sql,null);
     }
 
-    public String setVariables(String sql, Map<String, String> variables) {
+    protected String setVariables(String sql, Map<String, String> variables) {
         if (variables != null) {
             Iterator<String> it = variables.keySet().iterator();
             String[] searchList = new String[variables.size()];
@@ -86,7 +88,7 @@ public class SqlProzessor {
                 counter++;
             }
 
-            return StringUtils.replaceEachRepeatedly(sql, searchList, replacementList);
+            return replaceEachRepeatedly(sql, searchList, replacementList);
         }
         return sql;
     }

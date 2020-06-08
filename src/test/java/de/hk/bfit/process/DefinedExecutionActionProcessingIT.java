@@ -1,6 +1,7 @@
 package de.hk.bfit.process;
 
 import de.hk.bfit.db.PostgresDBConnector;
+import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.model.*;
 import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
@@ -13,14 +14,16 @@ import java.util.*;
 public class DefinedExecutionActionProcessingIT {
 
     private TestCaseProcessor cut;
+    private TestCaseGenerator tcg ;
 
     @Before
     public void init() throws Exception {
 
-        PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_LOCALHOST_5432_BERTIS_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
+        PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_MY_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
         Connection dbConnection = dBConnector.getDBConnection();
 
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
+        tcg = new TestCaseGenerator(dBConnector.getDBConnection());
         BasicConfigurator.configure();
     }
 
@@ -45,7 +48,7 @@ public class DefinedExecutionActionProcessingIT {
         definedReferenceActions.add(definedReferenceAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedExecutionActions,definedReferenceActions);
+        TestCase definedActionTestcase = tcg.generateExampleDefinedActionTestCase(filename, definedExecutionActions,definedReferenceActions);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }
@@ -69,7 +72,7 @@ public class DefinedExecutionActionProcessingIT {
         definedExecutionActions.add(definedExecutionAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedExecutionActions,null);
+        TestCase definedActionTestcase = tcg.generateExampleDefinedActionTestCase(filename, definedExecutionActions,null);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }
@@ -86,7 +89,7 @@ public class DefinedExecutionActionProcessingIT {
         definedExecutionActions.add(definedExecutionAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = cut.generateExampleDefinedActionTestCase(filename, definedExecutionActions,null);
+        TestCase definedActionTestcase = tcg.generateExampleDefinedActionTestCase(filename, definedExecutionActions,null);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }

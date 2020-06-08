@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -29,6 +30,13 @@ abstract class ExecutionAction extends BfiAction {
 
     public void setRollBackOnError(Boolean rollBackOnError) {
         this.rollBackOnError = rollBackOnError;
+    }
+
+    public void addSqlCommand(String sqlCommand) {
+        if(getSqlCommands() == null) {
+            sqlCommands = new ArrayList<>();
+        }
+        sqlCommands.add(sqlCommand);
     }
 
 }

@@ -96,6 +96,13 @@ public class TestCase {
         this.definedExecutionActions = definedExecutionActions;
     }
 
+    public void addDefinedExecutionAction(DefinedExecutionAction definedExecutionAction) {
+        if(getDefinedExecutionActions() == null) {
+            definedExecutionActions = new ArrayList<>();
+        }
+        definedExecutionActions.add(definedExecutionAction);
+    }
+
     public List<DefinedReferenceAction> getDefinedReferenceActions() {
         return definedReferenceActions;
     }
