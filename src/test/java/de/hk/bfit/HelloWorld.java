@@ -29,6 +29,7 @@ import static de.hk.bfit.helper.BfiRegEx.TIMESTAMP;
 import static de.hk.bfit.io.TestCaseHandler.loadTestCase;
 import static de.hk.bfit.io.TestCaseHandler.writeTestcase;
 import static java.lang.System.currentTimeMillis;
+import static java.lang.System.setErr;
 
 /**
  * @author palmherby
@@ -57,34 +58,36 @@ class HelloWorld implements IBfiTest {
         Map<String, String> variables = new HashMap<>();
 
         // generate init
+        System.err.println("-----------> (1) generate and process initialisation testcase ...");
         TestCase generatedInitTestcase = createInitTestCase(dbConnection);
         writeTestcase(generatedInitTestcase, BASE_PATH_GENERATED + "initTestcase.xml");
 
         tcp.processDefinedAction(generatedInitTestcase, "deletePersons");
         tcp.processDefinedAction(generatedInitTestcase, "insertPersons");
 
-        // generate assert
+        System.err.println("-----------> (2) generate assert testcase ...");
         String assertFilename = BASE_PATH_GENERATED+"assertTestCase.xml";
 
         TestCase generatedAssertTestcase = createAsserTestCase(dbConnection);
         writeTestcase(generatedAssertTestcase,assertFilename);
 
-        // assert
+        System.err.println("-----------> (3) first assert -> everything is fine ...");
         TestCase assertTestcase = loadTestCase(assertFilename);
         tcp.assertAfter(assertTestcase);
 
-        // change timestamp on DB
+        System.err.println("-----------> (4) update DB: timestamp changes");
         tcp.execSql("update person set message ='some timestamp: 2020-06-08 00:00:00.000' where id=102");
 
         // -> assert will fail
         try {
             tcp.assertAfter(assertTestcase);
         } catch (ComparisonFailure ex) {
-            System.out.println(ex.getMessage());
+            System.err.println(ex.getMessage());
         }
-        // show me the differences without an exception
-        System.out.println(tcp.getDifferencesAfter(assertTestcase));
+        // show me the differences
+        System.err.println(tcp.getDifferencesAfter(assertTestcase));
 
+        System.err.println("-----------> (5) ignore the timestamp using regex");
         // now we are setting an regex to ignore the timestamp
         SelectCmd selectCmd = assertTestcase.getReferenceActionAfter().getSelectCmds().get(0);
         selectCmd.addFilterExpression(TIMESTAMP);
@@ -92,16 +95,19 @@ class HelloWorld implements IBfiTest {
         // -> no differences, all timestamps are filtered out
         tcp.assertAfter(assertTestcase);
 
+        System.err.println("-----------> (6) update DB: Silberh[ö]rn -> Silberh[oe]rn");
         // change on DB: example replacements: Silberh[ö]rn -> Silberh[oe]rn
         tcp.execSql("update person set name = 'silberhoern' where id=100");
 
         // -> assert will fail because ö != oe
+        System.err.println("(7) Found Differences ö!=oe: " + tcp.getDifferencesAfter(assertTestcase));
         try {
             tcp.assertAfter(assertTestcase);
         } catch (ComparisonFailure ex) {
-            System.out.println(ex.getMessage());
+            System.err.println("assert failed, because ö != oe: " + ex.getMessage());
         }
 
+        System.err.println("(8) ignore umlaute  ");
         // no differences with replace UMLAUTE
         tcp.assertAfter(assertTestcase,null, Replacements.REPLACE_UMLAUTE);
         System.out.println(tcp.getDifferencesAfter(assertTestcase,null, Replacements.REPLACE_UMLAUTE));

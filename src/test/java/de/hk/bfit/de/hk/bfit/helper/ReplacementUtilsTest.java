@@ -6,7 +6,9 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static de.hk.bfit.helper.BfiRegEx.DATE_YYYY_MM_DD;
 import static de.hk.bfit.helper.BfiRegEx.TIMESTAMP;
@@ -56,7 +58,17 @@ public class ReplacementUtilsTest {
 
     @Test
     public void testReplaceMap() {
-        assertEquals("*ae**ue**oe**AE**UE**OE**ss*", replaceStrings("äüöÄÜÖß", REPLACE_UMLAUTE));
+        assertEquals("aeueoeAEUEOEss", replaceStrings("äüöÄÜÖß", REPLACE_UMLAUTE));
     }
+
+    @Test
+    public void firstTest() {
+        Map<String, String> variables = new HashMap<>();
+        variables.put("VNR","1234");
+        variables.put("ID","abc");
+        Assert.assertEquals("select * from person where vnr=1234 and id=abc",
+                ReplacementUtils.setVariables("select * from person where vnr=$VNR and id=$ID",variables));
+    }
+
 
 }

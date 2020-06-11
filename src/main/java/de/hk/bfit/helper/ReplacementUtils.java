@@ -3,15 +3,13 @@ package de.hk.bfit.helper;
 import de.hk.bfit.process.SqlProzessor;
 import org.apache.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static de.hk.bfit.helper.BfiRegEx.DATE_YYYY_MM_DD;
 import static de.hk.bfit.helper.BfiRegEx.TIMESTAMP;
+import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
 
 public abstract class ReplacementUtils {
     static private final Logger logger = Logger.getLogger(SqlProzessor.class);
@@ -68,6 +66,32 @@ public abstract class ReplacementUtils {
         }
         return newString;
     }
+
+
+    @Deprecated // refactor me !
+    static public  String setVariables(String sql) {
+        return setVariables(sql,null);
+    }
+
+    @Deprecated // refactor me !
+    static public String setVariables(String sql, Map<String, String> variables) {
+        if (variables != null) {
+            Iterator<String> it = variables.keySet().iterator();
+            String[] searchList = new String[variables.size()];
+            String[] replacementList = new String[variables.size()];
+            int counter = 0;
+            while (it.hasNext()) {
+                String variable = it.next();
+                searchList[counter] = "$" + variable;
+                replacementList[counter] = variables.get(variable);
+                counter++;
+            }
+
+            return replaceEachRepeatedly(sql, searchList, replacementList);
+        }
+        return sql;
+    }
+
 
 
 }

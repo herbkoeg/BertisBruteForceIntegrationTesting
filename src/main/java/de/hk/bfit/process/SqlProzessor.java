@@ -10,6 +10,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static de.hk.bfit.helper.ReplacementUtils.setVariables;
 import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
 
 public class SqlProzessor {
@@ -70,7 +71,7 @@ public class SqlProzessor {
                 || sql.toLowerCase().startsWith("insert")
                 || sql.toLowerCase().startsWith("delete");
     }
-
+/*
     protected String setVariables(String sql) {
         return setVariables(sql,null);
     }
@@ -92,6 +93,8 @@ public class SqlProzessor {
         }
         return sql;
     }
+
+ */
 
     public List<String> createResultList(ResultSet rs) throws SQLException {
         return createResultList(rs,null);

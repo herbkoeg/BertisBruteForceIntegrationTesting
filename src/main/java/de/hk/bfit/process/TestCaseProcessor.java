@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 import static de.hk.bfit.helper.ReplacementUtils.replaceStrings;
+import static de.hk.bfit.helper.ReplacementUtils.setVariables;
 
 public class TestCaseProcessor {
 
@@ -162,7 +163,7 @@ public class TestCaseProcessor {
      */
     public void execSql(String sql, Map<String, String> variables, boolean autoCommit) throws SQLException {
         List<String> sqlList = new ArrayList<>();
-        sqlList.add(sqlProzessor.setVariables(sql, variables));
+        sqlList.add(setVariables(sql, variables));
         sqlProzessor.processCommandList(sqlList, new HashMap<String, String>(), autoCommit);
     }
 
@@ -196,11 +197,8 @@ public class TestCaseProcessor {
             int length = resultList.size();
 
             for (int i = 0; i < length; i++) {
-                String reference = replaceStrings(sqlProzessor.setVariables(resultList.get(i), variableMap),replaceMap);
+                String reference = replaceStrings(setVariables(resultList.get(i), variableMap),replaceMap);
                 String actual =  replaceStrings(actualResults.get(i),replaceMap);
-
-//                String reference = sqlProzessor.setVariables(resultList.get(i), variables);
-//                String actual = actualResults.get(i);
 
                 if(selectCmd.getFilterExpressions()!=null) {
                     reference = ReplacementUtils.removeRegexFromString(reference, selectCmd.getFilterExpressions());
@@ -217,6 +215,7 @@ public class TestCaseProcessor {
 
         return assertResults;
     }
+
 
     /**
      * Determines all differences for all selectCmds of a referenceAction
@@ -279,7 +278,7 @@ public class TestCaseProcessor {
                 int length = refResults.size();
 
                 for (int i = 0; i < length; i++) {
-                    String reference = replaceStrings(sqlProzessor.setVariables(refResults.get(i), variablesMap),replaceMap);
+                    String reference = replaceStrings(setVariables(refResults.get(i), variablesMap),replaceMap);
                     String actual =  replaceStrings(actualResults.get(i),replaceMap);
                     if(selectCmd.getFilterExpressions()!=null) {
                         reference = ReplacementUtils.removeRegexFromString(reference, selectCmd.getFilterExpressions());
