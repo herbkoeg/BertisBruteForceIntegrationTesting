@@ -59,6 +59,13 @@ public class SelectCmd {
         return ignoredColumns;
     }
 
+    public void addIgnoredColumn(String column) {
+        if(getIgnoredColumns() == null) {
+            ignoredColumns = new ArrayList<>();
+        }
+        ignoredColumns.add(column);
+    }
+
     public void setIgnoredColumns(List<String> ignoredColumns) {
         this.ignoredColumns = ignoredColumns;
     }

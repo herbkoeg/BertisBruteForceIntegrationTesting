@@ -118,11 +118,15 @@ public class SqlProzessor {
         while (rs.next()) {
             StringBuilder sb = new StringBuilder();
             for (int i = 1; i <= columnCount; i++) {
-                //               System.err.println("########### -> " + rs.getMetaData().getColumnName(i));
-                if (rs.getString(i) != null) {
-                    sb.append(rs.getString(i).trim()).append(";");
+                // System.err.println("########### -> " + rs.getMetaData().getColumnName(i));
+                if(ignoredColumns!=null && ignoredColumns.contains(rs.getMetaData().getColumnName(i))) {
+                    // do nothing
                 } else {
-                    sb.append("null;");
+                    if (rs.getString(i) != null) {
+                        sb.append(rs.getString(i).trim()).append(";");
+                    } else {
+                        sb.append("null;");
+                    }
                 }
             }
             results.add(sb.toString());

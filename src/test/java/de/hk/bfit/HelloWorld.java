@@ -111,6 +111,20 @@ class HelloWorld implements IBfiTest {
         // no differences with replace UMLAUTE
         tcp.assertAfter(assertTestcase,null, Replacements.REPLACE_UMLAUTE);
         System.out.println(tcp.getDifferencesAfter(assertTestcase,null, Replacements.REPLACE_UMLAUTE));
+
+        System.err.println("(9) ignore columns  ");
+        tcp.processDefinedAction(generatedInitTestcase, "deletePersons");
+        tcp.processDefinedAction(generatedInitTestcase, "insertPersons");
+        tcp.execSql("update person set name = 'kasperl' where id=100");
+        assertTestcase = loadTestCase(assertFilename);  // back to initial Tescase
+        assertTestcase.getReferenceActionAfter().getSelectCmds().get(0).addIgnoredColumn("name");
+        assertTestcase.getReferenceActionAfter().getSelectCmds().get(0).setResults(new ArrayList<String>());
+        assertTestcase.getReferenceActionAfter().getSelectCmds().get(0).getResults().add("102;reinhard;maximiliansplatz;muenchen;some timestamp: 2020-06-08 12:12:12.121;");
+        assertTestcase.getReferenceActionAfter().getSelectCmds().get(0).getResults().add("101;horst;goetestrasse;muenchen;mathe;");
+        assertTestcase.getReferenceActionAfter().getSelectCmds().get(0).getResults().add("100;heinrich;schillerstrasse;muenchen;deutsch;");
+
+        tcp.assertAfter(assertTestcase);
+        System.out.println(tcp.getDifferencesAfter(assertTestcase));
     }
 
     static TestCase createInitTestCase(Connection dbConnection) throws IOException, SQLException {
