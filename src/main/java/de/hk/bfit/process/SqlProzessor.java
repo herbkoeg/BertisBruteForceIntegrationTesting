@@ -71,30 +71,6 @@ public class SqlProzessor {
                 || sql.toLowerCase().startsWith("insert")
                 || sql.toLowerCase().startsWith("delete");
     }
-/*
-    protected String setVariables(String sql) {
-        return setVariables(sql,null);
-    }
-
-    protected String setVariables(String sql, Map<String, String> variables) {
-        if (variables != null) {
-            Iterator<String> it = variables.keySet().iterator();
-            String[] searchList = new String[variables.size()];
-            String[] replacementList = new String[variables.size()];
-            int counter = 0;
-            while (it.hasNext()) {
-                String variable = it.next();
-                searchList[counter] = "$" + variable;
-                replacementList[counter] = variables.get(variable);
-                counter++;
-            }
-
-            return replaceEachRepeatedly(sql, searchList, replacementList);
-        }
-        return sql;
-    }
-
- */
 
     public List<String> createResultList(ResultSet rs) throws SQLException {
         return createResultList(rs,null);
