@@ -26,22 +26,22 @@ public class TestCaseGenerator {
         sqlProzessor = new SqlProzessor(connection);
     }
 
-    public TestCase generateTestCase(List<String> sqls) throws SQLException, IllegalArgumentException {
-        return generateTestCase(sqls, null);
+    public TestCase generateTestCaseWithReferenceAfter(List<String> sqls) throws SQLException, IllegalArgumentException {
+        return generateTestCaseWithReferenceAfter(sqls, null);
     }
 
-    public void generateTestCase(String filename, List<String> sqls, StubGeneration... stubGeneration) throws IOException, SQLException {
-        TestCase testCase = generateTestCase(sqls, stubGeneration);
+    public void generateTestCaseWithReferenceAfter(String filename, List<String> sqls, StubGeneration... stubGeneration) throws IOException, SQLException {
+        TestCase testCase = generateTestCaseWithReferenceAfter(sqls, stubGeneration);
         writeTestcase(testCase, filename);
     }
 
-    public TestCase generateTestCase(List<String> sqls, StubGeneration... stubGeneration) throws SQLException, IllegalArgumentException {
+    public TestCase generateTestCaseWithReferenceAfter(List<String> sqlsReferenceAfter, StubGeneration... stubGeneration) throws SQLException, IllegalArgumentException {
         logger.info("Generating TestCase");
 
         List<SelectCmd> selectCmd = new ArrayList<>();
 
-        for (String sql : sqls) {
-            logger.error("processing: " + sql);
+        for (String sql : sqlsReferenceAfter) {
+            logger.info("processing: " + sql);
             List<String> resultList = sqlProzessor.processCommand(sql);
             selectCmd.add(new SelectCmd("describe me!", sql, resultList));
         }
@@ -63,7 +63,7 @@ public class TestCaseGenerator {
         return testCase;
     }
 
-    public TestCase generateExampleDefinedActionTestCase(String filename, List<DefinedExecutionAction> definedExecutionActions, List<DefinedReferenceAction> definedReferenceActions) throws IllegalArgumentException, IOException {
+    public TestCase generateTestCaseWithDefinedExecutionActions(String filename, List<DefinedExecutionAction> definedExecutionActions, List<DefinedReferenceAction> definedReferenceActions) throws IllegalArgumentException, IOException {
         TestCase newTestCase = new TestCase();
         newTestCase.setDescription(filename);
         newTestCase.setDefinedExecutionActions(definedExecutionActions);

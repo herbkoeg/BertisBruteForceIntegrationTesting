@@ -1,6 +1,6 @@
 package de.hk.bfit.de.hk.bfit.workflow;
 
-import de.hk.bfit.db.PostgresDBConnector;
+import de.hk.bfit.db.DBConnectorImpl;
 import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.io.TestCaseHandler;
 import de.hk.bfit.model.DefinedExecutionAction;
@@ -23,7 +23,7 @@ public class TestCaseProcessorWorkflowDefinedExecutionActionIT implements IBfiTe
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        PostgresDBConnector dBConnector = new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+        DBConnectorImpl dBConnector = new DBConnectorImpl("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
         Connection dbConnection = dBConnector.getDBConnection();
         tcp = new TestCaseProcessor(dBConnector.getDBConnection());
         tcg = new TestCaseGenerator(dBConnector.getDBConnection());
@@ -34,9 +34,9 @@ public class TestCaseProcessorWorkflowDefinedExecutionActionIT implements IBfiTe
     public void testGenerateExampleTestCase() throws Exception {
         Map<String, String> variables = new HashMap<>();
         List<String> sqlList = new ArrayList<>();
-        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase.xml", sqlList);
-        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase2.xml", sqlList);
-        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase3.xml", sqlList);
+        tcg.generateTestCaseWithReferenceAfter(BASE_PATH_GENERATED + "myTestcase.xml", sqlList);
+        tcg.generateTestCaseWithReferenceAfter(BASE_PATH_GENERATED + "myTestcase2.xml", sqlList);
+        tcg.generateTestCaseWithReferenceAfter(BASE_PATH_GENERATED + "myTestcase3.xml", sqlList);
 
         String filename = "workflowtest_ignored_by_git.xml";
         TestCase newTestCase = new TestCase();

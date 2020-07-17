@@ -1,6 +1,6 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.db.PostgresDBConnector;
+import de.hk.bfit.db.DBConnectorImpl;
 import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.model.*;
 import org.apache.log4j.BasicConfigurator;
@@ -19,7 +19,7 @@ public class DefinedExecutionActionProcessingIT {
     @Before
     public void init() throws Exception {
 
-        PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_MY_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
+        DBConnectorImpl dBConnector = new DBConnectorImpl(IBfiTest.JDBC_POSTGRESQL_MY_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
         Connection dbConnection = dBConnector.getDBConnection();
 
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
@@ -48,7 +48,7 @@ public class DefinedExecutionActionProcessingIT {
         definedReferenceActions.add(definedReferenceAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = tcg.generateExampleDefinedActionTestCase(filename, definedExecutionActions,definedReferenceActions);
+        TestCase definedActionTestcase = tcg.generateTestCaseWithDefinedExecutionActions(filename, definedExecutionActions,definedReferenceActions);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }
@@ -72,7 +72,7 @@ public class DefinedExecutionActionProcessingIT {
         definedExecutionActions.add(definedExecutionAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = tcg.generateExampleDefinedActionTestCase(filename, definedExecutionActions,null);
+        TestCase definedActionTestcase = tcg.generateTestCaseWithDefinedExecutionActions(filename, definedExecutionActions,null);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }
@@ -89,7 +89,7 @@ public class DefinedExecutionActionProcessingIT {
         definedExecutionActions.add(definedExecutionAction);
 
         String filename = "src/test/resources/generated/definedActionTestcase.xml";
-        TestCase definedActionTestcase = tcg.generateExampleDefinedActionTestCase(filename, definedExecutionActions,null);
+        TestCase definedActionTestcase = tcg.generateTestCaseWithDefinedExecutionActions(filename, definedExecutionActions,null);
 
         cut.processDefinedAction(definedActionTestcase, "EXAMPLE");
     }

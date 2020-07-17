@@ -1,6 +1,6 @@
 package de.hk.bfit.process;
 
-import de.hk.bfit.db.PostgresDBConnector;
+import de.hk.bfit.db.DBConnectorImpl;
 import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.model.InitAction;
 import de.hk.bfit.model.ResetAction;
@@ -22,7 +22,7 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        PostgresDBConnector dBConnector = new PostgresDBConnector(IBfiTest.JDBC_POSTGRESQL_MY_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
+        DBConnectorImpl dBConnector = new DBConnectorImpl(IBfiTest.JDBC_POSTGRESQL_MY_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
         Connection dbConnection = dBConnector.getDBConnection();
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
         tcg = new TestCaseGenerator(dBConnector.getDBConnection());
@@ -32,7 +32,7 @@ public class TestCaseProcessorIT implements IBfiTest {
     public void testGenerateExampleTestCase() throws Exception {
         Map<String, String> variables = new HashMap<>();
         List<String> sqlList = new ArrayList<>();
-        tcg.generateTestCase(BASE_PATH_GENERATED + "myTestcase", sqlList);
+        tcg.generateTestCaseWithReferenceAfter(BASE_PATH_GENERATED + "myTestcase", sqlList);
   //      cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase2", sqlList, INITACTION, RESETACTION);
   //      cut.generateExampleTestCase(BASE_PATH_GENERATED + "myTestcase3", sqlList,INITACTION);
     }
@@ -42,7 +42,7 @@ public class TestCaseProcessorIT implements IBfiTest {
     public void testProcessResetAction() throws Exception {
         List<String> sqlList = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
-        TestCase testCase = tcg.generateTestCase(sqlList);
+        TestCase testCase = tcg.generateTestCaseWithReferenceAfter(sqlList);
         testCase.setResetAction(new ResetAction());
         cut.processResetAction(testCase, variables);
     }
@@ -51,14 +51,14 @@ public class TestCaseProcessorIT implements IBfiTest {
     public void testProcessInitAction() throws Exception {
         List<String> sqlList = new ArrayList<>();
         Map<String, String> variables = new HashMap<>();
-        TestCase testCase = tcg.generateTestCase(sqlList);
+        TestCase testCase = tcg.generateTestCaseWithReferenceAfter(sqlList);
         testCase.setInitAction(new InitAction());
         cut.processInitAction(testCase, variables);
     }
 
     @Test
     public void integerationTest() throws Exception {
-        PostgresDBConnector dBConnector = getPostgresDBConnector();
+        DBConnectorImpl dBConnector = getPostgresDBConnector();
 
         Map<String, String> variables = new HashMap<>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
@@ -66,7 +66,7 @@ public class TestCaseProcessorIT implements IBfiTest {
 
         List<String> sqlListReferenceAction = new ArrayList<>(Arrays.asList("select id from Person", "select name from Person"));
 
-        tcg.generateTestCase(filename, sqlListReferenceAction);
+        tcg.generateTestCaseWithReferenceAfter(filename, sqlListReferenceAction);
 
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
         testCaseProcessor.getDifferencesAfter(testCase);
@@ -76,7 +76,7 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @Test
     public void integerationTestOnlyResetAction() throws Exception {
-        PostgresDBConnector dBConnector = getPostgresDBConnector();
+        DBConnectorImpl dBConnector = getPostgresDBConnector();
 
         Map<String, String> variables = new HashMap<>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
@@ -88,7 +88,7 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @Test
     public void variablesInitAction() throws Exception {
-        PostgresDBConnector dBConnector = getPostgresDBConnector();
+        DBConnectorImpl dBConnector = getPostgresDBConnector();
 
         Map<String, String> variables = new HashMap<>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
@@ -101,7 +101,7 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @Test
     public void integerationTestNoResultToCompareAction() throws Exception {
-        PostgresDBConnector dBConnector = getPostgresDBConnector();
+        DBConnectorImpl dBConnector = getPostgresDBConnector();
 
         Map<String, String> variables = new HashMap<>();
         TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
@@ -111,8 +111,8 @@ public class TestCaseProcessorIT implements IBfiTest {
         testCaseProcessor.assertAfter(testCase);
     }
 
-    private PostgresDBConnector getPostgresDBConnector() {
-        return new PostgresDBConnector("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+    private DBConnectorImpl getPostgresDBConnector() {
+        return new DBConnectorImpl("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
     }
 
     @Test

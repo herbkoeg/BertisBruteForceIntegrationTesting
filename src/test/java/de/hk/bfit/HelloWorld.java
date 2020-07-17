@@ -5,8 +5,7 @@
  */
 package de.hk.bfit;
 
-import de.hk.bfit.db.PostgresDBConnector;
-import de.hk.bfit.helper.BfiRegEx;
+import de.hk.bfit.db.DBConnectorImpl;
 import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.model.DefinedExecutionAction;
 import de.hk.bfit.model.SelectCmd;
@@ -19,7 +18,6 @@ import org.junit.ComparisonFailure;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -28,8 +26,6 @@ import java.util.Map;
 import static de.hk.bfit.helper.BfiRegEx.TIMESTAMP;
 import static de.hk.bfit.io.TestCaseHandler.loadTestCase;
 import static de.hk.bfit.io.TestCaseHandler.writeTestcase;
-import static java.lang.System.currentTimeMillis;
-import static java.lang.System.setErr;
 
 /**
  * @author palmherby
@@ -46,11 +42,14 @@ class HelloWorld implements IBfiTest {
                     stadt character varying(255) COLLATE pg_catalog."default",
                     message character varying(255) COLLATE pg_catalog."default"
             )
+     or
+
+)
      */
 
     public static void main(String[] args) throws Exception {
-        PostgresDBConnector dBConnector =
-                new PostgresDBConnector(JDBC_POSTGRESQL_MY_DB, DB_USER, DB_PASSWORD);
+        DBConnectorImpl dBConnector =
+                new DBConnectorImpl(JDBC_POSTGRESQL_MY_DB, DB_USER, DB_PASSWORD);
 
         Connection dbConnection = dBConnector.getDBConnection();
         TestCaseProcessor tcp = new TestCaseProcessor(dBConnector.getDBConnection());
@@ -156,7 +155,7 @@ class HelloWorld implements IBfiTest {
 
         List sqlList = new ArrayList();
         sqlList.add("select * from person order by id desc");
-        TestCase testCase = testCaseGenerator.generateTestCase(sqlList, null);
+        TestCase testCase = testCaseGenerator.generateTestCaseWithReferenceAfter(sqlList, null);
 
         return testCase;
     }

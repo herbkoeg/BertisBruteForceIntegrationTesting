@@ -8,6 +8,12 @@
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
+            <groupId>com.ibm.db2</groupId>
+            <artifactId>jcc</artifactId>
+            <version>11.1.4.4</version>
+        </dependency>
+
+        <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.1-901-1.jdbc4</version>
