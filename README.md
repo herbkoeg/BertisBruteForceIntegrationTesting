@@ -9,6 +9,11 @@
    + you can run and assert some actions over different databases with your 
      countinous integration system
 
+The three central classes are:
+- TestCaseGenerator
+- TestCaseHandler
+- TestCaseProcessor
+
 You can define a TESTCASE described in a xml-file, which will be loaded and exectuted:
 - define insert, update or delete sql commands for INITIALISATION running 
 'TestCaseProcessor.processInitAction ...'
@@ -19,16 +24,17 @@ You can define a TESTCASE described in a xml-file, which will be loaded and exec
 running 'TestCaseProcessor.processResetAction ...'
 
 You can parameterize your testcase:
-- use $MyVariable and set it as key-value map PARAMETER calling process, assert or
+- use variaables: $MyVariable and set it as key-value map PARAMETER calling process, assert or
 generate methods
+- use filters to ignore regular expressions
+- use replacements to avoid for example encoding problems 
 
 Some Hints:
-- The TestCaseProcessor has a method called 'generateExampleTestCase', which 
-you can use for easily CREATE A NEW TESTCASE named MyTestCase.xml
+- There is a TestCaseGenerator, which 
+you can use for easily CREATE A NEW TESTCASE with the results of your select commands
 - This version comes with an PostgresDBConnector, but you very easily create
 your own DB2, MySql, ... Connector implementing DBConnector.
-- Just run HelloWorld.java or even better TestCaseProcessorTest
-to generate a first TestCase.
+- Just run HelloWorld.java to generate a first TestCase.
 
 MyToDos:
 - add execSql to Processor
