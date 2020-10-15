@@ -1,0 +1,12 @@
+<TestCase>
+    <referenceActionAfter>
+        <selectCmds>
+            <selectCmd>
+                <description>-- 9 --</description>
+                <results>
+                </results>
+                <select>select id from Person</select>
+            </selectCmd>
+        </selectCmds>
+    </referenceActionAfter>
+</TestCase>
