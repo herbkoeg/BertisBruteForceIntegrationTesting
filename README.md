@@ -9,10 +9,10 @@
    + you can run and assert some actions over different databases with your 
      countinous integration system
 
-The three central classes are:
-- TestCaseGenerator
-- TestCaseHandler
-- TestCaseProcessor
+The three central components are:
+- TestCaseGenerator: creates testcases, so get a full template filled with the results of your selects
+- TestCaseHandler: loads and writes testcase
+- TestCaseProcessor: processes actions and asserts
 
 You can define a TESTCASE described in a xml-file, which will be loaded and exectuted:
 - define insert, update or delete sql commands for INITIALISATION running 
@@ -26,20 +26,14 @@ running 'TestCaseProcessor.processResetAction ...'
 You can parameterize your testcase:
 - use variaables: $MyVariable and set it as key-value map PARAMETER calling process, assert or
 generate methods
-- use filters to ignore regular expressions
-- use replacements to avoid for example encoding problems 
+- use filters to ignore by regular expressions
+- use replacements 
 
 Some Hints:
-- There is a TestCaseGenerator, which 
-you can use for easily CREATE A NEW TESTCASE with the results of your select commands
 - This version comes with an PostgresDBConnector, but you very easily create
 your own DB2, MySql, ... Connector implementing DBConnector.
-- Just run HelloWorld.java to generate a first TestCase.
+- For quitckstart run HelloWorldWithArgs.java to generate a first TestCase and play with the features of bfi.
 
-MyToDos:
-- add execSql to Processor
-- add processCheck to testcase : i.e. select count(*) from xyz -> 
-    continuous monitoring of a process which doesn't throw a exception
 
 
 
