@@ -9,6 +9,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -19,13 +20,25 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     public TestCaseProcessorIT() {
     }
-
+/*
     @BeforeClass
     public static void setUpClass() throws Exception {
         DBConnectorImpl dBConnector = new DBConnectorImpl(IBfiTest.JDBC_POSTGRESQL_MY_DB, IBfiTest.DB_USER, IBfiTest.DB_PASSWORD);
         Connection dbConnection = dBConnector.getDBConnection();
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
         tcg = new TestCaseGenerator(dBConnector.getDBConnection());
+    }
+*/
+    @BeforeClass
+    public static void setUpClass() throws Exception {
+        Connection con = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "b....R....123+Postgres" TODO in Variable auslagern
+        );
+
+        cut = new TestCaseProcessor(con);
+        tcg = new TestCaseGenerator(con);
     }
 
     @Test
@@ -58,10 +71,9 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @Test
     public void integerationTest() throws Exception {
-        DBConnectorImpl dBConnector = getPostgresDBConnector();
 
         Map<String, String> variables = new HashMap<>();
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(getPostgresConnection());
         String filename = "BfitFirstTest.xml";
 
         List<String> sqlListReferenceAction = new ArrayList<>(Arrays.asList("select id from Person", "select name from Person"));
@@ -76,10 +88,8 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @Test
     public void integerationTestOnlyResetAction() throws Exception {
-        DBConnectorImpl dBConnector = getPostgresDBConnector();
-
         Map<String, String> variables = new HashMap<>();
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(getPostgresConnection());
 
         String filename = BASE_PATH_TESTCASES + "BfitFirstTestOnlyReset.xml";
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
@@ -88,10 +98,8 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @Test
     public void variablesInitAction() throws Exception {
-        DBConnectorImpl dBConnector = getPostgresDBConnector();
-
         Map<String, String> variables = new HashMap<>();
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(getPostgresConnection());
 
         String filename = BASE_PATH_TESTCASES + "BfitFirstTestOnlyReset.xml";
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
@@ -101,18 +109,22 @@ public class TestCaseProcessorIT implements IBfiTest {
 
     @Test
     public void integerationTestNoResultToCompareAction() throws Exception {
-        DBConnectorImpl dBConnector = getPostgresDBConnector();
-
         Map<String, String> variables = new HashMap<>();
-        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(dBConnector.getDBConnection());
+        TestCaseProcessor testCaseProcessor = new TestCaseProcessor(getPostgresConnection());
 
         String filename = BASE_PATH_TESTCASES + "BfitFirstTestNoResult.xml";
         TestCase testCase = testCaseProcessor.loadTestCase(filename);
         testCaseProcessor.assertAfter(testCase);
     }
 
-    private DBConnectorImpl getPostgresDBConnector() {
-        return new DBConnectorImpl("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
+    private Connection getPostgresConnection() throws SQLException {
+        Connection con = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "bo....R....123+Postgres" TODO in Variable auslagern
+        );
+        return con;
+//        return new DBConnectorImpl("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
     }
 
     @Test

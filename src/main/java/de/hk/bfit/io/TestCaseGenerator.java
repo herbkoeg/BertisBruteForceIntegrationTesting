@@ -3,7 +3,9 @@ package de.hk.bfit.io;
 import de.hk.bfit.model.*;
 import de.hk.bfit.process.SqlProzessor;
 import de.hk.bfit.process.enums.StubGeneration;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -18,7 +20,7 @@ import static java.util.Arrays.asList;
 
 public class TestCaseGenerator {
 
-    private final Logger logger = Logger.getLogger(TestCaseGenerator.class);
+    private final Logger logger = LogManager.getLogger(TestCaseGenerator.class);
 
     private SqlProzessor sqlProzessor = null;
 

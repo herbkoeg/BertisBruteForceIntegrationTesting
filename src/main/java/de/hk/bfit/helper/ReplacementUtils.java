@@ -1,7 +1,8 @@
 package de.hk.bfit.helper;
 
 import de.hk.bfit.process.SqlProzessor;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -12,7 +13,7 @@ import static de.hk.bfit.helper.BfiRegEx.TIMESTAMP;
 import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
 
 public abstract class ReplacementUtils {
-    static private final Logger logger = Logger.getLogger(SqlProzessor.class);
+    static private final Logger logger = LogManager.getLogger(SqlProzessor.class);
 
     /**
      * Removes YYYY-MM-DD HH:MM:SS.MMM from String

@@ -1,8 +1,8 @@
 package de.hk.bfit.process;
 
 import de.hk.bfit.model.IgnorableSqlCommand;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import static org.apache.commons.lang3.StringUtils.replaceEachRepeatedly;
 
 public class SqlProzessor {
 
-    private final Logger logger = Logger.getLogger(SqlProzessor.class);
+    private final Logger logger = LogManager.getLogger(SqlProzessor.class);
     private Connection connection = null;
 
     public SqlProzessor(Connection connection) {

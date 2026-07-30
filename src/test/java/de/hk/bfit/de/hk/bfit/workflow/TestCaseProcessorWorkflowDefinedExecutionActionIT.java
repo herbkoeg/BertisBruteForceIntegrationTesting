@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,10 +24,14 @@ public class TestCaseProcessorWorkflowDefinedExecutionActionIT implements IBfiTe
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        DBConnectorImpl dBConnector = new DBConnectorImpl("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
-        Connection dbConnection = dBConnector.getDBConnection();
-        tcp = new TestCaseProcessor(dBConnector.getDBConnection());
-        tcg = new TestCaseGenerator(dBConnector.getDBConnection());
+        Connection con = DriverManager.getConnection(
+                "jdbc:postgresql://localhost:5432/postgres",
+                "postgres",
+                "b....R....123+Postgres" TODO in Variable auslagern
+        );
+
+        tcp = new TestCaseProcessor(con);
+        tcg = new TestCaseGenerator(con);
     }
 
 
