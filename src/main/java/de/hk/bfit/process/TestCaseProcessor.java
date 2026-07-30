@@ -4,7 +4,8 @@ import de.hk.bfit.helper.ReplacementUtils;
 import de.hk.bfit.io.TestCaseHandler;
 import de.hk.bfit.model.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
 
 import java.io.IOException;
@@ -17,7 +18,7 @@ import static de.hk.bfit.helper.ReplacementUtils.setVariables;
 
 public class TestCaseProcessor {
 
-    private final Logger logger = Logger.getLogger(TestCaseProcessor.class);
+    private final Logger logger = LogManager.getLogger(TestCaseProcessor.class);
     private Connection connection = null;
     private  SqlProzessor sqlProzessor = null;
 

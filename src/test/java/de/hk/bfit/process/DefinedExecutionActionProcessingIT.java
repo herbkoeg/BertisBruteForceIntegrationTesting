@@ -3,7 +3,6 @@ package de.hk.bfit.process;
 import de.hk.bfit.db.DBConnectorImpl;
 import de.hk.bfit.io.TestCaseGenerator;
 import de.hk.bfit.model.*;
-import org.apache.log4j.BasicConfigurator;
 import org.junit.Before;
 import org.junit.Test;
 import org.postgresql.util.PSQLException;
@@ -24,7 +23,9 @@ public class DefinedExecutionActionProcessingIT {
 
         cut = new TestCaseProcessor(dBConnector.getDBConnection());
         tcg = new TestCaseGenerator(dBConnector.getDBConnection());
-        BasicConfigurator.configure();
+
+        // TODO log4j2.xml anlegen
+        // BasicConfigurator.configure();
     }
 
     @Test
