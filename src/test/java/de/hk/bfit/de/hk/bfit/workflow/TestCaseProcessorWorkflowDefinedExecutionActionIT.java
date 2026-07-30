@@ -27,7 +27,7 @@ public class TestCaseProcessorWorkflowDefinedExecutionActionIT implements IBfiTe
         Connection con = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/postgres",
                 "postgres",
-                "b....R....123+Postgres" TODO in Variable auslagern
+                "b....R....123+Postgres" // TODO in Variable auslagern
         );
 
         tcp = new TestCaseProcessor(con);

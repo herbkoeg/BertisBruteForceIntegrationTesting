@@ -34,7 +34,7 @@ public class TestCaseProcessorIT implements IBfiTest {
         Connection con = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/postgres",
                 "postgres",
-                "b....R....123+Postgres" TODO in Variable auslagern
+                "b....R....123+Postgres" // TODO in Variable auslagern
         );
 
         cut = new TestCaseProcessor(con);
@@ -121,7 +121,7 @@ public class TestCaseProcessorIT implements IBfiTest {
         Connection con = DriverManager.getConnection(
                 "jdbc:postgresql://localhost:5432/postgres",
                 "postgres",
-                "bo....R....123+Postgres" TODO in Variable auslagern
+                "bo....R....123+Postgres" // TODO in Variable auslagern
         );
         return con;
 //        return new DBConnectorImpl("jdbc:postgresql://localhost:5432/bertisDB", "berti", "berti");
